@@ -1,0 +1,14 @@
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\bin\Debug\netcoreapp2.2\DI.deps.json
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\bin\Debug\netcoreapp2.2\DI.dll
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\bin\Debug\netcoreapp2.2\DI.pdb
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\bin\Debug\netcoreapp2.2\DAL.dll
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\bin\Debug\netcoreapp2.2\DAL.pdb
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\obj\Debug\netcoreapp2.2\DI.csprojAssemblyReference.cache
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\obj\Debug\netcoreapp2.2\DI.csproj.CoreCompileInputs.cache
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\obj\Debug\netcoreapp2.2\DI.AssemblyInfoInputs.cache
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\obj\Debug\netcoreapp2.2\DI.AssemblyInfo.cs
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\obj\Debug\netcoreapp2.2\DI.csproj.CopyComplete
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\obj\Debug\netcoreapp2.2\DI.dll
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\obj\Debug\netcoreapp2.2\DI.pdb
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\bin\Debug\netcoreapp2.2\BLL.dll
+C:\Users\Vlad\Desktop\Core\FileStorage\DI\bin\Debug\netcoreapp2.2\BLL.pdb

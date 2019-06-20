@@ -1,0 +1,10 @@
+<div *ngIf='!changing'>
+  <button class="btn btn-primary btn-block" (click)='changing = true'>Change</button>
+</div>
+<div *ngIf='changing'>
+  <form method='put'>
+    <input type='text' name='name' [(ngModel)] = 'folder.name' placeholder='Folder name'>
+    <button class="btn btn-primary btn-block" type="button" (click)='onClickUpdate()'  [disabled]='!folder.name'>Change</button>
+    <button class="btn btn-primary btn-block" (click)='changing = false'>Close form</button>
+  </form>
+</div>

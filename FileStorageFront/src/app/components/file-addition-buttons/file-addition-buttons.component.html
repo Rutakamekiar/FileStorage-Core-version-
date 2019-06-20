@@ -1,0 +1,7 @@
+<div *ngIf='file.fileType === "bmp"'>
+    <button class="btn btn-primary btn-block" (click)='blackout()'>Blackout</button>
+</div>
+<div *ngIf='file.fileType === "txt"'>
+  <button class="btn btn-primary btn-block" (click)='getTxtFileSymbolsCount()'>FileSymbolsCounts</button>
+  <button class="btn btn-primary btn-block" (click)='getTxtFile()'>GetText</button>
+</div>

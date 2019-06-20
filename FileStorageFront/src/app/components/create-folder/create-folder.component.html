@@ -1,0 +1,10 @@
+<div *ngIf='!creating'>
+  <button class="btn btn-primary btn-block" (click)="creating = true">Create Folder</button>
+</div>
+<div *ngIf='creating'>
+  <form method='post'>
+    <input type='text' name='name' [(ngModel)] = 'name' placeholder='Folder name'>
+    <button class="btn btn-primary btn-block" type="button" (click)='onClickCreate()' [disabled]='!name'>Create</button>
+    <button class="btn btn-primary btn-block" (click)='creating = false'>Close form</button>
+  </form>
+</div>

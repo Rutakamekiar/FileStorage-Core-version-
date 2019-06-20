@@ -1,0 +1,68 @@
+<div class="content">
+  <div *ngIf="myFolder">
+    <div *ngIf="myFolder.parentFolderId">
+        <button class="btn btn-primary btn-block" [routerLink]="['/folders', myFolder.parentFolderId]" 
+        (click)="openFolder(myFolder.parentFolderId)">GetBack</button>
+    </div>  
+  </div>                  
+  <div *ngIf="myFolder">
+    <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+          <div class="ibox float-e-margins">
+              <div class="ibox-content">
+                  <div class="file-manager">
+                      <h5>{{myFolder.name}}</h5>
+                      <h6>{{memorySize}} / {{rootFolderSize}}</h6>
+                      <div class="hr-line-dashed"></div>
+                        <app-upload-file></app-upload-file>
+                        <app-create-folder></app-create-folder>
+                      <div class="hr-line-dashed"></div>
+                      <div *ngIf="myFolder.folders.length > 0">
+                        <h5>Folders</h5>
+                        <ul *ngFor="let folder of myFolder.folders" class="folder-list" style="padding: 0">
+                          <li><a [routerLink]="['/folders', folder.id]"
+                            (click)="openFolder(folder.id)">
+                            <i class="fa fa-folder"></i>{{folder.name}}</a>
+                            <app-update-folder [folder]='folder'></app-update-folder>
+                            <app-delete-folder [folderId]='folder.id'></app-delete-folder>
+                          </li>                        
+                        </ul>
+                        
+                      </div>
+                    <div class="clearfix"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-9 animated fadeInRight">
+          <div class="row">
+            <div class="col-lg-12">
+                <div *ngIf="myFolder.files">
+                    <ul *ngFor="let file of myFolder.files" class="file-list" style="padding: 0">
+                        <li>
+                          <div class="file-box">
+                            <div class="file">
+                                <div class="icon">
+                                  <i class="fa fa-file"></i>
+                                </div>
+                                <div class="file-name">
+                                  {{file.name}}
+                                  <app-delete-file [fileId]='file.id'></app-delete-file>
+                                  <div *ngIf="!file.isBlocked">
+                                    <app-update-file [file]='file'></app-update-file>
+                                    <app-download-file [file]='file'></app-download-file>
+                                    <app-file-addition-buttons [file]='file'></app-file-addition-buttons>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                        </li>
+                    </ul>
+                  </div>                    
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

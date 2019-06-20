@@ -1,0 +1,10 @@
+<div *ngIf='!creating'>
+  <button class="btn btn-primary btn-block" (click)="creating = true">Change memory size</button>
+</div>
+<div *ngIf='creating'>
+  <form method='put'>
+    <input type='text' name='size' [(ngModel)] = 'size' placeholder='Size'>
+    <button class="btn btn-primary btn-block" type="button" (click)='changeMemorySize()' [disabled]='!size'>Change</button>
+    <button class="btn btn-primary btn-block" (click)='creating = false'>Close form</button>
+  </form>
+</div>

@@ -1,0 +1,75 @@
+<div class="content">
+  <div *ngIf="myFolder">
+    <div *ngIf="myFolder.parentFolderId">
+        <button class="btn btn-primary btn-block" [routerLink]="['/admin', myFolder.parentFolderId]" 
+        (click)="openFolder(myFolder.parentFolderId)">GetBack</button>
+    </div>
+    <div *ngIf="!myFolder.parentFolderId">
+        <button class="btn btn-primary btn-block" [routerLink]="['/admin']">GetBack</button>
+    </div>    
+  </div>                  
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+          <div class="ibox float-e-margins">
+              <div class="ibox-content">
+                  <div class="file-manager">
+                    <div *ngIf="rootFolders">
+                      <div *ngIf="rootFolders.length > 0">
+                        <h5>Folders</h5>
+                        <ul *ngFor="let folder of rootFolders" class="folder-list" style="padding: 0">
+                          <li><a [routerLink]="['/admin', folder.id]"
+                            (click)="openFolder(folder.id)">
+                            <i class="fa fa-folder"></i>{{folder.name}}</a>
+                          </li>                        
+                        </ul>                        
+                      </div>
+                    </div>
+                    <div *ngIf="myFolder">
+                      <h5>{{myFolder.name}}</h5>
+                      <h6>{{memorySize}}</h6>
+                      <app-change-user-memory-size [folder]='myFolder'></app-change-user-memory-size>
+                      <div class="hr-line-dashed"></div>
+                      <div *ngIf="myFolder.folders.length > 0">
+                        <h5>Folders</h5>
+                        <ul *ngFor="let folder of myFolder.folders" class="folder-list" style="padding: 0">
+                          <li><a [routerLink]="['/admin', folder.id]"
+                            (click)="openFolder(folder.id)">
+                            <i class="fa fa-folder"></i>{{folder.name}}</a>
+                          </li>                        
+                        </ul>                        
+                      </div>
+                    <div class="clearfix"></div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9 animated fadeInRight">
+          <div class="row">
+            <div class="col-lg-12">
+              <div *ngIf="myFolder">
+                <div *ngIf="myFolder.files">
+                    <ul *ngFor="let file of myFolder.files" class="file-list" style="padding: 0">
+                        <li>
+                          <div class="file-box">
+                            <div class="file">
+                                <div class="icon">
+                                  <i class="fa fa-file"></i>
+                                </div>
+                                <div class="file-name">
+                                  {{file.name}}
+                                  <app-block-file [file]='file'></app-block-file>
+                                </div>
+                            </div>
+                          </div>
+                        </li>
+                    </ul>
+                  </div>         
+                </div>             
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div *ngIf='!changing'>
+    <button class="btn btn-primary btn-block" (click)='changing = true'>Change</button>
+</div>
+<div *ngIf='changing'>
+  <form method='put'>
+      <input type='text' name='name' [(ngModel)] = 'file.name' placeholder='File name'>
+      <input type="radio" id="publicRadio" name="public" value="true" checked [(ngModel)]="file.accessLevel" >
+      <label for="publicRadio">public </label> 
+      <input type="radio" id="privateRadio" name="private" value="false" [(ngModel)]="file.accessLevel">
+      <label for="privateRadio">private </label> 
+      <button class="btn btn-primary btn-block" type="button" (click)='onClickUpdate()' [disabled]='!file.name || !file.accessLevel'>Change</button>
+      <button class="btn btn-primary btn-block" (click)='changing = false'>Close form</button>
+    </form>
+</div>  

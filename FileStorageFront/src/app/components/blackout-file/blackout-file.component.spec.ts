@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { FileAdditionButtonsFileComponent } from './file-addition-buttons.component';
+import { BlackoutFileComponent } from './blackout-file.component';
 
-describe('FileAdditionButtonsFileComponent', () => {
-  let component: FileAdditionButtonsFileComponent;
-  let fixture: ComponentFixture<FileAdditionButtonsFileComponent>;
+describe('BlackoutFileComponent', () => {
+  let component: BlackoutFileComponent;
+  let fixture: ComponentFixture<BlackoutFileComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FileAdditionButtonsFileComponent ]
+      declarations: [ BlackoutFileComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FileAdditionButtonsFileComponent);
+    fixture = TestBed.createComponent(BlackoutFileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

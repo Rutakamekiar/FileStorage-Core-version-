@@ -1,3 +1,6 @@
+import { GetTxtFileSymbolsComponent } from './components/get-txt-file-symbols/get-txt-file-symbols.component';
+import { GetFileTextComponent } from './components/get-file-text/get-file-text.component';
+import { BlackoutFileComponent } from './components/blackout-file/blackout-file.component';
 import { ChangeUserMemorySizeComponent } from './components/admin/change-user-memory-size/change-user-memory-size.component';
 import { BlockFileComponent } from './components/admin/block-file/block-file.component';
 import { RootFoldersComponent } from './components/admin/root-folders/root-folders.component';
@@ -21,7 +24,6 @@ import { AppComponent } from './app.component';
 import { LoginUserComponent } from './components/login-user/login-user.component';
 import { LogoutUserComponent } from './components/logout-user/logout-user.component';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
-import { FileAdditionButtonsFileComponent } from './components/file-addition-buttons/file-addition-buttons.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { FileAdditionButtonsFileComponent } from './components/file-addition-but
     RootFoldersComponent,
     BlockFileComponent,
     ChangeUserMemorySizeComponent,
-    FileAdditionButtonsFileComponent
+    BlackoutFileComponent,
+    GetFileTextComponent,
+    GetTxtFileSymbolsComponent
   ],
   imports: [
     BrowserModule,

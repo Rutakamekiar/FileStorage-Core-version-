@@ -52,7 +52,9 @@
                                   <div *ngIf="!file.isBlocked">
                                     <app-update-file [file]='file'></app-update-file>
                                     <app-download-file [file]='file'></app-download-file>
-                                    <app-file-addition-buttons [file]='file'></app-file-addition-buttons>
+                                    <app-blackout-file [file]='file'></app-blackout-file>
+                                    <app-get-file-text [file]='file'></app-get-file-text>
+                                    <app-get-txt-file-symbols [file]='file'></app-get-txt-file-symbols>
                                   </div>
                                 </div>
                             </div>

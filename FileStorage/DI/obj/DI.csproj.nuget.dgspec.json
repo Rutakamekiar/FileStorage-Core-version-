@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DI\\DI.csproj": {}
+    "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DI\\DI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\BLL\\BLL.csproj": {
+    "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\BLL\\BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\BLL\\BLL.csproj",
+        "projectUniqueName": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\BLL\\BLL.csproj",
         "projectName": "BLL",
-        "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\BLL\\BLL.csproj",
+        "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\BLL\\BLL.csproj",
         "packagesPath": "C:\\Users\\Vlad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\BLL\\obj\\",
+        "outputPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\BLL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -30,8 +30,8 @@
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\DAL.csproj": {
-                "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\DAL.csproj"
+              "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\DAL.csproj": {
+                "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\DAL.csproj"
               }
             }
           }
@@ -54,6 +54,10 @@
               "target": "Package",
               "version": "[2.2.0, )",
               "autoReferenced": true
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[4.5.1, )"
             }
           },
           "imports": [
@@ -64,14 +68,14 @@
         }
       }
     },
-    "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\DAL.csproj": {
+    "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\DAL.csproj",
+        "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\DAL.csproj",
         "packagesPath": "C:\\Users\\Vlad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\obj\\",
+        "outputPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -126,14 +130,14 @@
         }
       }
     },
-    "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DI\\DI.csproj": {
+    "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DI\\DI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DI\\DI.csproj",
+        "projectUniqueName": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DI\\DI.csproj",
         "projectName": "DI",
-        "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DI\\DI.csproj",
+        "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DI\\DI.csproj",
         "packagesPath": "C:\\Users\\Vlad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DI\\obj\\",
+        "outputPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -152,11 +156,11 @@
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\BLL\\BLL.csproj": {
-                "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\BLL\\BLL.csproj"
+              "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\BLL\\BLL.csproj": {
+                "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\BLL\\BLL.csproj"
               },
-              "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\DAL.csproj": {
-                "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\DAL.csproj"
+              "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\DAL.csproj": {
+                "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\DAL.csproj"
               }
             }
           }

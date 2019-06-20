@@ -3619,11 +3619,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\DAL.csproj",
+      "projectUniqueName": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\DAL.csproj",
+      "projectPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\DAL.csproj",
       "packagesPath": "C:\\Users\\Vlad\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Vlad\\Desktop\\Core\\FileStorage\\DAL\\obj\\",
+      "outputPath": "C:\\Users\\Vlad\\Desktop\\Core\\_FileStorage\\FileStorage\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

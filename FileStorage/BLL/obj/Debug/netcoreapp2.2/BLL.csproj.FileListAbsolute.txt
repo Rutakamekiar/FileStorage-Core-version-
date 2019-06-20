@@ -10,3 +10,15 @@ C:\Users\Vlad\Desktop\Core\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.csproj.Co
 C:\Users\Vlad\Desktop\Core\FileStorage\BLL\bin\Debug\netcoreapp2.2\BLL.pdb
 C:\Users\Vlad\Desktop\Core\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.dll
 C:\Users\Vlad\Desktop\Core\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.pdb
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.csprojAssemblyReference.cache
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.csproj.CoreCompileInputs.cache
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.AssemblyInfoInputs.cache
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.AssemblyInfo.cs
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.dll
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.pdb
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\bin\Debug\netcoreapp2.2\BLL.deps.json
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\bin\Debug\netcoreapp2.2\BLL.dll
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\bin\Debug\netcoreapp2.2\BLL.pdb
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\bin\Debug\netcoreapp2.2\DAL.dll
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\bin\Debug\netcoreapp2.2\DAL.pdb
+C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorage\BLL\obj\Debug\netcoreapp2.2\BLL.csproj.CopyComplete

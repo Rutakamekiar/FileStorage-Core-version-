@@ -23,6 +23,8 @@ namespace DI
             services.AddScoped<IFolderService, FolderService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITxtFileService, TxtFileService>();
+            services.AddScoped<IImageFileService, ImageFileService>();
         }
     }
 }

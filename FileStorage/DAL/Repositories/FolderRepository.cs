@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DAL.Entities;
 using DAL.Entity_Framework;
 using DAL.Interfaces.RepositoryInterfaces;
@@ -37,7 +35,6 @@ namespace DAL.Repositories
 
         public UserFolder Get(int id)
         {
-            //return _context.Set<UserFolder>().Find(id)
             return _context.Set<UserFolder>().Include(f => f.Folders).Include(f => f.Files)
                 .Where(f => f.Id == id).FirstOrDefault()
                    ?? throw new FolderNotFoundException($"Folder with id = {id} was not found");

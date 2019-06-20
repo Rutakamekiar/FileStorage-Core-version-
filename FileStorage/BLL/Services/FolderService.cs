@@ -16,7 +16,7 @@ namespace BLL.Services
         private readonly IFileService _fileService;
         private readonly IUserService _userSevice;
 
-        public const string RootPath = @"C:\Users\Vlad\Desktop\Core\FileStorageFront\src\assets\Content";
+        public const string RootPath = @"C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorageFront\src\assets\Content";
 
         public FolderService(IUnitOfWork data, IFileService fileService, IUserService userSevice)
         {

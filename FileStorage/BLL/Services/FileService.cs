@@ -10,10 +10,10 @@ using DAL.Interfaces;
 
 namespace BLL.Services
 {
-    public sealed class FileService : IFileService, IDisposable
+    public class FileService : IFileService, IDisposable
     {
         private readonly IUnitOfWork _data;
-        private const string RootFilePath = @"C:\Users\Vlad\Desktop\Core\FileStorageFront\src\assets\Content";
+        private const string RootFilePath = @"C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorageFront\src\assets\Content";
 
         public FileService(IUnitOfWork data)
         {
@@ -25,11 +25,12 @@ namespace BLL.Services
         {
             _data.Files.Create(Mapper.Map<UserFile>(item));
             File.WriteAllBytes(ReturnFullPath(item), item.FileBytes);
+
             _data.Save();
         }
 
         //Ok
-        private string ReturnFullPath(FileDTO file)
+        public string ReturnFullPath(FileDTO file)
         {
             UserFolder folder = _data.Folders.Get(file.FolderId);
             return $@"{RootFilePath}\{folder.Path}\{folder.Name}\{file.Name}";

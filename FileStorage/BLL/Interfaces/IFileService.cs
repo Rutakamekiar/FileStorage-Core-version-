@@ -13,5 +13,7 @@ namespace BLL.Interfaces
         void EditFile(int id, FileDTO fileDto);
 
         bool IsFileExists(FileDTO file);
+
+        string ReturnFullPath(FileDTO file);
     }
 }

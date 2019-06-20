@@ -4,6 +4,7 @@ using BLL.DTO;
 using BLL.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Models;
 
 namespace WebApi.Controllers
 {
@@ -24,9 +25,9 @@ namespace WebApi.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<List<UserDTO>> GetAll()
+        public ActionResult<List<FileView>> GetAll()
         {
-            return _userService.GetAll().ToList();
+            return AutoMapper.Mapper.Map<List<FileView>>(_fileService.GetAll());
         }
     }
 }

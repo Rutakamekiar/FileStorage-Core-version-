@@ -1,13 +1,12 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApi.Models
 {
     public class FileView
     {
+        private string fileType;
+
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
@@ -22,5 +21,13 @@ namespace WebApi.Models
 
         [JsonProperty(PropertyName = "folderId")]
         public int FolderId { get; set; }
+
+        public string FileType
+        {
+            get
+            {
+                return Name.Split(".").Last();
+            }
+        }
     }
 }

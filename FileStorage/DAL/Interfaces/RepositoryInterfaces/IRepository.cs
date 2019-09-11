@@ -1,5 +1,5 @@
-﻿using DAL.Entities;
-using System.Linq;
+﻿using System.Linq;
+using DAL.Entities;
 
 namespace DAL.Interfaces.RepositoryInterfaces
 {
@@ -10,6 +10,5 @@ namespace DAL.Interfaces.RepositoryInterfaces
         void Create(T item);
         void Delete(int id);
         void Update(T item);
-
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AutoMapper;
 using BLL.DTO;
+using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
 
@@ -18,13 +17,13 @@ namespace BLL.Services
             _data = data;
         }
 
-        public void Create(UserDTO item)
+        public void Create(UserDto item)
         {
             _data.Users.Create(Mapper.Map<User>(item));
             _data.Save();
         }
 
-        public void Delete(UserDTO item)
+        public void Delete(UserDto item)
         {
             _data.Users.Delete(item.Id);
             _data.Save();
@@ -35,32 +34,36 @@ namespace BLL.Services
             _data.Dispose();
         }
 
-        public UserDTO Get(int id)
+        public UserDto Get(int id)
         {
-            return Mapper.Map<UserDTO>(_data.Users.Get(id));
+            return Mapper.Map<UserDto>(_data.Users.Get(id));
         }
 
-        public HashSet<UserDTO> GetAll()
+        public HashSet<UserDto> GetAll()
         {
-            return Mapper.Map<HashSet<UserDTO>>(_data.Users.GetAll());
+            return Mapper.Map<HashSet<UserDto>>(_data.Users.GetAll());
         }
 
-        public UserDTO GetByEmail(string email)
+        public UserDto GetByEmail(string email)
         {
-            return Mapper.Map<UserDTO>(_data.Users.GetAll().Where(u => u.Email.Equals(email)).FirstOrDefault());
+            return Mapper.Map<UserDto>(_data.Users.GetAll().FirstOrDefault(u => u.Email.Equals(email)));
         }
 
-        public UserDTO GetByEmailAndPassword(string email, string password)
+        public UserDto GetByEmailAndPassword(string email, string password)
         {
-            return Mapper.Map<UserDTO>(_data.Users.GetAll()
+            return Mapper.Map<UserDto>(_data.Users.GetAll()
                 .FirstOrDefault(u => u.Email.Equals(email) && u.Password.Equals(password)));
         }
 
         public void ChangeUserMemorySize(string email, long memorySize)
         {
-            var user = _data.Users.GetAll().Where(u => u.Email.Equals(email)).FirstOrDefault();
-            user.MemorySize = memorySize;
-            _data.Users.Update(user);
+            var user = _data.Users.GetAll().FirstOrDefault(u => u.Email.Equals(email));
+            if (user != null)
+            {
+                user.MemorySize = memorySize;
+                _data.Users.Update(user);
+            }
+
             _data.Save();
         }
     }

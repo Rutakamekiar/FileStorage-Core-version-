@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using DAL.Entity_Framework;
 using DAL.Interfaces;
 using DAL.Interfaces.RepositoryInterfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
@@ -13,12 +10,10 @@ namespace DAL.Repositories
     {
         private readonly StorageContext _context;
 
-        public IFileRepository Files { get; }
-        public IFolderRepository Folders { get; }
+        private bool _disposed;
 
-        public IUserRepository Users { get; }
-
-        public UnitOfWork(StorageContext context, IFileRepository files, IFolderRepository folders, IUserRepository users)
+        public UnitOfWork(StorageContext context, IFileRepository files, IFolderRepository folders,
+            IUserRepository users)
         {
             _context = context;
             Files = files;
@@ -26,19 +21,10 @@ namespace DAL.Repositories
             Users = users;
         }
 
-        private bool disposed = false;
-        
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            disposed = true;
-        }
+        public IFileRepository Files { get; }
+        public IFolderRepository Folders { get; }
+
+        public IUserRepository Users { get; }
 
         public void Dispose()
         {
@@ -50,9 +36,18 @@ namespace DAL.Repositories
         {
             _context.SaveChanges();
         }
+
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+                if (disposing)
+                    _context.Dispose();
+            _disposed = true;
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BLL.DTO;
 using DAL.Entities;
 
@@ -13,8 +8,8 @@ namespace BLL.MappingProfiles
     {
         public FolderMapProfile()
         {
-            CreateMap<FolderDTO, UserFolder>();
-            CreateMap<UserFolder, FolderDTO>();
+            CreateMap<FolderDto, UserFolder>();
+            CreateMap<UserFolder, FolderDto>();
         }
     }
 }

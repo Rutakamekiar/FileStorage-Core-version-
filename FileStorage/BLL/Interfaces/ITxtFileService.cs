@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using BLL.DTO;
-
-namespace BLL.Interfaces
+﻿namespace BLL.Interfaces
 {
     public interface ITxtFileService
     {

@@ -1,8 +1,6 @@
-﻿using DAL.Interfaces.RepositoryInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using DAL.Interfaces.RepositoryInterfaces;
 
 namespace DAL.Interfaces
 {
@@ -13,6 +11,5 @@ namespace DAL.Interfaces
         IUserRepository Users { get; }
         void Save();
         Task SaveAsync();
-
     }
 }

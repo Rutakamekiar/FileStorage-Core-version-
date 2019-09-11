@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BLL.DTO;
 using BLL.Interfaces;
-using BLL.Services;
-using DAL.Entity_Framework;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -22,8 +18,8 @@ namespace WebApi.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        private readonly IUserService _userService;
         private readonly IFolderService _folderService;
+        private readonly IUserService _userService;
 
         public AccountController(IUserService userService, IFolderService folderService)
         {
@@ -54,25 +50,30 @@ namespace WebApi.Controllers
             }
 
             var now = DateTime.UtcNow;
-            // создаем JWT-токен
-            var jwt = new JwtSecurityToken(
-                issuer: AuthOptions.Issuer,
-                audience: AuthOptions.Audience,
-                notBefore: now,
-                claims: identity.Claims,
-                expires: now.Add(TimeSpan.FromMinutes(AuthOptions.Lifetime)),
-                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            var response = new
+            // generate JWT-token
+            if (identity != null)
             {
-                access_token = encodedJwt,
-                role = identity.RoleClaimType
-            };
+                var jwt = new JwtSecurityToken(
+                    AuthOptions.Issuer,
+                    AuthOptions.Audience,
+                    notBefore: now,
+                    claims: identity.Claims,
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.Lifetime)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
+                        SecurityAlgorithms.HmacSha256));
+                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            // сериализация ответа
-            Response.ContentType = "application/json";
-            await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+                var response = new
+                {
+                    access_token = encodedJwt,
+                    role = identity.RoleClaimType
+                };
+
+                Response.ContentType = "application/json";
+                await Response.WriteAsync(JsonConvert.SerializeObject(response,
+                    new JsonSerializerSettings {Formatting = Formatting.Indented}));
+            }
+
             //return Ok(response);
         }
 
@@ -80,18 +81,15 @@ namespace WebApi.Controllers
         [Route("Register")]
         public IActionResult Register(RegisterBindingModel model)
         {
-            //throw  new Exception();
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var user = new UserDTO()
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = new UserDto
             {
                 Email = model.Email,
                 Password = model.Password,
-                MemorySize = 100000000
+                MemorySize = 100000000,
+                RoleId = 2
             };
-            user.RoleId = 2;
             _userService.Create(user);
 
             _folderService.CreateRootFolder(user.Id.ToString(), user.Email);
@@ -101,7 +99,7 @@ namespace WebApi.Controllers
 
         private ClaimsIdentity GetIdentity(string username, string password)
         {
-            UserDTO user = _userService.GetByEmailAndPassword(username, password);
+            var user = _userService.GetByEmailAndPassword(username, password);
             if (user != null)
             {
                 var claims = new List<Claim>
@@ -109,12 +107,12 @@ namespace WebApi.Controllers
                     new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
                     new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
                 };
-                ClaimsIdentity claimsIdentity =
+                var claimsIdentity =
                     new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
                         user.Role.Name);
                 return claimsIdentity;
             }
-            // если пользователя не найдено
+
             return null;
         }
 

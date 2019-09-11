@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace BLL.Services
+namespace BLL.Exceptions
 {
     [Serializable]
     internal class WrongTypeException : Exception

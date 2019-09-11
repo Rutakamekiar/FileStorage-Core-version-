@@ -8,8 +8,8 @@ namespace BLL.MappingProfiles
     {
         public FileMapProfile()
         {
-            CreateMap<FileDTO, UserFile>();
-            CreateMap<UserFile, FileDTO>();
+            CreateMap<FileDto, UserFile>();
+            CreateMap<UserFile, FileDto>();
         }
     }
 }

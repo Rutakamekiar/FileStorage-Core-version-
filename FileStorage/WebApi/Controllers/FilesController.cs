@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using AutoMapper;
 using BLL.DTO;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 
@@ -28,7 +27,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return base.Ok(AutoMapper.Mapper.Map<List<FileView>>(_fileService.GetAllByUserId(User.Identity.Name)));
+            return base.Ok(Mapper.Map<List<FileView>>(_fileService.GetAllByUserId(User.Identity.Name)));
         }
 
         //Ok
@@ -49,29 +48,31 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult UploadFile()
         {
-            HttpRequest request = HttpContext.Request;
+            var request = HttpContext.Request;
             if (request.Form.Files.Count <= 0)
                 return BadRequest("File was not found. Please upload it.");
             var file = request.Form.Files["File"];
             if (file?.Length <= 0)
                 return BadRequest("File have not content");
-            FileDTO fileDto = new FileDTO
+            if (file != null)
             {
-                AccessLevel = Convert.ToBoolean(request.Form["AccessLevel"]),
-                Name = file.FileName,
-                FolderId = Convert.ToInt32(request.Form["FolderId"])
-            };
+                var fileDto = new FileDto
+                {
+                    AccessLevel = Convert.ToBoolean(request.Form["AccessLevel"]),
+                    Name = file.FileName,
+                    FolderId = Convert.ToInt32(request.Form["FolderId"])
+                };
 
-            if (_fileService.IsFileExists(fileDto))
-                return BadRequest("The file with the specified name exists. Please change the file name");
-            file.OpenReadStream().Read(fileDto.FileBytes = new byte[file.Length], 0, (int)file.Length);
+                if (_fileService.IsFileExists(fileDto))
+                    return BadRequest("The file with the specified name exists. Please change the file name");
+                file.OpenReadStream().Read(fileDto.FileBytes = new byte[file.Length], 0, (int) file.Length);
 
-            if (!_folderService.CanAdd(User.Identity.Name, fileDto.FileBytes.Length))
-            {
-                return BadRequest("You did not have memory to add the file");
+                if (!_folderService.CanAdd(User.Identity.Name, fileDto.FileBytes.Length))
+                    return BadRequest("You did not have memory to add the file");
+
+                _fileService.Create(fileDto);
             }
 
-            _fileService.Create(fileDto);
             return Ok();
         }
 
@@ -82,7 +83,7 @@ namespace WebApi.Controllers
         {
             var file = _fileService.Get(id);
             if (!User.IsInRole("Admin") && file.Folder.UserId != User.Identity.Name)
-                return BadRequest($"File not found");
+                return BadRequest("File not found");
             _fileService.Delete(file);
             return Ok();
         }
@@ -90,7 +91,7 @@ namespace WebApi.Controllers
         //Ok
         [HttpPut]
         [Route("{id}")]
-        public IActionResult EditFile(int id, [FromBody] FileDTO file)
+        public IActionResult EditFile(int id, [FromBody] FileDto file)
         {
             if (file.IsBlocked)
                 return BadRequest("You can not change a locked file");
@@ -100,6 +101,7 @@ namespace WebApi.Controllers
                 _fileService.EditFile(id, file);
                 return NoContent();
             }
+
             return Forbid();
         }
     }

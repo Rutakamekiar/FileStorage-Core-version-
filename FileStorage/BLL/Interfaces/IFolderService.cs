@@ -1,23 +1,23 @@
-﻿using BLL.DTO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using BLL.DTO;
 
 namespace BLL.Interfaces
 {
-    public interface IFolderService : IService<FolderDTO>
+    public interface IFolderService : IService<FolderDto>
     {
-        FolderDTO CreateRootFolder(string userId, string email);
+        FolderDto CreateRootFolder(string userId, string email);
 
-        FolderDTO GetRootFolderContentByUserId(string userId);
+        FolderDto GetRootFolderContentByUserId(string userId);
 
-        FolderDTO CreateFolderInFolder(FolderDTO parent, string name);
+        FolderDto CreateFolderInFolder(FolderDto parent, string name);
 
-        FolderDTO GetByUserId(int id, string userId);
+        FolderDto GetByUserId(int id, string userId);
 
-        List<FolderDTO> GetAllRootFolders();
+        List<FolderDto> GetAllRootFolders();
 
-        bool IsFolderExists(FolderDTO file);
+        bool IsFolderExists(FolderDto file);
 
-        void EditFolder(int id, FolderDTO item);
+        void EditFolder(int id, FolderDto item);
 
         bool CanAdd(string email, long itemSize);
 

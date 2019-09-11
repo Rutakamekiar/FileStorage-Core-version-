@@ -1,6 +1,4 @@
-﻿using BLL.DTO;
-using BLL.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 

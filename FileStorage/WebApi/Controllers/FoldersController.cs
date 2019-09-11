@@ -3,7 +3,6 @@ using AutoMapper;
 using BLL.DTO;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 
@@ -15,20 +14,18 @@ namespace WebApi.Controllers
     public class FoldersController : Controller
     {
         private readonly IFolderService _folderService;
-        private readonly IFileService _fileService;
 
-        public FoldersController(IFolderService folderService, IFileService fileService)
+        public FoldersController(IFolderService folderService)
         {
             _folderService = folderService;
-            _fileService = fileService;
         }
 
         //Ok
         [HttpPost]
         public IActionResult CreateFolderInFolder()
         {
-            HttpRequest request = HttpContext.Request;
-            int parentId = Convert.ToInt32(request.Form["parentId"]);
+            var request = HttpContext.Request;
+            var parentId = Convert.ToInt32(request.Form["parentId"]);
             string name = request.Form["name"];
             var parent = _folderService.Get(parentId);
             if (parent.UserId != User.Identity.Name)
@@ -62,7 +59,7 @@ namespace WebApi.Controllers
         //Ok
         [HttpPut]
         [Route("{id}")]
-        public IActionResult EditFolder(int id, [FromBody] FolderDTO folder)
+        public IActionResult EditFolder(int id, [FromBody] FolderDto folder)
         {
             var folderDto = _folderService.Get(id);
             if (folderDto.UserId != User.Identity.Name)
@@ -78,7 +75,7 @@ namespace WebApi.Controllers
         {
             var folderDto = _folderService.Get(id);
             if (!User.IsInRole("admin") && folderDto.UserId != User.Identity.Name)
-                return BadRequest($"File not found");
+                return BadRequest("File not found");
 
             _folderService.Delete(folderDto);
             return Ok();

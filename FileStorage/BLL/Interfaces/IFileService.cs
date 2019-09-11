@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using BLL.DTO;
 
 namespace BLL.Interfaces
 {
-    public interface IFileService : IService<FileDTO>
+    public interface IFileService : IService<FileDto>
     {
-        List<FileDTO> GetAllByUserId(string userid);
+        List<FileDto> GetAllByUserId(string userid);
 
-        byte[] GetFileBytes(FileDTO fileDto);
+        byte[] GetFileBytes(FileDto fileDto);
 
-        void EditFile(int id, FileDTO fileDto);
+        void EditFile(int id, FileDto fileDto);
 
-        bool IsFileExists(FileDTO file);
+        bool IsFileExists(FileDto file);
 
-        string ReturnFullPath(FileDTO file);
+        string ReturnFullPath(FileDto file);
     }
 }

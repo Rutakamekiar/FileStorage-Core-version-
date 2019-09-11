@@ -2,6 +2,7 @@
 using System.Linq;
 using DAL.Entities;
 using DAL.Entity_Framework;
+using DAL.Exceptions;
 using DAL.Interfaces.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,13 +14,13 @@ namespace DAL.Repositories
 
         public FolderRepository(StorageContext context)
         {
-            _context = context ?? throw new ArgumentNullException($"Context must be not null!");
+            _context = context ?? throw new ArgumentNullException("Context must be not null!");
         }
 
         public void Create(UserFolder item)
         {
             _context.Set<UserFolder>().Add(item
-                                     ?? throw new ArgumentNullException("Folder must be not null!"));
+                                           ?? throw new ArgumentNullException("Folder must be not null!"));
         }
 
         public void Delete(int id)
@@ -35,8 +36,9 @@ namespace DAL.Repositories
 
         public UserFolder Get(int id)
         {
-            return _context.Set<UserFolder>().Include(f => f.Folders).Include(f => f.Files)
-                .Where(f => f.Id == id).FirstOrDefault()
+            return _context.Set<UserFolder>()
+                       .Include(f => f.Folders)
+                       .Include(f => f.Files).FirstOrDefault(f => f.Id == id)
                    ?? throw new FolderNotFoundException($"Folder with id = {id} was not found");
         }
 

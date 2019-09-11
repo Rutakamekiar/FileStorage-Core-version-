@@ -4,19 +4,17 @@ namespace WebApi.Models
 {
     public class RegisterBindingModel
     {
-        [Required]
-        [Display(Name = "Адрес электронной почты")]
-        public string Email { get; set; }
+        [Required] public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Password must be > 6", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Подтверждение пароля")]
-        [Compare("Password", ErrorMessage = "Пароль и его подтверждение не совпадают.")]
+        [Display(Name = "Confirm Password")]
+        [Compare("Password")]
         public string ConfirmPassword { get; set; }
     }
 }

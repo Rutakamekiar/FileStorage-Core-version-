@@ -8,8 +8,8 @@ namespace WebApi.MappingProfiles
     {
         public FileViewMapProfile()
         {
-            CreateMap<FileDTO, FileView>();
-            CreateMap<FileView, FileDTO>();
+            CreateMap<FileDto, FileView>();
+            CreateMap<FileView, FileDto>();
         }
     }
 }

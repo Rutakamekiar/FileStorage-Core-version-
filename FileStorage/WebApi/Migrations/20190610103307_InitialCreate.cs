@@ -8,113 +8,114 @@ namespace WebApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Folders",
-                columns: table => new
+                "Folders",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false),
-                    UserId = table.Column<string>(nullable: false),
-                    Path = table.Column<string>(nullable: false),
-                    ParentFolderId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(),
+                    UserId = table.Column<string>(),
+                    Path = table.Column<string>(),
+                    ParentFolderId = table.Column<int>()
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Folders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Folders_Folders_ParentFolderId",
-                        column: x => x.ParentFolderId,
-                        principalTable: "Folders",
-                        principalColumn: "Id",
+                        "FK_Folders_Folders_ParentFolderId",
+                        x => x.ParentFolderId,
+                        "Folders",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
+                "Roles",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false)
+                    Id = table.Column<int>()
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>()
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Roles", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Files",
-                columns: table => new
+                "Files",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false),
-                    AccessLevel = table.Column<bool>(nullable: false),
-                    IsBlocked = table.Column<bool>(nullable: false),
-                    FolderId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(),
+                    AccessLevel = table.Column<bool>(),
+                    IsBlocked = table.Column<bool>(),
+                    FolderId = table.Column<int>()
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Files", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Files_Folders_FolderId",
-                        column: x => x.FolderId,
-                        principalTable: "Folders",
-                        principalColumn: "Id",
+                        "FK_Files_Folders_FolderId",
+                        x => x.FolderId,
+                        "Folders",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
+                "Users",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Email = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false),
-                    MemorySize = table.Column<long>(nullable: false)
+                    Id = table.Column<int>()
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
+                    Email = table.Column<string>(),
+                    Password = table.Column<string>(),
+                    RoleId = table.Column<int>(),
+                    MemorySize = table.Column<long>()
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
+                        "FK_Users_Roles_RoleId",
+                        x => x.RoleId,
+                        "Roles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Files_FolderId",
-                table: "Files",
-                column: "FolderId");
+                "IX_Files_FolderId",
+                "Files",
+                "FolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Folders_ParentFolderId",
-                table: "Folders",
-                column: "ParentFolderId");
+                "IX_Folders_ParentFolderId",
+                "Folders",
+                "ParentFolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
-                table: "Users",
-                column: "RoleId");
+                "IX_Users_RoleId",
+                "Users",
+                "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Files");
+                "Files");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                "Users");
 
             migrationBuilder.DropTable(
-                name: "Folders");
+                "Folders");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                "Roles");
         }
     }
 }

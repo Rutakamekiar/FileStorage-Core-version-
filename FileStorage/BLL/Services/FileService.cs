@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AutoMapper;
@@ -10,10 +9,12 @@ using DAL.Interfaces;
 
 namespace BLL.Services
 {
-    public class FileService : IFileService, IDisposable
+    public class FileService : IFileService
     {
+        private const string RootFilePath =
+            @"C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorageFront\src\assets\Content";
+
         private readonly IUnitOfWork _data;
-        private const string RootFilePath = @"C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorageFront\src\assets\Content";
 
         public FileService(IUnitOfWork data)
         {
@@ -21,7 +22,7 @@ namespace BLL.Services
         }
 
         //Ok
-        public void Create(FileDTO item)
+        public void Create(FileDto item)
         {
             _data.Files.Create(Mapper.Map<UserFile>(item));
             File.WriteAllBytes(ReturnFullPath(item), item.FileBytes);
@@ -30,26 +31,26 @@ namespace BLL.Services
         }
 
         //Ok
-        public string ReturnFullPath(FileDTO file)
+        public string ReturnFullPath(FileDto file)
         {
-            UserFolder folder = _data.Folders.Get(file.FolderId);
+            var folder = _data.Folders.Get(file.FolderId);
             return $@"{RootFilePath}\{folder.Path}\{folder.Name}\{file.Name}";
         }
 
         //Ok
-        public FileDTO Get(int id)
+        public FileDto Get(int id)
         {
-            return Mapper.Map<FileDTO>(_data.Files.Get(id));
+            return Mapper.Map<FileDto>(_data.Files.Get(id));
         }
 
         //Ok
-        public byte[] GetFileBytes(FileDTO fileDto)
+        public byte[] GetFileBytes(FileDto fileDto)
         {
             return File.ReadAllBytes(ReturnFullPath(fileDto));
         }
 
         //Ok
-        public void Delete(FileDTO file)
+        public void Delete(FileDto file)
         {
             _data.Files.Delete(file.Id);
             File.Delete(ReturnFullPath(file));
@@ -63,24 +64,24 @@ namespace BLL.Services
         }
 
         //Ok
-        public HashSet<FileDTO> GetAll()
+        public HashSet<FileDto> GetAll()
         {
-            return Mapper.Map<HashSet<FileDTO>>(_data.Files.GetAll());
+            return Mapper.Map<HashSet<FileDto>>(_data.Files.GetAll());
         }
 
         //Ok
-        public List<FileDTO> GetAllByUserId(string userid)
+        public List<FileDto> GetAllByUserId(string userid)
         {
             return GetAll().Where(f => f.Folder.UserId.Equals(userid)).ToList();
         }
 
         //Ok
-        public void EditFile(int id, FileDTO fileDto)
+        public void EditFile(int id, FileDto fileDto)
         {
             var newFile = _data.Files.Get(id);
-            string oldPath = ReturnFullPath(Mapper.Map<FileDTO>(newFile));
+            var oldPath = ReturnFullPath(Mapper.Map<FileDto>(newFile));
             newFile.Name = fileDto.Name;
-            string newPath = ReturnFullPath(Mapper.Map<FileDTO>(newFile));
+            var newPath = ReturnFullPath(Mapper.Map<FileDto>(newFile));
             File.Move(oldPath, newPath);
             newFile.AccessLevel = fileDto.AccessLevel;
             newFile.IsBlocked = fileDto.IsBlocked;
@@ -89,7 +90,7 @@ namespace BLL.Services
         }
 
         //Ok
-        public bool IsFileExists(FileDTO file)
+        public bool IsFileExists(FileDto file)
         {
             return File.Exists(ReturnFullPath(file));
         }

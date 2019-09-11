@@ -1,13 +1,12 @@
 ﻿using BLL.DTO;
-using BLL.Interfaces;
 
-namespace BLL.Services
+namespace BLL.Interfaces
 {
-    public interface IUserService : IService<UserDTO>
+    public interface IUserService : IService<UserDto>
     {
-        UserDTO GetByEmailAndPassword(string email, string password);
+        UserDto GetByEmailAndPassword(string email, string password);
 
-        UserDTO GetByEmail(string email);
+        UserDto GetByEmail(string email);
 
         void ChangeUserMemorySize(string email, long memorySize);
     }

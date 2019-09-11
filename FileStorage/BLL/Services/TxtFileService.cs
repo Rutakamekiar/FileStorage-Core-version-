@@ -1,16 +1,19 @@
-﻿using BLL.DTO;
-using BLL.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using BLL.DTO;
+using BLL.Exceptions;
+using BLL.Interfaces;
 
 namespace BLL.Services
 {
     public class TxtFileService : ITxtFileService
     {
+        private static readonly IList<string> Extensions =
+            new ReadOnlyCollection<string>(new List<string> {"txt", "docx"});
+
         private readonly IFileService _fileService;
-        private static readonly IList<string> _extensions = new ReadOnlyCollection<string>(new List<string> { "txt", "docx" });
 
         public TxtFileService(IFileService fileService)
         {
@@ -19,29 +22,23 @@ namespace BLL.Services
 
         public int GetTxtFileSymbolsCount(int id)
         {
-            FileDTO fileDTO = _fileService.Get(id);
-            if (CheckType(fileDTO))
-            {
-                throw new WrongTypeException("Error type!");
-            }
-            string allText = File.ReadAllText(_fileService.ReturnFullPath(fileDTO));
+            var fileDto = _fileService.Get(id);
+            if (CheckType(fileDto)) throw new WrongTypeException("Error type!");
+            var allText = File.ReadAllText(_fileService.ReturnFullPath(fileDto));
             return allText.Length;
         }
 
         public string GetTxtFile(int id)
         {
-            FileDTO fileDTO = _fileService.Get(id);
-            if (CheckType(fileDTO))
-            {
-                throw new WrongTypeException("Error type!");
-            }
-            string allText = File.ReadAllText(_fileService.ReturnFullPath(fileDTO));
+            var fileDto = _fileService.Get(id);
+            if (CheckType(fileDto)) throw new WrongTypeException("Error type!");
+            var allText = File.ReadAllText(_fileService.ReturnFullPath(fileDto));
             return allText;
         }
 
-        private static bool CheckType(FileDTO fileDTO)
+        private static bool CheckType(FileDto fileDto)
         {
-            return !_extensions.Contains(fileDTO.Name.Split('.').Last());
+            return !Extensions.Contains(fileDto.Name.Split('.').Last());
         }
     }
 }

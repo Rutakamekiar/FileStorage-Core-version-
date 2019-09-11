@@ -1,14 +1,18 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
+using BLL.Interfaces;
 using BLL.MappingProfiles;
-using DI;
+using BLL.Services;
+using DAL.Entity_Framework;
+using DAL.Interfaces;
+using DAL.Interfaces.RepositoryInterfaces;
+using DAL.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using WebApi.MappingProfiles;
 
 namespace WebApi
 {
@@ -23,61 +27,46 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = Configuration.GetConnectionString("DatabaseConnection");
+
+            services.AddDbContext<StorageContext>(options =>
+                options.UseSqlServer(connection, b => b.MigrationsAssembly("WebApi")));
+            services.AddScoped<IFileRepository, FileRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFolderRepository, FolderRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IFolderService, FolderService>();
+            services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITxtFileService, TxtFileService>();
+            services.AddScoped<IImageFileService, ImageFileService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        // укзывает, будет ли валидироваться издатель при валидации токена
                         ValidateIssuer = true,
-                        // строка, представляющая издателя
                         ValidIssuer = AuthOptions.Issuer,
-
-                        // будет ли валидироваться потребитель токена
                         ValidateAudience = true,
-                        // установка потребителя токена
                         ValidAudience = AuthOptions.Audience,
-                        // будет ли валидироваться время существования
                         ValidateLifetime = true,
-
-                        // установка ключа безопасности
                         IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                        // валидация ключа безопасности
-                        ValidateIssuerSigningKey = true,
+                        ValidateIssuerSigningKey = true
                     };
                 });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddCors();
+
 #pragma warning disable CS0618 // Тип или член устарел
 
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile(new FileMapProfile());
                 cfg.AddProfile(new FolderMapProfile());
-                cfg.AddProfile(new MappingProfiles.FileViewMapProfile());
-                cfg.AddProfile(new MappingProfiles.FolderViewMapProfile());
+                cfg.AddProfile(new FileViewMapProfile());
+                cfg.AddProfile(new FolderViewMapProfile());
             });
-
-            string connection = Configuration.GetConnectionString("DatabaseConnection");
-            services.AddCors();
-            var serviceConfiguration = new ServiceConfiguration(services, connection);
-        }
-
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseMvc();
         }
     }
 }

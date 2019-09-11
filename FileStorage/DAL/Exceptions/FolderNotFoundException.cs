@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace DAL.Repositories
+namespace DAL.Exceptions
 {
     [Serializable]
     internal class FolderNotFoundException : Exception

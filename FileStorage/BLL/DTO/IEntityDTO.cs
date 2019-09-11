@@ -1,6 +1,6 @@
 ﻿namespace BLL.DTO
 {
-    public interface IEntityDTO
+    public interface IEntityDto
     {
     }
 }

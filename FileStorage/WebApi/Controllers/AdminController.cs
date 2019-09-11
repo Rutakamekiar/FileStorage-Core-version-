@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using BLL.Interfaces;
-using BLL.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
+using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -15,9 +13,9 @@ namespace WebApi.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly IFolderService _folderService;
         private readonly IFileService _fileService;
+        private readonly IFolderService _folderService;
+        private readonly IUserService _userService;
 
         public AdminController(IUserService userService, IFolderService folderService, IFileService fileService)
         {
@@ -76,8 +74,8 @@ namespace WebApi.Controllers
         [HttpPut]
         public IActionResult ChangeUserMemorySize(string name)
         {
-            HttpRequest request = HttpContext.Request;
-            long memorySize = Convert.ToInt64(request.Form["memorySize"]);
+            var request = HttpContext.Request;
+            var memorySize = Convert.ToInt64(request.Form["memorySize"]);
             _userService.ChangeUserMemorySize(name, memorySize);
 
             return NoContent();

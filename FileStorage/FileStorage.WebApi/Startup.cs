@@ -1,0 +1,189 @@
+﻿using System.Threading.Tasks;
+using AutoMapper;
+using FileStorage.Implementation.AutoMapperConfig;
+using FileStorage.Implementation.DataAccess.Entities;
+using FileStorage.Implementation.DataAccess.Entity_Framework;
+using FileStorage.Implementation.DataAccess.Repositories;
+using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
+using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.Services;
+using FileStorage.WebApi.Options;
+using FileStorage.WebApi.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+
+
+namespace FileStorage.WebApi
+{
+    public class Startup
+    {
+        public const string TestEnvironmentName = "TestEnv";
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            var connection = Configuration.GetConnectionString("DatabaseConnection");
+
+            services.AddDbContext<StorageContext>(options =>
+            {
+                //options.UseSqlServer(connection, b => b.MigrationsAssembly("WebApi"));
+                options.UseSqlite(Configuration.GetConnectionString("Database"));
+            });
+
+            services.AddIdentity<UserEntity, IdentityRole>(options =>
+                {
+                    options.User.RequireUniqueEmail = true;
+                })
+                .AddEntityFrameworkStores<StorageContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<IFileRepository, FileRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFolderRepository, FolderRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IFolderService, FolderService>();
+            services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITxtFileService, TxtFileService>();
+            services.AddScoped<IImageFileService, ImageFileService>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Title = "FileStorage API",
+                    Version = "v1"
+                });
+
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
+                    In = "header",
+                    Name = "Authorization",
+                    Type = "apiKey"
+                });
+
+                c.DocumentFilter<SecurityRequirementsDocumentFilter>();
+            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = AuthOptions.Issuer,
+                        ValidateAudience = true,
+                        ValidAudience = AuthOptions.Audience,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        ValidateIssuerSigningKey = true
+                    };
+                });
+            
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddCors();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+        }
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.EnvironmentName != TestEnvironmentName)
+            {
+                InitializeDatabase(app, env);
+            }
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FileStorage API"));
+
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseMvc();
+        }
+
+
+        private void ConfigureAuthorization(IServiceCollection services)
+        {
+            var jwtAuthenticationSection = Configuration.GetSection("JwtAuthentication");
+            services.Configure<JwtAuthenticationOptions>(jwtAuthenticationSection);
+            var jwtAuthenticationOptions = jwtAuthenticationSection.Get<JwtAuthenticationOptions>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                            var userId = context.Principal.Identity.Name;
+                            var user = userService.GetByIdAsync(userId).Result;
+                            if (user == null)
+                            {
+                                context.Fail("Unauthorized");
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = jwtAuthenticationOptions.SymmetricSecurityKey,
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+        }
+
+        private static void InitializeDatabase(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = scope.ServiceProvider.GetService<StorageContext>();
+                context.Database.Migrate();
+                if (!context.Users.Any())
+                {
+                    var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
+                    var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                    SeedData.EnsureSeedData(context, userMgr, roleMgr);
+                }
+            }
+        }
+    }
+}

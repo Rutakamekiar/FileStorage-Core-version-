@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{99AB0431-2A9B-40AC-B3E8-90BE06DE969F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileStorage.Contracts", "FileStorage.Contracts\FileStorage.Contracts.csproj", "{28FA0791-66AA-40BE-BFB8-F0C3D0E8AD33}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{F37FD5B0-6A58-4665-9D90-0D72CE22F374}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileStorage.WebApi", "FileStorage.WebApi\FileStorage.WebApi.csproj", "{60ED1CDD-5B13-45B6-9FC2-40C2F6C1F6E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{256F4D24-2C47-4880-AB63-207593FF8BD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileStorage.Implementation", "FileStorage.Implementation\FileStorage.Implementation.csproj", "{0596BA3D-1A39-4ED5-A51B-049EB7DFE3D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{99AB0431-2A9B-40AC-B3E8-90BE06DE969F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99AB0431-2A9B-40AC-B3E8-90BE06DE969F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99AB0431-2A9B-40AC-B3E8-90BE06DE969F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99AB0431-2A9B-40AC-B3E8-90BE06DE969F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F37FD5B0-6A58-4665-9D90-0D72CE22F374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F37FD5B0-6A58-4665-9D90-0D72CE22F374}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F37FD5B0-6A58-4665-9D90-0D72CE22F374}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F37FD5B0-6A58-4665-9D90-0D72CE22F374}.Release|Any CPU.Build.0 = Release|Any CPU
-		{256F4D24-2C47-4880-AB63-207593FF8BD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{256F4D24-2C47-4880-AB63-207593FF8BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{256F4D24-2C47-4880-AB63-207593FF8BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{256F4D24-2C47-4880-AB63-207593FF8BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28FA0791-66AA-40BE-BFB8-F0C3D0E8AD33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28FA0791-66AA-40BE-BFB8-F0C3D0E8AD33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28FA0791-66AA-40BE-BFB8-F0C3D0E8AD33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28FA0791-66AA-40BE-BFB8-F0C3D0E8AD33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60ED1CDD-5B13-45B6-9FC2-40C2F6C1F6E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60ED1CDD-5B13-45B6-9FC2-40C2F6C1F6E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60ED1CDD-5B13-45B6-9FC2-40C2F6C1F6E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60ED1CDD-5B13-45B6-9FC2-40C2F6C1F6E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0596BA3D-1A39-4ED5-A51B-049EB7DFE3D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0596BA3D-1A39-4ED5-A51B-049EB7DFE3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0596BA3D-1A39-4ED5-A51B-049EB7DFE3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0596BA3D-1A39-4ED5-A51B-049EB7DFE3D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

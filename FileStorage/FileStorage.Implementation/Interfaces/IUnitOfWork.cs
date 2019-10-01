@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 
 namespace FileStorage.Implementation.Interfaces
@@ -8,6 +9,6 @@ namespace FileStorage.Implementation.Interfaces
         IFileRepository Files { get; }
         IFolderRepository Folders { get; }
         IUserRepository Users { get; }
-        void Save();
+        Task SaveAsync();
     }
 }

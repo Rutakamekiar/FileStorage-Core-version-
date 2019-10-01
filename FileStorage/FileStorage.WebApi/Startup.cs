@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Implementation.AutoMapperConfig;
+using FileStorage.Implementation.DataAccess;
 using FileStorage.Implementation.DataAccess.Entities;
-using FileStorage.Implementation.DataAccess.Entity_Framework;
 using FileStorage.Implementation.DataAccess.Repositories;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 using FileStorage.Implementation.Interfaces;
@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
@@ -38,8 +39,6 @@ namespace FileStorage.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration.GetConnectionString("DatabaseConnection");
-
             services.AddDbContext<StorageContext>(options =>
             {
                 //options.UseSqlServer(connection, b => b.MigrationsAssembly("WebApi"));
@@ -52,7 +51,7 @@ namespace FileStorage.WebApi
                 })
                 .AddEntityFrameworkStores<StorageContext>()
                 .AddDefaultTokenProviders();
-
+            services.AddLogging(x => x.AddConsole());
             services.AddScoped<IFileRepository, FileRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IFolderRepository, FolderRepository>();

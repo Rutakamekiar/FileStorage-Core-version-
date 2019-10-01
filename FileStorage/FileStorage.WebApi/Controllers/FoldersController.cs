@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
 using FileStorage.Implementation.Interfaces;
@@ -24,7 +25,6 @@ namespace FileStorage.WebApi.Controllers
             _mapper = mapper;
         }
 
-        //Ok
         [HttpPost]
         public IActionResult CreateFolderInFolder(CreateFolderInFolderRequest request)
         {
@@ -36,32 +36,26 @@ namespace FileStorage.WebApi.Controllers
             return Ok(_folderService.CreateFolderInFolder(parent, name));
         }
 
-        //Ok
         [HttpGet]
         public ActionResult<FolderView> Get()
         {
             return _mapper.Map<FolderView>(_folderService.GetRootFolderContentByUserId(User.Identity.Name));
         }
 
-        [Route("folderSize")]
-        [HttpGet]
-        public ActionResult<long> GetSize()
+        [HttpGet("folderSize")]
+        public async Task<ActionResult<long>> GetSize()
         {
-            return _folderService.GetRootFolderSize(User.Identity.Name);
+            return await _folderService.GetRootFolderSize(User.Identity.Name);
         }
 
-        //Ok
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public ActionResult<FolderView> GetByUserId(Guid id)
         {
             var userId = User.Identity.Name;
             return _mapper.Map<FolderView>(_folderService.GetByUserId(id, userId));
         }
 
-        //Ok
-        [HttpPut]
-        [Route("{id}")]
+        [HttpPut("{id}")]
         public IActionResult EditFolder(Guid id, [FromBody] Folder folder)
         {
             var folderDto = _folderService.Get(id);
@@ -71,16 +65,14 @@ namespace FileStorage.WebApi.Controllers
             return NoContent();
         }
 
-        //Ok
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteFolder(Guid id)
         {
             var folderDto = _folderService.Get(id);
             if (!User.IsInRole("admin") && folderDto.UserId != User.Identity.Name)
                 return BadRequest("File not found");
 
-            _folderService.Delete(folderDto);
+            _folderService.DeleteAsync(folderDto);
             return Ok();
         }
     }

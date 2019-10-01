@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
 using FileStorage.Implementation.DataAccess.Entities;
@@ -24,78 +25,68 @@ namespace FileStorage.Implementation.Services
             _mapper = mapper;
         }
 
-        //Ok
-        public void Create(MyFile item)
+        public async Task CreateAsync(MyFile item)
         {
-            _data.Files.Create(_mapper.Map<FileEntity>(item));
-            File.WriteAllBytes(ReturnFullPath(item), item.FileBytes);
+            await _data.Files.CreateAsync(_mapper.Map<FileEntity>(item));
+            File.WriteAllBytes(await ReturnFullPathAsync(item), item.FileBytes);
 
-            _data.Save();
+            await _data.SaveAsync();
         }
 
-        //Ok
-        public string ReturnFullPath(MyFile file)
+        public async Task<string> ReturnFullPathAsync(MyFile file)
         {
-            var folder = _data.Folders.Get(file.FolderId);
+            var folder = await _data.Folders.GetAsync(file.FolderId);
             return $@"{RootFilePath}\{folder.Path}\{folder.Name}\{file.Name}";
         }
 
-        //Ok
         public MyFile Get(Guid id)
         {
-            return _mapper.Map<MyFile>(_data.Files.Get(id));
+            return _mapper.Map<MyFile>(_data.Files.GetAsync(id));
         }
 
-        //Ok
-        public byte[] GetFileBytes(MyFile fileDto)
+        public async Task<byte[]> GetFileBytesAsync(MyFile fileDto)
         {
-            return File.ReadAllBytes(ReturnFullPath(fileDto));
+            return File.ReadAllBytes(await ReturnFullPathAsync(fileDto));
         }
 
-        //Ok
-        public void Delete(MyFile file)
+        public async Task DeleteAsync(MyFile file)
         {
-            _data.Files.Delete(file.Id);
-            File.Delete(ReturnFullPath(file));
-            _data.Save();
+            await _data.Files.DeleteAsync(file.Id);
+            File.Delete(await ReturnFullPathAsync(file));
+            await _data.SaveAsync();
         }
 
-        //Ok
         public void Dispose()
         {
             _data.Dispose();
         }
 
-        //Ok
-        public HashSet<MyFile> GetAll()
+        public async Task<HashSet<MyFile>> GetAllAsync()
         {
-            return _mapper.Map<HashSet<MyFile>>(_data.Files.GetAll());
+            return _mapper.Map<HashSet<MyFile>>(await _data.Files.GetAllAsync());
         }
 
-        //Ok
-        public void EditFile(Guid id, MyFile fileDto)
+        public async Task EditFileAsync(Guid id, MyFile fileDto)
         {
-            var newFile = _data.Files.Get(id);
-            var oldPath = ReturnFullPath(_mapper.Map<MyFile>(newFile));
+            var newFile = await _data.Files.GetAsync(id);
+            var oldPath = await ReturnFullPathAsync(_mapper.Map<MyFile>(newFile));
             newFile.Name = fileDto.Name;
-            var newPath = ReturnFullPath(_mapper.Map<MyFile>(newFile));
+            var newPath = await ReturnFullPathAsync(_mapper.Map<MyFile>(newFile));
             File.Move(oldPath, newPath);
             newFile.AccessLevel = fileDto.AccessLevel;
             newFile.IsBlocked = fileDto.IsBlocked;
             _data.Files.Update(newFile);
-            _data.Save();
+            await _data.SaveAsync();
         }
 
-        //Ok
-        public bool IsFileExists(MyFile file)
+        public async Task<bool> IsFileExistsAsync(MyFile file)
         {
-            return File.Exists(ReturnFullPath(file));
+            return File.Exists(await ReturnFullPathAsync(file));
         }
 
-        //Ok
-        public List<MyFile> GetAllByUserId(string userid)
+        public async Task<List<MyFile>> GetAllByUserIdAsync(string userid)
         {
-            return GetAll().Where(f => f.Folder.UserId.Equals(userid)).ToList();
+            return (await GetAllAsync()).Where(f => f.Folder.UserId.Equals(userid)).ToList();
         }
     }
 }

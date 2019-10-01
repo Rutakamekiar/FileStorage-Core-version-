@@ -15,9 +15,7 @@ namespace FileStorage.WebApi.Controllers
             _imageFileService = imageFileService;
         }
 
-        //Ok
-        [HttpPut]
-        [Route("{id}/Blackout")]
+        [HttpPut("{id}/Blackout")]
         public IActionResult Get(Guid id)
         {
             _imageFileService.Blackout(id);

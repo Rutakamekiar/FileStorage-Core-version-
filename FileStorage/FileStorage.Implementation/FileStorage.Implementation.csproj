@@ -28,10 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataAccess\Entity_Framework\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FileStorage.Contracts\FileStorage.Contracts.csproj" />
   </ItemGroup>
 

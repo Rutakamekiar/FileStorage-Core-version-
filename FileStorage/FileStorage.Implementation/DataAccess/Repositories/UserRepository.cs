@@ -1,5 +1,4 @@
-﻿using FileStorage.Implementation.DataAccess.Entity_Framework;
-using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
+﻿using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 
 namespace FileStorage.Implementation.DataAccess.Repositories
 {

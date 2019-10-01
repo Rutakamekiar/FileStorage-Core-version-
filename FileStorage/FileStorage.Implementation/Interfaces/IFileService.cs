@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FileStorage.Contracts;
 
 namespace FileStorage.Implementation.Interfaces
 {
     public interface IFileService : IService<MyFile>
     {
-        List<MyFile> GetAllByUserId(string userid);
+        Task<List<MyFile>> GetAllByUserIdAsync(string userid);
 
-        byte[] GetFileBytes(MyFile fileDto);
+        Task<byte[]> GetFileBytesAsync(MyFile fileDto);
 
-        void EditFile(Guid id, MyFile fileDto);
+        Task EditFileAsync(Guid id, MyFile fileDto);
 
-        bool IsFileExists(MyFile file);
+        Task<bool> IsFileExistsAsync(MyFile file);
 
-        string ReturnFullPath(MyFile file);
+        Task<string> ReturnFullPathAsync(MyFile file);
     }
 }

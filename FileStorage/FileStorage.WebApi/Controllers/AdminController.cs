@@ -34,54 +34,47 @@ namespace FileStorage.WebApi.Controllers
             _mapper = mapper;
         }
 
-        [Route("folders")]
-        [HttpGet]
+        [HttpGet("folders")]
         public IActionResult GetAllFolders()
         {
             return Ok(_mapper.Map<List<FolderView>>(_folderService.GetAllRootFolders()));
         }
 
-        [Route("folders/{id}")]
-        [HttpGet]
+        [HttpGet("folders/{id}")]
         public IActionResult GetById(Guid id)
         {
             return Ok(_mapper.Map<FolderView>(_folderService.Get(id)));
         }
 
-        [Route("folderSize/{name}")]
-        [HttpGet]
-        public ActionResult<long> GetSize(string name)
+        [HttpGet("folderSize/{name}")]
+        public async Task<ActionResult<long>> GetSize(string name)
         {
-            return _folderService.GetRootFolderSize(name);
+            return await _folderService.GetRootFolderSize(name);
         }
 
-        [Route("files")]
-        [HttpGet]
+        [HttpGet("files")]
         public IActionResult GetFiles()
         {
-            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAll()));
+            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAllAsync()));
         }
 
         [AllowAnonymous]
-        [Route("files/{id}")]
-        [HttpPut]
+        [HttpPut("files/{id}")]
         public IActionResult FileBlockChange(Guid id)
         {
             var file = _fileService.Get(id);
             file.IsBlocked = !file.IsBlocked;
-            _fileService.EditFile(id, file);
+            _fileService.EditFileAsync(id, file);
             return NoContent();
         }
 
-        [Route("users")]
-        [HttpGet]
+        [HttpGet("users")]
         public async Task<IActionResult> GetUsers()
         {
             return Ok(await _userService.GetAllAsync());
         }
 
-        [Route("users/{name}")]
-        [HttpPut]
+        [HttpPut("users/{name}")]
         public async Task<IActionResult> ChangeUserMemorySize(ChangeUserMemorySizeRequest request)
         {
             await _userService.ChangeUserMemorySize(request);
@@ -89,8 +82,7 @@ namespace FileStorage.WebApi.Controllers
             return NoContent();
         }
 
-        [HttpGet]
-        [Route("memorySize/{userId}")]
+        [HttpGet("memorySize/{userId}")]
         public async Task<IActionResult> GetMemorySize(string userId)
         {
             return Ok(await _userService.GetMemorySize(userId));

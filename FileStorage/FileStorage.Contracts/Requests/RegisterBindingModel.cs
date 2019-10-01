@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FileStorage.WebApi.Models
+namespace FileStorage.Contracts.Requests
 {
     public class RegisterBindingModel
     {
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]

@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using FileStorage.Contracts;
+using FileStorage.Contracts.Requests;
 using FileStorage.WebApi.Models;
 using FileStorage.WebApi.Models.Requests;
 

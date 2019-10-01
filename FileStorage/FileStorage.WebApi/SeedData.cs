@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Contracts;
+using FileStorage.Implementation.DataAccess;
 using FileStorage.Implementation.DataAccess.Entities;
-using FileStorage.Implementation.DataAccess.Entity_Framework;
 using Microsoft.AspNetCore.Identity;
 
 namespace FileStorage.WebApi

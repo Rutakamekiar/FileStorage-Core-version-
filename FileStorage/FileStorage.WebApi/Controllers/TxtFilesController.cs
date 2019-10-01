@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -16,19 +17,16 @@ namespace FileStorage.WebApi.Controllers
             _txtFileService = txtFileService;
         }
 
-        //Ok
-        [HttpGet]
-        [Route("{id}/Symbols")]
+        [HttpGet("{id}/Symbols")]
         public IActionResult GetSymbols(Guid id)
         {
             return Ok(_txtFileService.GetTxtFileSymbolsCount(id));
         }
 
-        [HttpGet]
-        [Route("{id}")]
-        public IActionResult Get(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
         {
-            return Ok(new TxtResponse(_txtFileService.GetTxtFile(id)));
+            return Ok(new TxtResponse(await _txtFileService.GetTxtFile(id)));
         }
     }
 }

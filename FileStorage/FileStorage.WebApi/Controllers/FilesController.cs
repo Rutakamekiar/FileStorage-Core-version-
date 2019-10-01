@@ -29,28 +29,24 @@ namespace FileStorage.WebApi.Controllers
             _mapper = mapper;
         }
 
-        //Ok
         [HttpGet]
         public IActionResult Get()
         {
-            return base.Ok(_mapper.Map<List<FileView>>(_fileService.GetAllByUserId(User.Identity.Name)));
+            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAllByUserIdAsync(User.Identity.Name)));
         }
 
-        //Ok
-        [HttpGet]
         [AllowAnonymous]
-        [Route("{id}")]
-        public IActionResult Get(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
         {
             var file = _fileService.Get(id);
             if (!file.AccessLevel && User.Identity.Name != file.Folder.UserId)
                 return BadRequest("You have no access to this file");
             if (file.IsBlocked)
                 return BadRequest("You can not download a locked file");
-            return File(_fileService.GetFileBytes(file), "application/octet-stream", file.Name);
+            return File(await _fileService.GetFileBytesAsync(file), "application/octet-stream", file.Name);
         }
 
-        //Ok
         [HttpPost]
         public async Task<IActionResult> UploadFile(UploadFileRequest uploadFileRequest)
         {
@@ -69,34 +65,30 @@ namespace FileStorage.WebApi.Controllers
                     FolderId = uploadFileRequest.FolderId
                 };
 
-                if (_fileService.IsFileExists(fileDto))
+                if (await _fileService.IsFileExistsAsync(fileDto))
                     return BadRequest("The file with the specified name exists. Please change the file name");
                 file.OpenReadStream().Read(fileDto.FileBytes = new byte[file.Length], 0, (int) file.Length);
 
                 if (!await _folderService.CanAddAsync(User.Identity.Name, fileDto.FileBytes.Length))
                     return BadRequest("You did not have memory to add the file");
 
-                _fileService.Create(fileDto);
+                await _fileService.CreateAsync(fileDto);
             }
 
             return Ok();
         }
 
-        //Ok
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteFile(Guid id)
         {
             var file = _fileService.Get(id);
             if (!User.IsInRole("Admin") && file.Folder.UserId != User.Identity.Name)
                 return BadRequest("File not found");
-            _fileService.Delete(file);
+            _fileService.DeleteAsync(file);
             return Ok();
         }
 
-        //Ok
-        [HttpPut]
-        [Route("{id}")]
+        [HttpPut("{id}")]
         public IActionResult EditFile(Guid id, [FromBody] MyFile file)
         {
             if (file.IsBlocked)
@@ -104,7 +96,7 @@ namespace FileStorage.WebApi.Controllers
             var fileDto = _fileService.Get(id);
             if (fileDto.Folder.UserId == User.Identity.Name)
             {
-                _fileService.EditFile(id, file);
+                _fileService.EditFileAsync(id, file);
                 return NoContent();
             }
 

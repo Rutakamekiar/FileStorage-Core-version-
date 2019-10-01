@@ -2,8 +2,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.Interfaces;
-using FileStorage.WebApi.Models;
 using FileStorage.WebApi.Models.Requests;
 using FileStorage.WebApi.Options;
 using Microsoft.AspNetCore.Authorization;
@@ -30,8 +30,7 @@ namespace FileStorage.WebApi.Controllers
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
-        [HttpPost]
-        [Route("SignIn")]
+        [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn(SignInRequest request )
         {
             var user = await _userService.SignInAsync(request);
@@ -54,19 +53,17 @@ namespace FileStorage.WebApi.Controllers
             });
         }
 
-        [HttpPost]
-        [Route("Register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterBindingModel model)
         {
             var user = await _userService.CreateAsync(model);
-            _folderService.CreateRootFolder(user.Id, user.Email);
+            await _folderService.CreateRootFolder(user.Id, user.Email);
 
             return Ok(user);
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("memorySize")]
+        [HttpGet("memorySize")]
         public async Task<IActionResult> UserInfo()
         {
             return Ok((await _userService.GetByIdAsync(User.Identity.Name)).MemorySize);

@@ -10,6 +10,7 @@ namespace FileStorage.Implementation.AutoMapperConfig
         {
             CreateMap<MyFile, FileEntity>().ReverseMap();
             CreateMap<Folder, FolderEntity>().ReverseMap();
+            CreateMap<User, UserEntity>().ReverseMap();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.Interfaces;
 
@@ -22,11 +23,11 @@ namespace FileStorage.Implementation.Services
             _fileService = fileService;
         }
 
-        public void Blackout(Guid id)
+        public async Task Blackout(Guid id)
         {
             var file = _fileService.Get(id);
             if (!Extensions.Contains(file.Name.Split('.').Last())) throw new WrongTypeException("Error type!");
-            var path = _fileService.ReturnFullPath(file);
+            var path = await _fileService.ReturnFullPathAsync(file);
             var newName = path.Split('.').First() + "-copy.bmp";
             using (var image = (Bitmap)Image.FromFile(path))
             {

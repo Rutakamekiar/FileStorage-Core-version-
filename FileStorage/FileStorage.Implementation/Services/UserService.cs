@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
+using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Interfaces;
-using FileStorage.WebApi.Models;
 using FileStorage.WebApi.Models.Requests;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +34,7 @@ namespace FileStorage.Implementation.Services
             }
         }
 
+        // ToDO SecurityStap null. Why???
         public async Task<User> CreateAsync(RegisterBindingModel model)
         {
             var user = new UserEntity

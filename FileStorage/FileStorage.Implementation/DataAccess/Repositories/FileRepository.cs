@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.Entities;
-using FileStorage.Implementation.DataAccess.Entity_Framework;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 using FileStorage.Implementation.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -17,31 +17,35 @@ namespace FileStorage.Implementation.DataAccess.Repositories
             _context = context ?? throw new ArgumentNullException("Context must be not null!");
         }
 
-        public void Create(FileEntity item)
+        public async Task CreateAsync(FileEntity item)
         {
-            _context.Set<FileEntity>().Add(item ?? throw new ArgumentNullException("File must be not null!"));
+            await _context.Files.AddAsync(item ?? throw new ArgumentNullException("File must be not null!"));
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var file = Get(id);
-            _context.Set<FileEntity>().Remove(file);
+            var file = await GetAsync(id);
+            _context.Files.Remove(file);
         }
 
-        public FileEntity Get(Guid id)
+        public async Task<FileEntity> GetAsync(Guid id)
         {
-            return _context.Set<FileEntity>().Include(f => f.FolderEntity).FirstOrDefault(f => f.Id == id)
+            return await _context.Files
+                       .Include(f => f.FolderEntity)
+                       .FirstOrDefaultAsync(f => f.Id == id)
                    ?? throw new FileNotFoundException($"File with id = {id} was not found");
         }
 
-        public IQueryable<FileEntity> GetAll()
+        public async Task<IEnumerable<FileEntity>> GetAllAsync()
         {
-            return _context.Set<FileEntity>().Include(f => f.FolderEntity);
+            return await _context.Files
+                .Include(f => f.FolderEntity)
+                .ToListAsync();
         }
 
         public void Update(FileEntity fileEntity)
         {
-            _context.Entry(fileEntity).State = EntityState.Modified;
+            _context.Update(fileEntity);
         }
     }
 }

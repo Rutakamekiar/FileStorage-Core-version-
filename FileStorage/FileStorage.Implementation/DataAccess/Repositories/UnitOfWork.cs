@@ -1,5 +1,5 @@
 ﻿using System;
-using FileStorage.Implementation.DataAccess.Entity_Framework;
+using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 using FileStorage.Implementation.Interfaces;
 
@@ -33,9 +33,9 @@ namespace FileStorage.Implementation.DataAccess.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         protected virtual void Dispose(bool disposing)

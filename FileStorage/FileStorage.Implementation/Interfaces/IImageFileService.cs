@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace FileStorage.Implementation.Interfaces
 {
     public interface IImageFileService
     {
-        void Blackout(Guid id);
+        Task Blackout(Guid id);
     }
 }

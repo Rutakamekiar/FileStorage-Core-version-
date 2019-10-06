@@ -15,12 +15,14 @@ namespace FileStorage.Implementation.Services
     {
         private readonly IUnitOfWork _data;
         private readonly UserManager<UserEntity> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork data, UserManager<UserEntity> userManager, IMapper mapper)
+        public UserService(IUnitOfWork data, UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper)
         {
             _data = data;
             _userManager = userManager;
+            _roleManager = roleManager;
             _mapper = mapper;
         }
 
@@ -34,7 +36,6 @@ namespace FileStorage.Implementation.Services
             }
         }
 
-        // ToDO SecurityStap null. Why???
         public async Task<User> CreateAsync(RegisterBindingModel model)
         {
             var user = new UserEntity
@@ -55,13 +56,15 @@ namespace FileStorage.Implementation.Services
 
         public async Task<User> SignInAsync(SignInRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
-            if (await _userManager.CheckPasswordAsync(user, request.Password))
+            var userEntity = await _userManager.FindByEmailAsync(request.Email);
+            if (!(await _userManager.CheckPasswordAsync(userEntity, request.Password)))
             {
                 throw new Exception("Invalid username or password.");
             }
 
-            return _mapper.Map<User>(user);
+            var user = _mapper.Map<User>(userEntity);
+            user.Roles = await _userManager.GetRolesAsync(userEntity);
+            return user;
         }
 
         public async Task<long> GetMemorySize(string userId)

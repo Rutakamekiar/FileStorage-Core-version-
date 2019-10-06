@@ -41,7 +41,6 @@ namespace FileStorage.WebApi
         {
             services.AddDbContext<StorageContext>(options =>
             {
-                //options.UseSqlServer(connection, b => b.MigrationsAssembly("WebApi"));
                 options.UseSqlite(Configuration.GetConnectionString("Database"));
             });
 
@@ -80,22 +79,6 @@ namespace FileStorage.WebApi
                 c.DocumentFilter<SecurityRequirementsDocumentFilter>();
             });
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = AuthOptions.Issuer,
-                        ValidateAudience = true,
-                        ValidAudience = AuthOptions.Audience,
-                        ValidateLifetime = true,
-                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                        ValidateIssuerSigningKey = true
-                    };
-                });
-            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddCors();
 
@@ -106,6 +89,8 @@ namespace FileStorage.WebApi
 
             var mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            ConfigureAuthorization(services);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -140,27 +125,16 @@ namespace FileStorage.WebApi
             services.Configure<JwtAuthenticationOptions>(jwtAuthenticationSection);
             var jwtAuthenticationOptions = jwtAuthenticationSection.Get<JwtAuthenticationOptions>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            services.AddAuthentication(x =>
                 {
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnTokenValidated = context =>
-                        {
-                            var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
-                            var userId = context.Principal.Identity.Name;
-                            var user = userService.GetByIdAsync(userId).Result;
-                            if (user == null)
-                            {
-                                context.Fail("Unauthorized");
-                            }
-
-                            return Task.CompletedTask;
-                        }
-                    };
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.TokenValidationParameters = new TokenValidationParameters
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = jwtAuthenticationOptions.SymmetricSecurityKey,

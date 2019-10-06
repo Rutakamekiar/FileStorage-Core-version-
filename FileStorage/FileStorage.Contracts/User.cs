@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace FileStorage.Contracts
 {
@@ -7,5 +7,6 @@ namespace FileStorage.Contracts
         public string Id { get; set; }
         public string Email { get; set; }
         public long MemorySize { get; set; }
+        public IList<string> Roles { get; set; }
     }
 }

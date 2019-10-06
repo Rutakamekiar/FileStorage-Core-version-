@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FileStorage.Contracts.Requests;
@@ -43,6 +44,11 @@ namespace FileStorage.WebApi.Controllers
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = _jwtAuthenticationOptions.SigningCredentials
             };
+            foreach (var role in user.Roles)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role));
+            }
+
             var token = _jwtSecurityTokenHandler.CreateToken(tokenDescriptor);
             var tokenString = _jwtSecurityTokenHandler.WriteToken(token);
 
@@ -62,7 +68,7 @@ namespace FileStorage.WebApi.Controllers
             return Ok(user);
         }
 
-        [Authorize]
+        [Authorize(Roles = "User, Admin")]
         [HttpGet("memorySize")]
         public async Task<IActionResult> UserInfo()
         {

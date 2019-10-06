@@ -13,7 +13,7 @@ namespace FileStorage.Implementation.Services
 {
     public class FolderService : IFolderService
     {
-        public const string RootPath = @"C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorageFront\src\assets\Content";
+        public const string RootPath = @"G:\Проекты\C#\FileStorage-Core-version-\FileStorageFront\src\assets\Content";
         private readonly IUnitOfWork _data;
         private readonly IFileService _fileService;
         private readonly IUserService _userService;
@@ -95,13 +95,11 @@ namespace FileStorage.Implementation.Services
             return folder;
         }
 
-        //Ok
         public bool IsFolderExists(Folder file)
         {
             return Directory.Exists(ReturnFullFolderPath(file));
         }
 
-        //Ok
         public void Dispose()
         {
             _data.Dispose();
@@ -135,7 +133,6 @@ namespace FileStorage.Implementation.Services
                 : throw new FolderNotFoundException($"Cannot find folderEntity with id = {id} and userId = {userId}");
         }
 
-        //Ok
         public async Task<Folder> CreateRootFolder(string userId, string email)
         {
             var folder = new Folder
@@ -148,13 +145,11 @@ namespace FileStorage.Implementation.Services
             return folder;
         }
 
-        //Ok
         private string ReturnFolderPath(Folder item)
         {
             return item.Path + @"\" + item.Name;
         }
 
-        //Ok
         private string ReturnFullFolderPath(Folder item)
         {
             return RootPath + ReturnFolderPath(item);

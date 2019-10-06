@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FileStorage.WebApi.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase

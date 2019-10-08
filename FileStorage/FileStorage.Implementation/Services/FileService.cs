@@ -1,42 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.Options;
 
 namespace FileStorage.Implementation.Services
 {
     public class FileService : IFileService
     {
-        private const string RootFilePath =
-            @"C:\Users\Vlad\Desktop\Core\_FileStorage\FileStorageFront\src\assets\Content";
-
+        private readonly string _rootPath;
         private readonly IUnitOfWork _data;
         private readonly IMapper _mapper;
+        private readonly IPhysicalFileService _physicalFileService;
 
         public FileService(IUnitOfWork data,
-                           IMapper mapper)
+                           IMapper mapper,
+                           IPhysicalFileService physicalFileService,
+                           PathOptions pathOptions)
         {
             _data = data;
             _mapper = mapper;
+            _physicalFileService = physicalFileService;
+            _rootPath = pathOptions.RootPath;
         }
 
         public async Task CreateAsync(MyFile item)
         {
             await _data.Files.CreateAsync(_mapper.Map<FileEntity>(item));
-            File.WriteAllBytes(await ReturnFullPathAsync(item), item.FileBytes);
-
+            var path = await ReturnFullPathAsync(item);
+            _physicalFileService.CreateFile(path, item.FileBytes);
             await _data.SaveAsync();
         }
 
         public async Task<string> ReturnFullPathAsync(MyFile file)
         {
             var folder = await _data.Folders.GetAsync(file.FolderId);
-            return $@"{RootFilePath}\{folder.Path}\{folder.Name}\{file.Name}";
+            return $@"{_rootPath}\{folder.Path}\{folder.Name}\{file.Name}";
         }
 
         public MyFile Get(Guid id)
@@ -46,13 +49,14 @@ namespace FileStorage.Implementation.Services
 
         public async Task<byte[]> GetFileBytesAsync(MyFile fileDto)
         {
-            return File.ReadAllBytes(await ReturnFullPathAsync(fileDto));
+            return _physicalFileService.ReadFile(await ReturnFullPathAsync(fileDto));
         }
 
         public async Task DeleteAsync(MyFile file)
         {
             await _data.Files.DeleteAsync(file.Id);
-            File.Delete(await ReturnFullPathAsync(file));
+            var path = await ReturnFullPathAsync(file);
+            _physicalFileService.DeleteFile(path);
             await _data.SaveAsync();
         }
 
@@ -72,7 +76,8 @@ namespace FileStorage.Implementation.Services
             var oldPath = await ReturnFullPathAsync(_mapper.Map<MyFile>(newFile));
             newFile.Name = fileDto.Name;
             var newPath = await ReturnFullPathAsync(_mapper.Map<MyFile>(newFile));
-            File.Move(oldPath, newPath);
+            _physicalFileService.ReplaceFile(oldPath, newPath);
+
             newFile.AccessLevel = fileDto.AccessLevel;
             newFile.IsBlocked = fileDto.IsBlocked;
             _data.Files.Update(newFile);
@@ -81,7 +86,7 @@ namespace FileStorage.Implementation.Services
 
         public async Task<bool> IsFileExistsAsync(MyFile file)
         {
-            return File.Exists(await ReturnFullPathAsync(file));
+            return _physicalFileService.CheckFile(await ReturnFullPathAsync(file));
         }
 
         public async Task<List<MyFile>> GetAllByUserIdAsync(string userid)

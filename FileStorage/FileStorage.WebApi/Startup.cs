@@ -5,6 +5,7 @@ using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.DataAccess.Repositories;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.Options;
 using FileStorage.Implementation.Services;
 using FileStorage.WebApi.Options;
 using FileStorage.WebApi.Swagger;
@@ -59,6 +60,12 @@ namespace FileStorage.WebApi
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITxtFileService, TxtFileService>();
             services.AddScoped<IImageFileService, ImageFileService>();
+            services.AddScoped<IPhysicalFileService, PhysicalFileService>();
+            services.AddScoped<IPhysicalFolderService, PhysicalFolderService>();
+
+            var pathOptions = Configuration.GetSection("PathOption");
+            services.Configure<PathOptions>(pathOptions);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info

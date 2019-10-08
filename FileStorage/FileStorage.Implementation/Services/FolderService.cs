@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,26 +7,35 @@ using FileStorage.Contracts;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.Options;
 
 namespace FileStorage.Implementation.Services
 {
     public class FolderService : IFolderService
     {
-        public const string RootPath = @"G:\Проекты\C#\FileStorage-Core-version-\FileStorageFront\src\assets\Content";
+        private readonly string _rootPath;
         private readonly IUnitOfWork _data;
         private readonly IFileService _fileService;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IPhysicalFolderService _physicalFolderService;
+        private readonly IPhysicalFileService _physicalFileService;
 
         public FolderService(IUnitOfWork data,
                              IFileService fileService,
                              IUserService userService,
-                             IMapper mapper)
+                             IMapper mapper,
+                             IPhysicalFolderService physicalFolderService,
+                             IPhysicalFileService physicalFileService,
+                             PathOptions pathOptions)
         {
             _data = data;
             _fileService = fileService;
             _userService = userService;
             _mapper = mapper;
+            _physicalFolderService = physicalFolderService;
+            _physicalFileService = physicalFileService;
+            _rootPath = pathOptions.RootPath;
         }
 
         public async Task<HashSet<Folder>> GetAllAsync()
@@ -48,17 +56,18 @@ namespace FileStorage.Implementation.Services
         public async Task CreateAsync(Folder item)
         {
             await _data.Folders.CreateAsync(_mapper.Map<FolderEntity>(item));
-            Directory.CreateDirectory(ReturnFullFolderPath(item));
+            var path = ReturnFullFolderPath(item);
+            _physicalFolderService.CreateFolder(path);
             await _data.SaveAsync();
         }
 
         public async Task EditFolder(Guid id, Folder item)
         {
             var folder = await _data.Folders.GetAsync(id);
-            var oldPath = ReturnFolderPath(_mapper.Map<Folder>(folder));
+            var oldPath = _rootPath + ReturnFolderPath(_mapper.Map<Folder>(folder));
             folder.Name = item.Name;
-            var newPath = ReturnFolderPath(_mapper.Map<Folder>(folder));
-            Directory.Move(RootPath + oldPath, RootPath + newPath);
+            var newPath = _rootPath + ReturnFolderPath(_mapper.Map<Folder>(folder));
+            _physicalFolderService.ReplaceFolder(oldPath,newPath);
             _data.Folders.Update(folder);
 
             await _data.SaveAsync();
@@ -75,7 +84,7 @@ namespace FileStorage.Implementation.Services
                     await DeleteAsync(folder);
 
             await _data.Folders.DeleteAsync(folderDto.Id);
-            Directory.Delete(ReturnFullFolderPath(folderDto));
+            _physicalFolderService.DeleteFolder(ReturnFullFolderPath(folderDto));
             await _data.SaveAsync();
         }
 
@@ -97,7 +106,7 @@ namespace FileStorage.Implementation.Services
 
         public bool IsFolderExists(Folder file)
         {
-            return Directory.Exists(ReturnFullFolderPath(file));
+            return _physicalFolderService.CheckFolder(ReturnFullFolderPath(file));
         }
 
         public void Dispose()
@@ -145,30 +154,30 @@ namespace FileStorage.Implementation.Services
             return folder;
         }
 
-        private string ReturnFolderPath(Folder item)
+        private static string ReturnFolderPath(Folder item)
         {
             return item.Path + @"\" + item.Name;
         }
 
         private string ReturnFullFolderPath(Folder item)
         {
-            return RootPath + ReturnFolderPath(item);
+            return _rootPath + ReturnFolderPath(item);
         }
 
         private long GetRootFolderSizeByPath(string path)
         {
             long sum = 0;
-            var dirs = Directory.GetDirectories(path);
+            var dirs = _physicalFolderService.GetFolders(path);
             if (dirs.Length > 0)
-                foreach (var s in dirs)
-                    sum += GetRootFolderSizeByPath(s);
-            var files = Directory.GetFiles(path);
-            if (files.Length > 0)
-                foreach (var s in files)
-                {
-                    var fileInfo = new FileInfo(s);
-                    sum += fileInfo.Length;
-                }
+            {
+                sum += dirs.Sum(GetRootFolderSizeByPath);
+            }
+
+            var filesPath = _physicalFolderService.GetFolderFiles(path);
+            if (filesPath.Length > 0)
+            {
+                sum += filesPath.Sum(filePath => _physicalFileService.GetFileLength(filePath));
+            }
 
             return sum;
         }

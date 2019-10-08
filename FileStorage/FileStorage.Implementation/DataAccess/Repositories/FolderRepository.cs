@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
@@ -15,12 +14,12 @@ namespace FileStorage.Implementation.DataAccess.Repositories
 
         public FolderRepository(StorageContext context)
         {
-            _context = context ?? throw new ArgumentNullException("Context must be not null!");
+            _context = context ?? throw new ArgumentNullException($"Context must be not null!");
         }
 
         public async Task CreateAsync(FolderEntity item)
         {
-            await _context.Folders.AddAsync(item ?? throw new ArgumentNullException("FolderEntity must be not null!"));
+            await _context.Folders.AddAsync(item ?? throw new ArgumentNullException($"FolderEntity must be not null!"));
         }
 
         public async Task DeleteAsync(Guid id)

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FileStorage.Implementation.AutoMapperConfig;
 using FileStorage.Implementation.DataAccess;
 using FileStorage.Implementation.DataAccess.Entities;
@@ -97,7 +96,7 @@ namespace FileStorage.WebApi
         {
             if (env.EnvironmentName != TestEnvironmentName)
             {
-                InitializeDatabase(app, env);
+                InitializeDatabase(app);
             }
 
             if (env.IsDevelopment())
@@ -144,7 +143,7 @@ namespace FileStorage.WebApi
                 });
         }
 
-        private static void InitializeDatabase(IApplicationBuilder app, IHostingEnvironment env)
+        private static void InitializeDatabase(IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {

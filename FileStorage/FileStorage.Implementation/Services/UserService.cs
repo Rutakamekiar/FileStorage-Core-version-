@@ -5,7 +5,6 @@ using FileStorage.Contracts;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Interfaces;
-using FileStorage.WebApi.Models.Requests;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +14,12 @@ namespace FileStorage.Implementation.Services
     {
         private readonly IUnitOfWork _data;
         private readonly UserManager<UserEntity> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork data, UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper)
+        public UserService(IUnitOfWork data, UserManager<UserEntity> userManager, IMapper mapper)
         {
             _data = data;
             _userManager = userManager;
-            _roleManager = roleManager;
             _mapper = mapper;
         }
 

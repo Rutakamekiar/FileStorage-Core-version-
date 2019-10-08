@@ -12,7 +12,7 @@ namespace FileStorage.Implementation.Services
 {
     public class TxtFileService : ITxtFileService
     {
-        private static readonly IList<string> Extensions =
+        private static readonly IList<string> _extensions =
             new ReadOnlyCollection<string>(new List<string> {"txt", "docx"});
 
         private readonly IFileService _fileService;
@@ -40,7 +40,7 @@ namespace FileStorage.Implementation.Services
 
         private static bool CheckType(MyFile fileDto)
         {
-            return !Extensions.Contains(fileDto.Name.Split('.').Last());
+            return !_extensions.Contains(fileDto.Name.Split('.').Last());
         }
     }
 }

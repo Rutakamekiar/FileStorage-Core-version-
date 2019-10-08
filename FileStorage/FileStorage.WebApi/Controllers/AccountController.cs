@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.Interfaces;
-using FileStorage.WebApi.Models.Requests;
 using FileStorage.WebApi.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FileStorage.Contracts
+﻿namespace FileStorage.Contracts
 {
     public enum Roles
     {

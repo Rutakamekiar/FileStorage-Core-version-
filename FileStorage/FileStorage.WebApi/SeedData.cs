@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using FileStorage.Contracts;
 using FileStorage.Implementation.DataAccess;
 using FileStorage.Implementation.DataAccess.Entities;
@@ -61,7 +59,15 @@ namespace FileStorage.WebApi
                     }
 
                     result = userManager.AddToRoleAsync(user, Roles.Admin.ToString()).Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new InvalidOperationException(result.Errors.First().Description);
+                    }
                     result = userManager.AddToRoleAsync(user, Roles.User.ToString()).Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new InvalidOperationException(result.Errors.First().Description);
+                    }
                 }
             }
         }

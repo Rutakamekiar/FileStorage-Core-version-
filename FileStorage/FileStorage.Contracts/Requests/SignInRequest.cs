@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FileStorage.WebApi.Models.Requests
+namespace FileStorage.Contracts.Requests
 {
     public class SignInRequest
     {

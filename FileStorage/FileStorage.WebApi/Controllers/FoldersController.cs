@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
+using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.WebApi.Models;
-using FileStorage.WebApi.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

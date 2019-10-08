@@ -14,12 +14,12 @@ namespace FileStorage.Implementation.DataAccess.Repositories
 
         public FileRepository(StorageContext context)
         {
-            _context = context ?? throw new ArgumentNullException("Context must be not null!");
+            _context = context ?? throw new ArgumentNullException($"Context must be not null!");
         }
 
         public async Task CreateAsync(FileEntity item)
         {
-            await _context.Files.AddAsync(item ?? throw new ArgumentNullException("File must be not null!"));
+            await _context.Files.AddAsync(item ?? throw new ArgumentNullException($"File must be not null!"));
         }
 
         public async Task DeleteAsync(Guid id)

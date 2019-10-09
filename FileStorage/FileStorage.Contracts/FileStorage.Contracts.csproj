@@ -1,7 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\SolutionItems\FileStorageCommonProjectProperties.xml" />
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\SolutionItems\FileStorage.ruleset" Link="FileStorage.ruleset" />
+    <AdditionalFiles Include="..\SolutionItems\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
 
 </Project>

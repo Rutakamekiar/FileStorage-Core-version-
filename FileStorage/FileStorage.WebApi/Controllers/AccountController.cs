@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="AccountController.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -30,7 +36,7 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn(SignInRequest request )
+        public async Task<IActionResult> SignIn(SignInRequest request)
         {
             var user = await _userService.SignInAsync(request);
             var tokenDescriptor = new SecurityTokenDescriptor

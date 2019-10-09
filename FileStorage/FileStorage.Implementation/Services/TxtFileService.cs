@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="TxtFileService.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -6,13 +12,18 @@ using System.Threading.Tasks;
 using FileStorage.Contracts;
 using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.Resourses.Exceptions;
 
 namespace FileStorage.Implementation.Services
 {
     public class TxtFileService : ITxtFileService
     {
         private static readonly IList<string> _extensions =
-            new ReadOnlyCollection<string>(new List<string> {"txt", "docx"});
+            new ReadOnlyCollection<string>(
+                new List<string>
+                {
+                    "txt", "docx"
+                });
 
         private readonly IFileService _fileService;
         private readonly IPhysicalFileService _physicalFileService;
@@ -25,10 +36,10 @@ namespace FileStorage.Implementation.Services
 
         public async Task<int> GetTxtFileSymbolsCount(Guid id)
         {
-            var file = _fileService.Get(id);
+            var file = _fileService.GetItem(id);
             if (CheckType(file))
             {
-                throw new WrongTypeException("Error type!");
+                throw new WrongTypeException();
             }
 
             var allText = _physicalFileService.ReadAllText(await _fileService.ReturnFullPathAsync(file));
@@ -37,10 +48,10 @@ namespace FileStorage.Implementation.Services
 
         public async Task<string> GetTxtFile(Guid id)
         {
-            var fileDto = _fileService.Get(id);
+            var fileDto = _fileService.GetItem(id);
             if (CheckType(fileDto))
             {
-                throw new WrongTypeException("Error type!");
+                throw new WrongTypeException();
             }
 
             var allText = _physicalFileService.ReadAllText(await _fileService.ReturnFullPathAsync(fileDto));

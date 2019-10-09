@@ -1,20 +1,35 @@
-﻿using System;
+﻿// <copyright file="FileNotFoundException.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
+using System.Globalization;
 using System.Runtime.Serialization;
+using FileStorage.Implementation.Resourses.Exceptions;
 
 namespace FileStorage.Implementation.Exceptions
 {
     [Serializable]
-    internal class FileNotFoundException : Exception
+    public class FileNotFoundException : Exception
     {
         public FileNotFoundException()
         {
         }
 
-        public FileNotFoundException(string message) : base(message)
+        public FileNotFoundException(string fileId)
+            : base(string.Format(CultureInfo.CurrentCulture,
+                                 Localization.FileNotFoundTemplate,
+                                 fileId))
         {
         }
 
-        public FileNotFoundException(string message, Exception innerException) : base(message, innerException)
+        public FileNotFoundException(string fileId, Exception innerException)
+            : base(string.Format(CultureInfo.CurrentCulture,
+                                 Localization.FileNotFoundTemplate,
+                                 fileId),
+                   innerException)
         {
         }
 

@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="ImageFileService.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -8,13 +14,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.Resourses.Exceptions;
 
 namespace FileStorage.Implementation.Services
 {
     public class ImageFileService : IImageFileService
     {
-        private static readonly IList<string> _extensions =
-            new ReadOnlyCollection<string>(new List<string> {"img", "bmp"});
+        private static readonly IList<string> _extensions = new ReadOnlyCollection<string>(
+            new List<string>
+            {
+                "img", "bmp"
+            });
 
         private readonly IFileService _fileService;
 
@@ -25,8 +35,12 @@ namespace FileStorage.Implementation.Services
 
         public async Task Blackout(Guid id)
         {
-            var file = _fileService.Get(id);
-            if (!_extensions.Contains(file.Name.Split('.').Last())) throw new WrongTypeException("Error type!");
+            var file = _fileService.GetItem(id);
+            if (!_extensions.Contains(file.Name.Split('.').Last()))
+            {
+                throw new WrongTypeException();
+            }
+
             var path = await _fileService.ReturnFullPathAsync(file);
             var newName = path.Split('.').First() + "-copy.bmp";
             using (var image = (Bitmap)Image.FromFile(path))

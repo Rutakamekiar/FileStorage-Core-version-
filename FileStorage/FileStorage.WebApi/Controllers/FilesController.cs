@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="FilesController.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -39,11 +45,17 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var file = _fileService.Get(id);
+            var file = _fileService.GetItem(id);
             if (!file.AccessLevel && User.Identity.Name != file.Folder.UserId)
+            {
                 return BadRequest("You have no access to this file");
+            }
+
             if (file.IsBlocked)
+            {
                 return BadRequest("You can not download a locked file");
+            }
+
             return File(await _fileService.GetFileBytesAsync(file), "application/octet-stream", file.Name);
         }
 
@@ -52,10 +64,16 @@ namespace FileStorage.WebApi.Controllers
         {
             var request = HttpContext.Request;
             if (request.Form.Files.Count <= 0)
+            {
                 return BadRequest("File was not found. Please upload it.");
+            }
+
             var file = request.Form.Files["File"];
             if (file?.Length <= 0)
+            {
                 return BadRequest("File have not content");
+            }
+
             if (file != null)
             {
                 var fileDto = new MyFile
@@ -67,7 +85,7 @@ namespace FileStorage.WebApi.Controllers
 
                 if (await _fileService.IsFileExistsAsync(fileDto))
                     return BadRequest("The file with the specified name exists. Please change the file name");
-                file.OpenReadStream().Read(fileDto.FileBytes = new byte[file.Length], 0, (int) file.Length);
+                file.OpenReadStream().Read(fileDto.FileBytes = new byte[file.Length], 0, (int)file.Length);
 
                 if (!await _folderService.CanAddAsync(User.Identity.Name, fileDto.FileBytes.Length))
                     return BadRequest("You did not have memory to add the file");
@@ -81,9 +99,12 @@ namespace FileStorage.WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteFile(Guid id)
         {
-            var file = _fileService.Get(id);
+            var file = _fileService.GetItem(id);
             if (!User.IsInRole("Admin") && file.Folder.UserId != User.Identity.Name)
+            {
                 return BadRequest("File not found");
+            }
+
             _fileService.DeleteAsync(file);
             return Ok();
         }
@@ -92,8 +113,11 @@ namespace FileStorage.WebApi.Controllers
         public IActionResult EditFile(Guid id, [FromBody] MyFile file)
         {
             if (file.IsBlocked)
+            {
                 return BadRequest("You can not change a locked file");
-            var fileDto = _fileService.Get(id);
+            }
+
+            var fileDto = _fileService.GetItem(id);
             if (fileDto.Folder.UserId == User.Identity.Name)
             {
                 _fileService.EditFileAsync(id, file);

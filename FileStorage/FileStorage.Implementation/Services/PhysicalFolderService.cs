@@ -1,4 +1,10 @@
-﻿using System.IO;
+﻿// <copyright file="PhysicalFolderService.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System.IO;
 using FileStorage.Implementation.Interfaces;
 
 namespace FileStorage.Implementation.Services

@@ -1,4 +1,10 @@
-﻿using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
+﻿// <copyright file="UserRepository.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 
 namespace FileStorage.Implementation.DataAccess.Repositories
 {
@@ -9,11 +15,6 @@ namespace FileStorage.Implementation.DataAccess.Repositories
         public UserRepository(StorageContext context)
         {
             _context = context;
-        }
-
-        public void Dispose()
-        {
-            _context?.Dispose();
         }
     }
 }

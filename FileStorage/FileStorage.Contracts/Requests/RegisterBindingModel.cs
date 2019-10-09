@@ -1,4 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// <copyright file="RegisterBindingModel.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System.ComponentModel.DataAnnotations;
 
 namespace FileStorage.Contracts.Requests
 {

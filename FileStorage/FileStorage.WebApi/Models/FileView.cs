@@ -1,21 +1,19 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿// <copyright file="FileView.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 
 namespace FileStorage.WebApi.Models
 {
     public class FileView
     {
-        [JsonProperty(PropertyName = "id")] public Guid Id { get; set; }
-
-        [JsonProperty(PropertyName = "name")] public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "accessLevel")]
+        public Guid Id { get; set; }
+        public string Name { get; set; }
         public bool AccessLevel { get; set; }
-
-        [JsonProperty(PropertyName = "isBlocked")]
         public bool IsBlocked { get; set; }
-
-        [JsonProperty(PropertyName = "folderId")]
         public Guid FolderId { get; set; }
     }
 }

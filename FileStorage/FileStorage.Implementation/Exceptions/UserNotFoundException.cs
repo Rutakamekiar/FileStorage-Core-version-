@@ -1,12 +1,18 @@
-﻿using System;
+﻿// <copyright file="UserNotFoundException.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Runtime.Serialization;
+using FileStorage.Implementation.Resourses.Exceptions;
 
 namespace FileStorage.Implementation.Exceptions
 {
-    [Serializable]
-    internal class UserNotFoundException : Exception
+    public class UserNotFoundException : Exception
     {
-        public UserNotFoundException()
+        public UserNotFoundException() : base(Localization.UserNotFound)
         {
         }
 

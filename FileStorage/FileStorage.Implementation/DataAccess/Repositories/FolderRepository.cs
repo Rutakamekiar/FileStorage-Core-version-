@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="FolderRepository.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.Entities;
@@ -14,12 +20,12 @@ namespace FileStorage.Implementation.DataAccess.Repositories
 
         public FolderRepository(StorageContext context)
         {
-            _context = context ?? throw new ArgumentNullException($"Context must be not null!");
+            _context = context;
         }
 
         public async Task CreateAsync(FolderEntity item)
         {
-            await _context.Folders.AddAsync(item ?? throw new ArgumentNullException($"FolderEntity must be not null!"));
+            await _context.Folders.AddAsync(item);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -28,9 +34,9 @@ namespace FileStorage.Implementation.DataAccess.Repositories
             _context.Folders.Remove(folder);
         }
 
-        public void Update(FolderEntity folderEntity)
+        public void Update(FolderEntity item)
         {
-            _context.Entry(folderEntity).State = EntityState.Modified;
+            _context.Entry(item).State = EntityState.Modified;
         }
 
         public async Task<FolderEntity> GetAsync(Guid id)
@@ -39,7 +45,7 @@ namespace FileStorage.Implementation.DataAccess.Repositories
                        .Include(f => f.Folders)
                        .Include(f => f.Files)
                        .FirstOrDefaultAsync(f => f.Id == id)
-                   ?? throw new FolderNotFoundException($"FolderEntity with id = {id} was not found");
+                   ?? throw new FolderNotFoundException(id.ToString());
         }
 
         public async Task<IEnumerable<FolderEntity>> GetAllAsync()

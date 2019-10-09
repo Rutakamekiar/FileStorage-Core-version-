@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="AdminController.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -40,7 +46,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet("folders/{id}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_mapper.Map<FolderView>(_folderService.Get(id)));
+            return Ok(_mapper.Map<FolderView>(_folderService.GetItem(id)));
         }
 
         [HttpGet("folderSize/{name}")]
@@ -59,7 +65,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpPut("files/{id}")]
         public IActionResult FileBlockChange(Guid id)
         {
-            var file = _fileService.Get(id);
+            var file = _fileService.GetItem(id);
             file.IsBlocked = !file.IsBlocked;
             _fileService.EditFileAsync(id, file);
             return NoContent();

@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="SeedData.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Linq;
 using FileStorage.Contracts;
 using FileStorage.Implementation.DataAccess;
@@ -9,22 +15,21 @@ namespace FileStorage.WebApi
 {
     public static class SeedData
     {
-        public static void EnsureSeedData(StorageContext context,
-                                          UserManager<UserEntity> userManager,
+        public static void EnsureSeedData(UserManager<UserEntity> userManager,
                                           RoleManager<IdentityRole> roleManager)
         {
-            if (roleManager.FindByNameAsync(Roles.Admin.ToString()).Result == null)
+            if (roleManager.FindByNameAsync(Role.Admin.ToString()).Result == null)
             {
-                var result = roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString())).Result;
+                var result = roleManager.CreateAsync(new IdentityRole(Role.Admin.ToString())).Result;
                 if (!result.Succeeded)
                 {
                     throw new InvalidOperationException(result.Errors.First().Description);
                 }
             }
 
-            if (roleManager.FindByNameAsync(Roles.User.ToString()).Result == null)
+            if (roleManager.FindByNameAsync(Role.User.ToString()).Result == null)
             {
-                var result = roleManager.CreateAsync(new IdentityRole(Roles.User.ToString())).Result;
+                var result = roleManager.CreateAsync(new IdentityRole(Role.User.ToString())).Result;
                 if (!result.Succeeded)
                 {
                     throw new InvalidOperationException(result.Errors.First().Description);
@@ -35,15 +40,15 @@ namespace FileStorage.WebApi
             {
                 new UserEntity
                 {
-                    Email = "admin@admin", 
+                    Email = "admin@admin",
                     UserName = "admin",
-                    MemorySize = 1000000000000 
+                    MemorySize = 1000000000000
                 },
                 new UserEntity
                 {
-                    Email = "string@string", 
+                    Email = "string@string",
                     UserName = "user",
-                    MemorySize = 10000 
+                    MemorySize = 10000
                 },
             };
 
@@ -58,12 +63,13 @@ namespace FileStorage.WebApi
                         throw new InvalidOperationException(result.Errors.First().Description);
                     }
 
-                    result = userManager.AddToRoleAsync(user, Roles.Admin.ToString()).Result;
+                    result = userManager.AddToRoleAsync(user, Role.Admin.ToString()).Result;
                     if (!result.Succeeded)
                     {
                         throw new InvalidOperationException(result.Errors.First().Description);
                     }
-                    result = userManager.AddToRoleAsync(user, Roles.User.ToString()).Result;
+
+                    result = userManager.AddToRoleAsync(user, Role.User.ToString()).Result;
                     if (!result.Succeeded)
                     {
                         throw new InvalidOperationException(result.Errors.First().Description);

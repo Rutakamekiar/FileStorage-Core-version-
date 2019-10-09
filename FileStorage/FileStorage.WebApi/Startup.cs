@@ -1,4 +1,10 @@
-﻿using AutoMapper;
+﻿// <copyright file="Startup.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using AutoMapper;
 using FileStorage.Implementation.AutoMapperConfig;
 using FileStorage.Implementation.DataAccess;
 using FileStorage.Implementation.DataAccess.Entities;
@@ -22,7 +28,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
-
 
 namespace FileStorage.WebApi
 {
@@ -99,7 +104,7 @@ namespace FileStorage.WebApi
             ConfigureAuthorization(services);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.EnvironmentName != TestEnvironmentName)
             {
@@ -115,6 +120,7 @@ namespace FileStorage.WebApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FileStorage API"));
 
@@ -123,7 +129,6 @@ namespace FileStorage.WebApi
             app.UseAuthentication();
             app.UseMvc();
         }
-
 
         private void ConfigureAuthorization(IServiceCollection services)
         {
@@ -160,7 +165,7 @@ namespace FileStorage.WebApi
                 {
                     var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
                     var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                    SeedData.EnsureSeedData(context, userMgr, roleMgr);
+                    SeedData.EnsureSeedData(userMgr, roleMgr);
                 }
             }
         }

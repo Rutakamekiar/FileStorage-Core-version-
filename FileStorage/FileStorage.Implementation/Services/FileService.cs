@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="FileService.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,7 +48,7 @@ namespace FileStorage.Implementation.Services
             return $@"{_rootPath}\{folder.Path}\{folder.Name}\{file.Name}";
         }
 
-        public MyFile Get(Guid id)
+        public MyFile GetItem(Guid id)
         {
             return _mapper.Map<MyFile>(_data.Files.GetAsync(id));
         }
@@ -52,17 +58,12 @@ namespace FileStorage.Implementation.Services
             return _physicalFileService.ReadFile(await ReturnFullPathAsync(fileDto));
         }
 
-        public async Task DeleteAsync(MyFile file)
+        public async Task DeleteAsync(MyFile item)
         {
-            await _data.Files.DeleteAsync(file.Id);
-            var path = await ReturnFullPathAsync(file);
+            await _data.Files.DeleteAsync(item.Id);
+            var path = await ReturnFullPathAsync(item);
             _physicalFileService.DeleteFile(path);
             await _data.SaveAsync();
-        }
-
-        public void Dispose()
-        {
-            _data.Dispose();
         }
 
         public async Task<HashSet<MyFile>> GetAllAsync()
@@ -91,7 +92,7 @@ namespace FileStorage.Implementation.Services
 
         public async Task<List<MyFile>> GetAllByUserIdAsync(string userid)
         {
-            return (await GetAllAsync()).Where(f => f.Folder.UserId.Equals(userid)).ToList();
+            return (await GetAllAsync()).Where(f => f.Folder.UserId == userid).ToList();
         }
     }
 }

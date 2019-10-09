@@ -1,9 +1,15 @@
-﻿using System;
+﻿// <copyright file="UserService.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.DataAccess.Entities;
+using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +48,7 @@ namespace FileStorage.Implementation.Services
                 MemorySize = 100000000
             };
             await _userManager.CreateAsync(user, model.Password);
-            await _userManager.AddToRoleAsync(user, Roles.User.ToString());
+            await _userManager.AddToRoleAsync(user, Role.User.ToString());
             return _mapper.Map<User>(user);
         }
 
@@ -56,7 +62,7 @@ namespace FileStorage.Implementation.Services
             var userEntity = await _userManager.FindByEmailAsync(request.Email);
             if (!(await _userManager.CheckPasswordAsync(userEntity, request.Password)))
             {
-                throw new Exception("Invalid username or password.");
+                throw new UserNotFoundException();
             }
 
             var user = _mapper.Map<User>(userEntity);
@@ -73,12 +79,6 @@ namespace FileStorage.Implementation.Services
         public async Task<User[]> GetAllAsync()
         {
             return _mapper.Map<User[]>(await _userManager.Users.ToArrayAsync());
-        }
-
-
-        public void Dispose()
-        {
-            _data.Dispose();
         }
     }
 }

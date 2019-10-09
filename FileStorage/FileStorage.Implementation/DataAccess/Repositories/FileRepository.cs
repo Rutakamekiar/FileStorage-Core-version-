@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="FileRepository.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.Entities;
@@ -14,12 +20,12 @@ namespace FileStorage.Implementation.DataAccess.Repositories
 
         public FileRepository(StorageContext context)
         {
-            _context = context ?? throw new ArgumentNullException($"Context must be not null!");
+            _context = context;
         }
 
         public async Task CreateAsync(FileEntity item)
         {
-            await _context.Files.AddAsync(item ?? throw new ArgumentNullException($"File must be not null!"));
+            await _context.Files.AddAsync(item);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -33,7 +39,7 @@ namespace FileStorage.Implementation.DataAccess.Repositories
             return await _context.Files
                        .Include(f => f.FolderEntity)
                        .FirstOrDefaultAsync(f => f.Id == id)
-                   ?? throw new FileNotFoundException($"File with id = {id} was not found");
+                   ?? throw new FileNotFoundException(id.ToString());
         }
 
         public async Task<IEnumerable<FileEntity>> GetAllAsync()
@@ -43,9 +49,9 @@ namespace FileStorage.Implementation.DataAccess.Repositories
                 .ToListAsync();
         }
 
-        public void Update(FileEntity fileEntity)
+        public void Update(FileEntity item)
         {
-            _context.Update(fileEntity);
+            _context.Update(item);
         }
     }
 }

@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="TxtFilesController.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Threading.Tasks;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.WebApi.Models;
@@ -26,7 +32,10 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            return Ok(new TxtResponse(await _txtFileService.GetTxtFile(id)));
+            return Ok(new TxtResponse
+            {
+                Text = await _txtFileService.GetTxtFile(id)
+            });
         }
     }
 }

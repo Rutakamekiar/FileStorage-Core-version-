@@ -1,4 +1,10 @@
-﻿using System;
+﻿// <copyright file="FoldersController.cs" company="Kovalov Systems">
+// Confidential and Proprietary
+// Copyright 2019 Kovalov Systems
+// ALL RIGHTS RESERVED.
+// </copyright>
+
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
@@ -30,7 +36,7 @@ namespace FileStorage.WebApi.Controllers
         {
             var parentId = request.ParentId;
             var name = request.Name;
-            var parent = _folderService.Get(parentId);
+            var parent = _folderService.GetItem(parentId);
             if (parent.UserId != User.Identity.Name)
                 return BadRequest("cannot create folderEntity in folders of others");
             return Ok(_folderService.CreateFolderInFolder(parent, name));
@@ -58,7 +64,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult EditFolder(Guid id, [FromBody] Folder folder)
         {
-            var folderDto = _folderService.Get(id);
+            var folderDto = _folderService.GetItem(id);
             if (folderDto.UserId != User.Identity.Name)
                 return Forbid();
             _folderService.EditFolder(id, folder);
@@ -68,7 +74,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteFolder(Guid id)
         {
-            var folderDto = _folderService.Get(id);
+            var folderDto = _folderService.GetItem(id);
             if (!User.IsInRole("admin") && folderDto.UserId != User.Identity.Name)
                 return BadRequest("File not found");
 

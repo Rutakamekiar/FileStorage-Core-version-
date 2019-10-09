@@ -26,6 +26,6 @@ namespace FileStorage.Implementation.DataAccess.Entities
         public ICollection<FileEntity> Files { get; set; }
         public ICollection<FolderEntity> Folders { get; set; }
         public Guid? ParentFolderId { get; set; }
-        public virtual FolderEntity ParentFolderEntity { get; set; }
+        public virtual FolderEntity ParentFolder { get; set; }
     }
 }

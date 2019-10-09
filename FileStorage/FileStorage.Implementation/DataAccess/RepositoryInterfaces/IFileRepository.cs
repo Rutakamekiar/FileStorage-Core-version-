@@ -8,7 +8,7 @@ using FileStorage.Implementation.DataAccess.Entities;
 
 namespace FileStorage.Implementation.DataAccess.RepositoryInterfaces
 {
-    public interface IFileRepository : IRepository<FileEntity>
+    public interface IFileRepository : IRepositoryBase<FileEntity>, IGenericRepository<FileEntity>
     {
     }
 }

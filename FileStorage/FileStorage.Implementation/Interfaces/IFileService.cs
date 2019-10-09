@@ -8,12 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FileStorage.Contracts;
+using FileStorage.Contracts.DTO;
 
 namespace FileStorage.Implementation.Interfaces
 {
     public interface IFileService : IService<MyFile>
     {
-        Task<List<MyFile>> GetAllByUserIdAsync(string userid);
+        IEnumerable<MyFile> GetAllByUserIdAsync(string userid);
 
         Task<byte[]> GetFileBytesAsync(MyFile fileDto);
 

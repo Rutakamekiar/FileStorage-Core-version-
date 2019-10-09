@@ -38,17 +38,13 @@ namespace FileStorage.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<StorageContext>(options =>
-            {
-                options.UseSqlite(Configuration.GetConnectionString("Database"));
-            });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<StorageContext>(options => options.UseSqlite(Configuration.GetConnectionString("Database")));
 
             services.ConfigureIdentity();
 
             services.AddLogging(x => x.AddConsole());
-            services.AddScoped<IFileRepository, FileRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IFolderRepository, FolderRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IFolderService, FolderService>();
             services.AddScoped<IFileService, FileService>();
@@ -65,8 +61,6 @@ namespace FileStorage.WebApi
             services.ConfigureSwagger();
             services.ConfigureAuthorization(Configuration);
             services.ConfigureCors();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public static void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -10,10 +10,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
+using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.Implementation.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace FileStorage.Implementation.Services
 {
@@ -44,19 +46,19 @@ namespace FileStorage.Implementation.Services
             _rootPath = pathOptions.RootPath;
         }
 
-        public async Task<HashSet<Folder>> GetAllAsync()
+        public IEnumerable<Folder> GetAllAsync()
         {
-            return _mapper.Map<HashSet<Folder>>(await _data.Folders.GetAllAsync());
+            return _mapper.Map<IEnumerable<Folder>>(_data.Folders.GetAll());
         }
 
-        public async Task<List<Folder>> GetAllRootFolders()
+        public IEnumerable<Folder> GetAllRootFolders()
         {
-            return (await GetAllAsync()).Where(f => f.ParentFolderId == null).ToList();
+            return _mapper.Map<IEnumerable<Folder>>(_data.Folders.GetByCondition(f => f.ParentFolderId == null));
         }
 
-        public Folder GetItem(Guid id)
+        public async Task<Folder> GetByIdAsync(Guid id)
         {
-            return _mapper.Map<Folder>(_data.Folders.GetAsync(id));
+            return _mapper.Map<Folder>(await _data.Folders.GetByIdAsync(id));
         }
 
         public async Task CreateAsync(Folder item)
@@ -67,9 +69,9 @@ namespace FileStorage.Implementation.Services
             await _data.SaveAsync();
         }
 
-        public async Task EditFolder(Guid id, Folder item)
+        public async Task EditFolderAsync(Guid id, Folder item)
         {
-            var folder = await _data.Folders.GetAsync(id);
+            var folder = await _data.Folders.GetByIdAsync(id);
             var oldPath = _rootPath + ReturnFolderPath(_mapper.Map<Folder>(folder));
             folder.Name = item.Name;
             var newPath = _rootPath + ReturnFolderPath(_mapper.Map<Folder>(folder));
@@ -97,12 +99,12 @@ namespace FileStorage.Implementation.Services
                 }
             }
 
-            await _data.Folders.DeleteAsync(item.Id);
+            await _data.Folders.DeleteByIdAsync(item.Id);
             _physicalFolderService.DeleteFolder(ReturnFullFolderPath(item));
             await _data.SaveAsync();
         }
 
-        public async Task<Folder> CreateFolderInFolder(Folder parent, string name)
+        public async Task<Folder> CreateFolderInFolderAsync(Folder parent, string name)
         {
             var folder = new Folder
             {
@@ -129,19 +131,19 @@ namespace FileStorage.Implementation.Services
 
         public async Task<long> GetRootFolderSize(string userId)
         {
-            var folder = await GetRootFolderContentByUserId(userId);
+            var folder = await GetRootFolderByUserIdAsync(userId);
             return GetRootFolderSizeByPath(ReturnFullFolderPath(folder));
         }
 
-        public async Task<Folder> GetRootFolderContentByUserId(string userId)
+        public async Task<Folder> GetRootFolderByUserIdAsync(string userId)
         {
-            var folderEntity = (await _data.Folders.GetAllAsync()).FirstOrDefault(f => f.UserId == userId);
+            var folderEntity = await _data.Folders.GetByCondition(f => f.UserId == userId).FirstOrDefaultAsync();
             return _mapper.Map<Folder>(folderEntity);
         }
 
         public Folder GetByUserId(Guid id, string userId)
         {
-            var folder = _mapper.Map<Folder>(_data.Folders.GetAsync(id));
+            var folder = _mapper.Map<Folder>(_data.Folders.GetByIdAsync(id));
             return folder.UserId == userId
                 ? folder
                 : throw new FolderNotFoundException(id.ToString());

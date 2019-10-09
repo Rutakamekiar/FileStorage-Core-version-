@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
+using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.WebApi.Models;
@@ -45,7 +46,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var file = _fileService.GetItem(id);
+            var file = await _fileService.GetByIdAsync(id);
             if (!file.AccessLevel && User.Identity.Name != file.Folder.UserId)
             {
                 return BadRequest("You have no access to this file");
@@ -97,30 +98,30 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteFile(Guid id)
+        public async Task<IActionResult> DeleteFile(Guid id)
         {
-            var file = _fileService.GetItem(id);
+            var file = await _fileService.GetByIdAsync(id);
             if (!User.IsInRole("Admin") && file.Folder.UserId != User.Identity.Name)
             {
                 return BadRequest("File not found");
             }
 
-            _fileService.DeleteAsync(file);
+            await _fileService.DeleteAsync(file);
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public IActionResult EditFile(Guid id, [FromBody] MyFile file)
+        public async Task<IActionResult> EditFile(Guid id, [FromBody] MyFile file)
         {
             if (file.IsBlocked)
             {
                 return BadRequest("You can not change a locked file");
             }
 
-            var fileDto = _fileService.GetItem(id);
+            var fileDto = await _fileService.GetByIdAsync(id);
             if (fileDto.Folder.UserId == User.Identity.Name)
             {
-                _fileService.EditFileAsync(id, file);
+                await _fileService.EditFileAsync(id, file);
                 return NoContent();
             }
 

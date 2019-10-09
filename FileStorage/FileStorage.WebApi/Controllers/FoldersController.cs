@@ -7,7 +7,7 @@
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using FileStorage.Contracts;
+using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.WebApi.Models;
@@ -32,20 +32,20 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateFolderInFolder(CreateFolderInFolderRequest request)
+        public async Task<IActionResult> CreateFolderInFolder(CreateFolderInFolderRequest request)
         {
             var parentId = request.ParentId;
             var name = request.Name;
-            var parent = _folderService.GetItem(parentId);
+            var parent = await _folderService.GetByIdAsync(parentId);
             if (parent.UserId != User.Identity.Name)
                 return BadRequest("cannot create folderEntity in folders of others");
-            return Ok(_folderService.CreateFolderInFolder(parent, name));
+            return Ok(await _folderService.CreateFolderInFolderAsync(parent, name));
         }
 
         [HttpGet]
-        public ActionResult<FolderView> Get()
+        public async Task<IActionResult> Get()
         {
-            return _mapper.Map<FolderView>(_folderService.GetRootFolderContentByUserId(User.Identity.Name));
+            return Ok(_mapper.Map<FolderView>(await _folderService.GetRootFolderByUserIdAsync(User.Identity.Name)));
         }
 
         [HttpGet("folderSize")]
@@ -62,23 +62,23 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult EditFolder(Guid id, [FromBody] Folder folder)
+        public async Task<IActionResult> EditFolder(Guid id, [FromBody] Folder folder)
         {
-            var folderDto = _folderService.GetItem(id);
+            var folderDto = await _folderService.GetByIdAsync(id);
             if (folderDto.UserId != User.Identity.Name)
                 return Forbid();
-            _folderService.EditFolder(id, folder);
+            await _folderService.EditFolderAsync(id, folder);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteFolder(Guid id)
+        public async Task<IActionResult> DeleteFolder(Guid id)
         {
-            var folderDto = _folderService.GetItem(id);
+            var folderDto = await _folderService.GetByIdAsync(id);
             if (!User.IsInRole("admin") && folderDto.UserId != User.Identity.Name)
                 return BadRequest("File not found");
 
-            _folderService.DeleteAsync(folderDto);
+            await _folderService.DeleteAsync(folderDto);
             return Ok();
         }
     }

@@ -35,7 +35,7 @@ namespace FileStorage.Implementation.Services
 
         public async Task Blackout(Guid id)
         {
-            var file = _fileService.GetItem(id);
+            var file = await _fileService.GetByIdAsync(id);
             if (!_extensions.Contains(file.Name.Split('.').Last()))
             {
                 throw new WrongTypeException();

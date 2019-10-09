@@ -9,10 +9,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using FileStorage.Contracts;
+using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.Interfaces;
-using FileStorage.Implementation.Resourses.Exceptions;
 
 namespace FileStorage.Implementation.Services
 {
@@ -36,7 +35,7 @@ namespace FileStorage.Implementation.Services
 
         public async Task<int> GetTxtFileSymbolsCount(Guid id)
         {
-            var file = _fileService.GetItem(id);
+            var file = await _fileService.GetByIdAsync(id);
             if (CheckType(file))
             {
                 throw new WrongTypeException();
@@ -48,7 +47,7 @@ namespace FileStorage.Implementation.Services
 
         public async Task<string> GetTxtFile(Guid id)
         {
-            var fileDto = _fileService.GetItem(id);
+            var fileDto = await _fileService.GetByIdAsync(id);
             if (CheckType(fileDto))
             {
                 throw new WrongTypeException();

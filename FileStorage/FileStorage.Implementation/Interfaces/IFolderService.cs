@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FileStorage.Contracts;
+using FileStorage.Contracts.DTO;
 
 namespace FileStorage.Implementation.Interfaces
 {
@@ -15,15 +16,15 @@ namespace FileStorage.Implementation.Interfaces
     {
         Task<Folder> CreateRootFolder(string userId, string email);
 
-        Task<Folder> GetRootFolderContentByUserId(string userId);
+        Task<Folder> GetRootFolderByUserIdAsync(string userId);
 
-        Task<Folder> CreateFolderInFolder(Folder parent, string name);
+        Task<Folder> CreateFolderInFolderAsync(Folder parent, string name);
 
         Folder GetByUserId(Guid id, string userId);
 
-        Task<List<Folder>> GetAllRootFolders();
+        IEnumerable<Folder> GetAllRootFolders();
 
-        Task EditFolder(Guid id, Folder item);
+        Task EditFolderAsync(Guid id, Folder item);
 
         Task<bool> CanAddAsync(string userId, long itemSize);
 

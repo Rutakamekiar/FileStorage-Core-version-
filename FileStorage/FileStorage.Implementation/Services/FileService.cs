@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts;
+using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.Implementation.Options;
@@ -44,13 +45,13 @@ namespace FileStorage.Implementation.Services
 
         public async Task<string> ReturnFullPathAsync(MyFile file)
         {
-            var folder = await _data.Folders.GetAsync(file.FolderId);
+            var folder = await _data.Folders.GetByIdAsync(file.FolderId);
             return $@"{_rootPath}\{folder.Path}\{folder.Name}\{file.Name}";
         }
 
-        public MyFile GetItem(Guid id)
+        public async Task<MyFile> GetByIdAsync(Guid id)
         {
-            return _mapper.Map<MyFile>(_data.Files.GetAsync(id));
+            return _mapper.Map<MyFile>(await _data.Files.GetByIdAsync(id));
         }
 
         public async Task<byte[]> GetFileBytesAsync(MyFile fileDto)
@@ -60,20 +61,20 @@ namespace FileStorage.Implementation.Services
 
         public async Task DeleteAsync(MyFile item)
         {
-            await _data.Files.DeleteAsync(item.Id);
+            await _data.Files.DeleteByIdAsync(item.Id);
             var path = await ReturnFullPathAsync(item);
             _physicalFileService.DeleteFile(path);
             await _data.SaveAsync();
         }
 
-        public async Task<HashSet<MyFile>> GetAllAsync()
+        public IEnumerable<MyFile> GetAllAsync()
         {
-            return _mapper.Map<HashSet<MyFile>>(await _data.Files.GetAllAsync());
+            return _mapper.Map<IEnumerable<MyFile>>(_data.Files.GetAll());
         }
 
         public async Task EditFileAsync(Guid id, MyFile fileDto)
         {
-            var newFile = await _data.Files.GetAsync(id);
+            var newFile = await _data.Files.GetByIdAsync(id);
             var oldPath = await ReturnFullPathAsync(_mapper.Map<MyFile>(newFile));
             newFile.Name = fileDto.Name;
             var newPath = await ReturnFullPathAsync(_mapper.Map<MyFile>(newFile));
@@ -90,9 +91,9 @@ namespace FileStorage.Implementation.Services
             return _physicalFileService.CheckFile(await ReturnFullPathAsync(file));
         }
 
-        public async Task<List<MyFile>> GetAllByUserIdAsync(string userid)
+        public IEnumerable<MyFile> GetAllByUserIdAsync(string userid)
         {
-            return (await GetAllAsync()).Where(f => f.Folder.UserId == userid).ToList();
+            return _mapper.Map<IEnumerable<MyFile>>(_data.Files.GetByCondition(f => f.Folder.UserId == userid));
         }
     }
 }

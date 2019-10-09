@@ -4,7 +4,7 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
-namespace FileStorage.Contracts
+namespace FileStorage.Contracts.Enums
 {
     public enum Role
     {

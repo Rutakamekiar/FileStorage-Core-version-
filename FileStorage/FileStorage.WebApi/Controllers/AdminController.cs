@@ -46,7 +46,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet("folders/{id}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_mapper.Map<FolderView>(_folderService.GetItem(id)));
+            return Ok(_mapper.Map<FolderView>(_folderService.GetByIdAsync(id)));
         }
 
         [HttpGet("folderSize/{name}")]
@@ -65,7 +65,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpPut("files/{id}")]
         public IActionResult FileBlockChange(Guid id)
         {
-            var file = _fileService.GetItem(id);
+            var file = _fileService.GetByIdAsync(id);
             file.IsBlocked = !file.IsBlocked;
             _fileService.EditFileAsync(id, file);
             return NoContent();

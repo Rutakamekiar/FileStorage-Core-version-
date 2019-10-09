@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FileStorage.Contracts
+namespace FileStorage.Contracts.DTO
 {
     public class Folder
     {

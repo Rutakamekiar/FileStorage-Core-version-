@@ -4,7 +4,6 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
-using System;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 

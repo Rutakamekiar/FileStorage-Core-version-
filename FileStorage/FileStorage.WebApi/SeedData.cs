@@ -7,6 +7,7 @@
 using System;
 using System.Linq;
 using FileStorage.Contracts;
+using FileStorage.Contracts.Enums;
 using FileStorage.Implementation.DataAccess;
 using FileStorage.Implementation.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;

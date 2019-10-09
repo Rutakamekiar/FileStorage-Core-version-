@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 using FileStorage.Contracts;
+using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Requests;
 
 namespace FileStorage.Implementation.Interfaces

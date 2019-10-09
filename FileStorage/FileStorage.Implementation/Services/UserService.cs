@@ -6,7 +6,8 @@
 
 using System.Threading.Tasks;
 using AutoMapper;
-using FileStorage.Contracts;
+using FileStorage.Contracts.DTO;
+using FileStorage.Contracts.Enums;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Exceptions;

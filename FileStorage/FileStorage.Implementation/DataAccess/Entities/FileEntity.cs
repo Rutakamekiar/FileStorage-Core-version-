@@ -25,6 +25,6 @@ namespace FileStorage.Implementation.DataAccess.Entities
         [Required]
         public Guid FolderId { get; set; }
 
-        public FolderEntity FolderEntity { get; set; }
+        public FolderEntity Folder { get; set; }
     }
 }

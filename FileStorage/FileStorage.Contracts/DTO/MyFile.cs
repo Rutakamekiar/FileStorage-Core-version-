@@ -6,7 +6,7 @@
 
 using System;
 
-namespace FileStorage.Contracts
+namespace FileStorage.Contracts.DTO
 {
     public sealed class MyFile
     {

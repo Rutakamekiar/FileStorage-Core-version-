@@ -5,6 +5,7 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
@@ -21,15 +22,13 @@ namespace FileStorage.Implementation.DataAccess.Repositories
 
         public async Task<FolderEntity> GetByIdAsync(Guid id)
         {
-            var folder = await GetByCondition(x => x.Id == id).SingleOrDefaultAsync()
-                       ?? throw new FolderNotFoundException(id.ToString());
+            var folder = await GetByCondition(x => x.Id == id).DefaultIfEmpty().SingleOrDefaultAsync();
             return folder;
         }
 
         public async Task DeleteByIdAsync(Guid id)
         {
-            var folder = await GetByCondition(x => x.Id == id).SingleOrDefaultAsync()
-                       ?? throw new FolderNotFoundException(id.ToString());
+            var folder = await GetByCondition(x => x.Id == id).DefaultIfEmpty().SingleOrDefaultAsync();
             Delete(folder);
         }
     }

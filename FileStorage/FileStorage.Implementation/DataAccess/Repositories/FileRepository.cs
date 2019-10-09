@@ -5,10 +5,10 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
-using FileStorage.Implementation.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace FileStorage.Implementation.DataAccess.Repositories
@@ -21,15 +21,13 @@ namespace FileStorage.Implementation.DataAccess.Repositories
 
         public async Task<FileEntity> GetByIdAsync(Guid id)
         {
-            var file = await GetByCondition(x => x.Id == id).SingleOrDefaultAsync()
-                       ?? throw new FileNotFoundException(id.ToString());
+            var file = await GetByCondition(x => x.Id == id).DefaultIfEmpty().SingleOrDefaultAsync();
             return file;
         }
 
         public async Task DeleteByIdAsync(Guid id)
         {
-            var file = await GetByCondition(x => x.Id == id).SingleOrDefaultAsync()
-                       ?? throw new FileNotFoundException(id.ToString());
+            var file = await GetByCondition(x => x.Id == id).DefaultIfEmpty().SingleOrDefaultAsync();
             Delete(file);
         }
     }

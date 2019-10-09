@@ -8,6 +8,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.WebApi.Options;
@@ -24,13 +25,18 @@ namespace FileStorage.WebApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly IFolderService _folderService;
+        private readonly ILoggerManager _loggerManager;
         private readonly JwtAuthenticationOptions _jwtAuthenticationOptions;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
-        public AccountController(IUserService userService, IFolderService folderService, IOptions<JwtAuthenticationOptions> options)
+        public AccountController(IUserService userService,
+                                 IFolderService folderService,
+                                 IOptions<JwtAuthenticationOptions> options,
+                                 ILoggerManager loggerManager)
         {
             _userService = userService;
             _folderService = folderService;
+            _loggerManager = loggerManager;
             _jwtAuthenticationOptions = options.Value;
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }

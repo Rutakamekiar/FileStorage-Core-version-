@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.WebApi.Models;
@@ -25,16 +26,19 @@ namespace FileStorage.WebApi.Controllers
         private readonly IFolderService _folderService;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly ILoggerManager _loggerManager;
 
         public AdminController(IFolderService folderService,
                                IFileService fileService,
                                IUserService userService,
-                               IMapper mapper)
+                               IMapper mapper,
+                               ILoggerManager loggerManager)
         {
             _folderService = folderService;
             _fileService = fileService;
             _userService = userService;
             _mapper = mapper;
+            _loggerManager = loggerManager;
         }
 
         [HttpGet("folders")]
@@ -63,11 +67,11 @@ namespace FileStorage.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPut("files/{id}")]
-        public IActionResult FileBlockChange(Guid id)
+        public async Task<IActionResult> FileBlockChange(Guid id)
         {
-            var file = _fileService.GetByIdAsync(id);
+            var file = await _fileService.GetByIdAsync(id);
             file.IsBlocked = !file.IsBlocked;
-            _fileService.EditFileAsync(id, file);
+            await _fileService.EditFileAsync(id, file);
             return NoContent();
         }
 

@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts.DTO;
+using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.WebApi.Models;
@@ -23,12 +24,15 @@ namespace FileStorage.WebApi.Controllers
     {
         private readonly IFolderService _folderService;
         private readonly IMapper _mapper;
+        private readonly ILoggerManager _loggerManager;
 
         public FoldersController(IFolderService folderService,
-                                 IMapper mapper)
+                                 IMapper mapper,
+                                 ILoggerManager loggerManager)
         {
             _folderService = folderService;
             _mapper = mapper;
+            _loggerManager = loggerManager;
         }
 
         [HttpPost]

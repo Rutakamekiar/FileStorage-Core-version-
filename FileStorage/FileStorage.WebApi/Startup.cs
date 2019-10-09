@@ -4,10 +4,12 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
+using System.IO;
+using FileStorage.Contracts.Interfaces;
+using FileStorage.Implementation;
 using FileStorage.Implementation.DataAccess;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.DataAccess.Repositories;
-using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.Implementation.Options;
 using FileStorage.Implementation.Services;
@@ -21,6 +23,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace FileStorage.WebApi
@@ -31,6 +34,7 @@ namespace FileStorage.WebApi
 
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -39,10 +43,9 @@ namespace FileStorage.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
             services.AddDbContext<StorageContext>(options => options.UseSqlite(Configuration.GetConnectionString("Database")));
 
-            services.ConfigureIdentity();
+            services.AddSingleton<ILoggerManager, LoggerManager>();
 
             services.AddLogging(x => x.AddConsole());
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -57,6 +60,7 @@ namespace FileStorage.WebApi
             var pathOptions = Configuration.GetSection("PathOption");
             services.Configure<PathOptions>(pathOptions);
 
+            services.ConfigureIdentity();
             services.ConfigureAutoMapper();
             services.ConfigureSwagger();
             services.ConfigureAuthorization(Configuration);

@@ -5,6 +5,7 @@
 // </copyright>
 
 using System;
+using FileStorage.Contracts.Interfaces;
 using FileStorage.Implementation.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,10 +16,13 @@ namespace FileStorage.WebApi.Controllers
     public class ImageFilesController : ControllerBase
     {
         private readonly IImageFileService _imageFileService;
+        private readonly ILoggerManager _loggerManager;
 
-        public ImageFilesController(IImageFileService imageFileService)
+        public ImageFilesController(IImageFileService imageFileService,
+                                    ILoggerManager loggerManager)
         {
             _imageFileService = imageFileService;
+            _loggerManager = loggerManager;
         }
 
         [HttpPut("{id}/Blackout")]

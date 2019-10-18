@@ -9,13 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using FileStorage.Contracts;
 using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.Implementation.Options;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace FileStorage.Implementation.Services
 {
@@ -35,7 +35,7 @@ namespace FileStorage.Implementation.Services
                              IMapper mapper,
                              IPhysicalFolderService physicalFolderService,
                              IPhysicalFileService physicalFileService,
-                             PathOptions pathOptions)
+                             IOptions<PathOptions> pathOptions)
         {
             _data = data;
             _fileService = fileService;
@@ -43,7 +43,7 @@ namespace FileStorage.Implementation.Services
             _mapper = mapper;
             _physicalFolderService = physicalFolderService;
             _physicalFileService = physicalFileService;
-            _rootPath = pathOptions.RootPath;
+            _rootPath = pathOptions.Value.RootPath;
         }
 
         public IEnumerable<Folder> GetAllAsync()

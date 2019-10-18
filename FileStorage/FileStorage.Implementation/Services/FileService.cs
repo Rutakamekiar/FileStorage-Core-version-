@@ -14,6 +14,7 @@ using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Interfaces;
 using FileStorage.Implementation.Options;
+using Microsoft.Extensions.Options;
 
 namespace FileStorage.Implementation.Services
 {
@@ -27,12 +28,12 @@ namespace FileStorage.Implementation.Services
         public FileService(IUnitOfWork data,
                            IMapper mapper,
                            IPhysicalFileService physicalFileService,
-                           PathOptions pathOptions)
+                           IOptions<PathOptions> pathOptions)
         {
             _data = data;
             _mapper = mapper;
             _physicalFileService = physicalFileService;
-            _rootPath = pathOptions.RootPath;
+            _rootPath = pathOptions.Value.RootPath;
         }
 
         public async Task CreateAsync(MyFile item)

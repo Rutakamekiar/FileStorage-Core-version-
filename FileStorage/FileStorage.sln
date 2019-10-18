@@ -23,10 +23,13 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{28FA0791-66AA-40BE-BFB8-F0C3D0E8AD33}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{28FA0791-66AA-40BE-BFB8-F0C3D0E8AD33}.Debug|Any CPU.Build.0 = Debug|x64
 		{28FA0791-66AA-40BE-BFB8-F0C3D0E8AD33}.Release|Any CPU.ActiveCfg = Release|x64
 		{60ED1CDD-5B13-45B6-9FC2-40C2F6C1F6E3}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{60ED1CDD-5B13-45B6-9FC2-40C2F6C1F6E3}.Debug|Any CPU.Build.0 = Debug|x64
 		{60ED1CDD-5B13-45B6-9FC2-40C2F6C1F6E3}.Release|Any CPU.ActiveCfg = Release|x64
 		{0596BA3D-1A39-4ED5-A51B-049EB7DFE3D8}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{0596BA3D-1A39-4ED5-A51B-049EB7DFE3D8}.Debug|Any CPU.Build.0 = Debug|x64
 		{0596BA3D-1A39-4ED5-A51B-049EB7DFE3D8}.Release|Any CPU.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

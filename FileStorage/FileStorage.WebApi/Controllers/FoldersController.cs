@@ -53,16 +53,15 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpGet("folderSize")]
-        public async Task<ActionResult<long>> GetSize()
+        public async Task<IActionResult> GetSize()
         {
-            return await _folderService.GetRootFolderSize(User.Identity.Name);
+            return Ok(await _folderService.GetRootFolderSize(User.Identity.Name));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<FolderView> GetByUserId(Guid id)
+        public IActionResult GetByUserId(Guid id)
         {
-            var userId = User.Identity.Name;
-            return _mapper.Map<FolderView>(_folderService.GetByUserId(id, userId));
+            return Ok(_mapper.Map<FolderView>(_folderService.GetByUserId(id, User.Identity.Name)));
         }
 
         [HttpPut("{id}")]

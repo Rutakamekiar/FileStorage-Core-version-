@@ -42,7 +42,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAllByUserIdAsync(User.Identity.Name)));
+            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAllByUserId(User.Identity.Name)));
         }
 
         [AllowAnonymous]
@@ -97,7 +97,7 @@ namespace FileStorage.WebApi.Controllers
                 await _fileService.CreateAsync(fileDto);
             }
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

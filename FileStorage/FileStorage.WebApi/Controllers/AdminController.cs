@@ -48,21 +48,21 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpGet("folders/{id}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(_mapper.Map<FolderView>(_folderService.GetByIdAsync(id)));
+            return Ok(_mapper.Map<FolderView>(await _folderService.GetByIdAsync(id)));
         }
 
         [HttpGet("folderSize/{name}")]
-        public async Task<ActionResult<long>> GetSize(string name)
+        public async Task<IActionResult> GetSize(string name)
         {
-            return await _folderService.GetRootFolderSize(name);
+            return Ok(await _folderService.GetRootFolderSize(name));
         }
 
         [HttpGet("files")]
         public IActionResult GetFiles()
         {
-            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAllAsync()));
+            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAll()));
         }
 
         [AllowAnonymous]
@@ -84,7 +84,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpPut("users/{name}")]
         public async Task<IActionResult> ChangeUserMemorySize(ChangeUserMemorySizeRequest request)
         {
-            await _userService.ChangeUserMemorySize(request);
+            await _userService.ChangeUserMemorySizeAsync(request);
 
             return NoContent();
         }
@@ -92,7 +92,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet("memorySize/{userId}")]
         public async Task<IActionResult> GetMemorySize(string userId)
         {
-            return Ok(await _userService.GetMemorySize(userId));
+            return Ok(await _userService.GetMemorySizeAsync(userId));
         }
     }
 }

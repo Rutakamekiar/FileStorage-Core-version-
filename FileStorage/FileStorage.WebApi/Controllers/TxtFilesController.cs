@@ -28,9 +28,9 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpGet("{id}/Symbols")]
-        public IActionResult GetSymbols(Guid id)
+        public async Task<IActionResult> GetSymbols(Guid id)
         {
-            return Ok(_txtFileService.GetTxtFileSymbolsCount(id));
+            return Ok(await _txtFileService.GetTxtFileSymbolsCountAsync(id));
         }
 
         [HttpGet("{id}")]

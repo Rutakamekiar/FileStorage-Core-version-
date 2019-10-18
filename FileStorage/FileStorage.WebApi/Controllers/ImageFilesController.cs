@@ -5,6 +5,7 @@
 // </copyright>
 
 using System;
+using System.Threading.Tasks;
 using FileStorage.Contracts.Interfaces;
 using FileStorage.Implementation.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +27,9 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPut("{id}/Blackout")]
-        public IActionResult Get(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            _imageFileService.Blackout(id);
+            await _imageFileService.BlackoutAsync(id);
             return NoContent();
         }
     }

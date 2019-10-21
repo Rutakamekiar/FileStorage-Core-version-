@@ -102,7 +102,8 @@ namespace FileStorage.WebApi
                 {
                     var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
                     var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                    SeedData.EnsureSeedData(userMgr, roleMgr);
+                    var folderService = scope.ServiceProvider.GetRequiredService<IFolderService>();
+                    SeedData.EnsureSeedDataAsync(userMgr, roleMgr, folderService).Wait();
                 }
             }
         }

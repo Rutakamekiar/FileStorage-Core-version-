@@ -6,16 +6,19 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using FileStorage.Contracts.Enums;
 using FileStorage.Implementation.DataAccess.Entities;
+using FileStorage.Implementation.ServicesInterfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace FileStorage.WebApi
 {
     public static class SeedData
     {
-        public static void EnsureSeedData(UserManager<UserEntity> userManager,
-                                          RoleManager<IdentityRole> roleManager)
+        public static async Task EnsureSeedDataAsync(UserManager<UserEntity> userManager,
+                                                     RoleManager<IdentityRole> roleManager,
+                                                     IFolderService folderService)
         {
             if (roleManager.FindByNameAsync(Role.Admin.ToString()).Result == null)
             {
@@ -53,22 +56,24 @@ namespace FileStorage.WebApi
 
             foreach (var user in users)
             {
-                var checkUser = userManager.FindByEmailAsync(user.Email).Result;
+                var checkUser = await userManager.FindByEmailAsync(user.Email);
                 if (checkUser == null)
                 {
-                    var result = userManager.CreateAsync(user, "Vlad_15").Result;
+                    var result = await userManager.CreateAsync(user, "Vlad_15");
                     if (!result.Succeeded)
                     {
                         throw new InvalidOperationException(result.Errors.First().Description);
                     }
 
-                    result = userManager.AddToRoleAsync(user, Role.Admin.ToString()).Result;
+                    await folderService.CreateRootFolder(user.Id, user.Email);
+
+                    result = await userManager.AddToRoleAsync(user, Role.Admin.ToString());
                     if (!result.Succeeded)
                     {
                         throw new InvalidOperationException(result.Errors.First().Description);
                     }
 
-                    result = userManager.AddToRoleAsync(user, Role.User.ToString()).Result;
+                    result = await userManager.AddToRoleAsync(user, Role.User.ToString());
                     if (!result.Succeeded)
                     {
                         throw new InvalidOperationException(result.Errors.First().Description);

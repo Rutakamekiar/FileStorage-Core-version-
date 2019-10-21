@@ -11,6 +11,6 @@ namespace FileStorage.Implementation.Interfaces
 {
     public interface IImageFileService
     {
-        Task Blackout(Guid id);
+        Task BlackoutAsync(Guid id);
     }
 }

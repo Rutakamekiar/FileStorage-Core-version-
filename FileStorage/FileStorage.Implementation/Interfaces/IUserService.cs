@@ -13,11 +13,11 @@ namespace FileStorage.Implementation.Interfaces
 {
     public interface IUserService
     {
-        Task ChangeUserMemorySize(ChangeUserMemorySizeRequest request);
+        Task ChangeUserMemorySizeAsync(ChangeUserMemorySizeRequest request);
         Task<User> CreateAsync(RegisterBindingModel model);
         Task<User> GetByIdAsync(string userId);
         Task<User> SignInAsync(SignInRequest request);
-        Task<long> GetMemorySize(string userId);
+        Task<long> GetMemorySizeAsync(string userId);
         Task<User[]> GetAllAsync();
     }
 }

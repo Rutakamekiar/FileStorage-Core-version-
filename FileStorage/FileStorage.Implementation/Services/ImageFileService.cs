@@ -33,7 +33,7 @@ namespace FileStorage.Implementation.Services
             _fileService = fileService;
         }
 
-        public async Task Blackout(Guid id)
+        public async Task BlackoutAsync(Guid id)
         {
             var file = await _fileService.GetByIdAsync(id);
             if (!_extensions.Contains(file.Name.Split('.').Last()))

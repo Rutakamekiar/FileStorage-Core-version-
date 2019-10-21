@@ -68,7 +68,7 @@ namespace FileStorage.Implementation.Services
             await _data.SaveAsync();
         }
 
-        public IEnumerable<MyFile> GetAllAsync()
+        public IEnumerable<MyFile> GetAll()
         {
             return _mapper.Map<IEnumerable<MyFile>>(_data.Files.GetAll());
         }
@@ -92,7 +92,7 @@ namespace FileStorage.Implementation.Services
             return _physicalFileService.CheckFile(await ReturnFullPathAsync(file));
         }
 
-        public IEnumerable<MyFile> GetAllByUserIdAsync(string userid)
+        public IEnumerable<MyFile> GetAllByUserId(string userid)
         {
             return _mapper.Map<IEnumerable<MyFile>>(_data.Files.GetByCondition(f => f.Folder.UserId == userid));
         }

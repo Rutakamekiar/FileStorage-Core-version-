@@ -30,7 +30,7 @@ namespace FileStorage.Implementation.Services
             _mapper = mapper;
         }
 
-        public async Task ChangeUserMemorySize(ChangeUserMemorySizeRequest request)
+        public async Task ChangeUserMemorySizeAsync(ChangeUserMemorySizeRequest request)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
             if (user != null)
@@ -71,7 +71,7 @@ namespace FileStorage.Implementation.Services
             return user;
         }
 
-        public async Task<long> GetMemorySize(string userId)
+        public async Task<long> GetMemorySizeAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             return user.MemorySize;

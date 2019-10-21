@@ -33,7 +33,7 @@ namespace FileStorage.Implementation.Services
             _physicalFileService = physicalFileService;
         }
 
-        public async Task<int> GetTxtFileSymbolsCount(Guid id)
+        public async Task<int> GetTxtFileSymbolsCountAsync(Guid id)
         {
             var file = await _fileService.GetByIdAsync(id);
             if (CheckType(file))

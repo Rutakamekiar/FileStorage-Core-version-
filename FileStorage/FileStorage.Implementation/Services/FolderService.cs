@@ -46,7 +46,7 @@ namespace FileStorage.Implementation.Services
             _rootPath = pathOptions.Value.RootPath;
         }
 
-        public IEnumerable<Folder> GetAllAsync()
+        public IEnumerable<Folder> GetAll()
         {
             return _mapper.Map<IEnumerable<Folder>>(_data.Folders.GetAll());
         }
@@ -125,7 +125,7 @@ namespace FileStorage.Implementation.Services
         public async Task<bool> CanAddAsync(string userId, long itemSize)
         {
             var folderSize = await GetRootFolderSize(userId);
-            var userMemorySize = await _userService.GetMemorySize(userId);
+            var userMemorySize = await _userService.GetMemorySizeAsync(userId);
             return userMemorySize - folderSize - itemSize > 0;
         }
 

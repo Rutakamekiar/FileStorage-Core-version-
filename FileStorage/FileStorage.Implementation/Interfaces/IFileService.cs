@@ -14,7 +14,7 @@ namespace FileStorage.Implementation.Interfaces
 {
     public interface IFileService : IService<MyFile>
     {
-        IEnumerable<MyFile> GetAllByUserIdAsync(string userid);
+        IEnumerable<MyFile> GetAllByUserId(string userid);
 
         Task<byte[]> GetFileBytesAsync(MyFile fileDto);
 

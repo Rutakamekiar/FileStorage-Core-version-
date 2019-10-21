@@ -11,7 +11,7 @@ namespace FileStorage.Implementation.Interfaces
 {
     public interface ITxtFileService
     {
-        Task<int> GetTxtFileSymbolsCount(Guid id);
+        Task<int> GetTxtFileSymbolsCountAsync(Guid id);
 
         Task<string> GetTxtFile(Guid id);
     }

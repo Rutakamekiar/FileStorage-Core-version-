@@ -6,14 +6,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using FileStorage.Contracts;
 using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.DataAccess.Entities;
-using FileStorage.Implementation.Interfaces;
 using FileStorage.Implementation.Options;
+using FileStorage.Implementation.ServicesInterfaces;
 using Microsoft.Extensions.Options;
 
 namespace FileStorage.Implementation.Services

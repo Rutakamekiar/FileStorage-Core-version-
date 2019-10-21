@@ -7,10 +7,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FileStorage.Contracts;
 using FileStorage.Contracts.DTO;
 
-namespace FileStorage.Implementation.Interfaces
+namespace FileStorage.Implementation.ServicesInterfaces
 {
     public interface IFileService : IService<MyFile>
     {

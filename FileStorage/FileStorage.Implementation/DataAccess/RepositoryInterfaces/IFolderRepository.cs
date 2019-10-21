@@ -6,7 +6,7 @@
 
 using FileStorage.Implementation.DataAccess.Entities;
 
-namespace FileStorage.Implementation.DataAccess.RepositoryInterfaces
+namespace FileStorage.Contracts.RepositoryInterfaces
 {
     public interface IFolderRepository : IRepositoryBase<FolderEntity>, IGenericRepository<FolderEntity>
     {

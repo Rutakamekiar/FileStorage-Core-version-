@@ -4,17 +4,15 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
-using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
+using FileStorage.Contracts.RepositoryInterfaces;
+using FileStorage.Implementation.DataAccess.Entities;
 
 namespace FileStorage.Implementation.DataAccess.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : RepositoryBase<UserEntity>, IUserRepository
     {
-        private readonly StorageContext _context;
-
-        public UserRepository(StorageContext context)
+        public UserRepository(StorageContext context) : base(context)
         {
-            _context = context;
         }
     }
 }

@@ -11,7 +11,7 @@ using FileStorage.Contracts.Enums;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Exceptions;
-using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.ServicesInterfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,13 +19,13 @@ namespace FileStorage.Implementation.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUnitOfWork _data;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<UserEntity> _userManager;
         private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork data, UserManager<UserEntity> userManager, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, UserManager<UserEntity> userManager, IMapper mapper)
         {
-            _data = data;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _mapper = mapper;
         }
@@ -79,7 +79,15 @@ namespace FileStorage.Implementation.Services
 
         public async Task<User[]> GetAllAsync()
         {
-            return _mapper.Map<User[]>(await _userManager.Users.ToArrayAsync());
+            var userEntities = await _userManager.Users.ToArrayAsync();
+            var users = new User[userEntities.Length];
+            for (var i = 0; i < userEntities.Length; i++)
+            {
+                users[i] = _mapper.Map<User>(userEntities[i]);
+                users[i].Roles = await _userManager.GetRolesAsync(userEntities[i]);
+            }
+
+            return users;
         }
     }
 }

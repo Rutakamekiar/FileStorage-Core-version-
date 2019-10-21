@@ -12,8 +12,8 @@ using AutoMapper;
 using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Exceptions;
-using FileStorage.Implementation.Interfaces;
 using FileStorage.Implementation.Options;
+using FileStorage.Implementation.ServicesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

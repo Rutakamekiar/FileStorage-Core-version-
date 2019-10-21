@@ -13,6 +13,6 @@ namespace FileStorage.Contracts.DTO
         public string Id { get; set; }
         public string Email { get; set; }
         public long MemorySize { get; set; }
-        public IList<string> Roles { get; set; }
+        public IEnumerable<string> Roles { get; set; }
     }
 }

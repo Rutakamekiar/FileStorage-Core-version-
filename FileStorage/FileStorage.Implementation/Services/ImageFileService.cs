@@ -13,8 +13,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Implementation.Exceptions;
-using FileStorage.Implementation.Interfaces;
 using FileStorage.Implementation.Resourses.Exceptions;
+using FileStorage.Implementation.ServicesInterfaces;
 
 namespace FileStorage.Implementation.Services
 {

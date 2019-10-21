@@ -5,7 +5,7 @@
 // </copyright>
 
 using System.IO;
-using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.ServicesInterfaces;
 
 namespace FileStorage.Implementation.Services
 {

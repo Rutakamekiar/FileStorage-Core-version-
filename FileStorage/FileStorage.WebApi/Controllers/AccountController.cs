@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
-using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.ServicesInterfaces;
 using FileStorage.WebApi.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

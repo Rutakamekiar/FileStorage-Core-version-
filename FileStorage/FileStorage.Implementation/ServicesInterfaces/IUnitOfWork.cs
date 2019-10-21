@@ -5,9 +5,9 @@
 // </copyright>
 
 using System.Threading.Tasks;
-using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
+using FileStorage.Contracts.RepositoryInterfaces;
 
-namespace FileStorage.Implementation.Interfaces
+namespace FileStorage.Implementation.ServicesInterfaces
 {
     public interface IUnitOfWork
     {

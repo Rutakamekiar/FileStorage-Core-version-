@@ -7,7 +7,7 @@
 using System;
 using System.Threading.Tasks;
 using FileStorage.Contracts.Interfaces;
-using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.ServicesInterfaces;
 using FileStorage.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 

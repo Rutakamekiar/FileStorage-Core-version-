@@ -5,11 +5,10 @@
 // </copyright>
 
 using System.Threading.Tasks;
-using FileStorage.Contracts;
 using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Requests;
 
-namespace FileStorage.Implementation.Interfaces
+namespace FileStorage.Implementation.ServicesInterfaces
 {
     public interface IUserService
     {

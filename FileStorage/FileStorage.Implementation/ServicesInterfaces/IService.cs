@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FileStorage.Implementation.Interfaces
+namespace FileStorage.Implementation.ServicesInterfaces
 {
     public interface IService<T>
     {

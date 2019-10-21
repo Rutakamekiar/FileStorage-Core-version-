@@ -5,7 +5,6 @@
 // </copyright>
 
 using AutoMapper;
-using FileStorage.Contracts;
 using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.DataAccess.Entities;
 

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.Exceptions;
-using FileStorage.Implementation.Interfaces;
+using FileStorage.Implementation.ServicesInterfaces;
 
 namespace FileStorage.Implementation.Services
 {

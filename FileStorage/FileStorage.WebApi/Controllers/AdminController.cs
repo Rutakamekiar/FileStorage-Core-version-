@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
+using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
-using FileStorage.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -92,7 +92,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet("memorySize/{userId}")]
         public async Task<IActionResult> GetMemorySize(string userId)
         {
-            return Ok(await _userService.GetMemorySizeAsync(userId));
+            return Ok(await _userService.GetMemorySizeByUserIdAsync(userId));
         }
     }
 }

@@ -6,6 +6,7 @@
 
 using AutoMapper;
 using FileStorage.Contracts.DTO;
+using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.DataAccess.Entities;
 
 namespace FileStorage.Implementation.AutoMapperConfig
@@ -15,7 +16,9 @@ namespace FileStorage.Implementation.AutoMapperConfig
         public MappingProfile()
         {
             CreateMap<MyFile, FileEntity>().ReverseMap();
+            CreateMap<MyFile, FileView>().ReverseMap();
             CreateMap<Folder, FolderEntity>().ReverseMap();
+            CreateMap<Folder, FolderView>().ReverseMap();
             CreateMap<User, UserEntity>().ReverseMap();
         }
     }

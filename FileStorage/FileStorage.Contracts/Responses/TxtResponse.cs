@@ -4,7 +4,7 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
-namespace FileStorage.WebApi.Models
+namespace FileStorage.Contracts.Responses
 {
     public class TxtResponse
     {

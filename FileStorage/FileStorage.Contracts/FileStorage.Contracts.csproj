@@ -10,4 +10,8 @@
     <AdditionalFiles Include="..\SolutionItems\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Responses\" />
+  </ItemGroup>
+
 </Project>

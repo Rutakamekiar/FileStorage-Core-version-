@@ -4,7 +4,7 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
-using System.Collections.Generic;
+using System;
 using Microsoft.AspNetCore.Identity;
 
 namespace FileStorage.Implementation.DataAccess.Entities
@@ -12,7 +12,5 @@ namespace FileStorage.Implementation.DataAccess.Entities
     public class UserEntity : IdentityUser
     {
         public long MemorySize { get; set; }
-
-        public ICollection<IdentityUserRole<string>> Roles { get; } = new List<IdentityUserRole<string>>();
     }
 }

@@ -6,7 +6,7 @@
 
 using System;
 
-namespace FileStorage.WebApi.Models
+namespace FileStorage.Contracts.Responses
 {
     public class FileView
     {

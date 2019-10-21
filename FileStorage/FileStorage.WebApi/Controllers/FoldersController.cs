@@ -10,8 +10,8 @@ using AutoMapper;
 using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
+using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
-using FileStorage.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

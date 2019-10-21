@@ -16,7 +16,7 @@ namespace FileStorage.Implementation.ServicesInterfaces
         Task<User> CreateAsync(RegisterBindingModel model);
         Task<User> GetByIdAsync(string userId);
         Task<User> SignInAsync(SignInRequest request);
-        Task<long> GetMemorySizeAsync(string userId);
+        Task<long> GetMemorySizeByUserIdAsync(string userId);
         Task<User[]> GetAllAsync();
     }
 }

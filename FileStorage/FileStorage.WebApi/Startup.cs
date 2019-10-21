@@ -57,7 +57,7 @@ namespace FileStorage.WebApi
             services.AddScoped<IPhysicalFileService, PhysicalFileService>();
             services.AddScoped<IPhysicalFolderService, PhysicalFolderService>();
 
-            var pathOptions = Configuration.GetSection("PathOption");
+            var pathOptions = Configuration.GetSection("RootPathConfig");
             services.Configure<PathOptions>(pathOptions);
 
             services.ConfigureIdentity();

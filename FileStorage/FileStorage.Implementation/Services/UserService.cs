@@ -71,7 +71,7 @@ namespace FileStorage.Implementation.Services
             return user;
         }
 
-        public async Task<long> GetMemorySizeAsync(string userId)
+        public async Task<long> GetMemorySizeByUserIdAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             return user.MemorySize;

@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FileStorage.WebApi.Models
+namespace FileStorage.Contracts.Responses
 {
     public class FolderView
     {

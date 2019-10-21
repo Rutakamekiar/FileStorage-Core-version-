@@ -13,7 +13,7 @@ namespace FileStorage.Implementation.Services
     {
         public void CreateFolder(string path)
         {
-            Directory.CreateDirectory(path);
+            var folder = Directory.CreateDirectory(path);
         }
 
         public void DeleteFolder(string path)

@@ -125,7 +125,7 @@ namespace FileStorage.Implementation.Services
         public async Task<bool> CanAddAsync(string userId, long itemSize)
         {
             var folderSize = await GetRootFolderSize(userId);
-            var userMemorySize = await _userService.GetMemorySizeAsync(userId);
+            var userMemorySize = await _userService.GetMemorySizeByUserIdAsync(userId);
             return userMemorySize - folderSize - itemSize > 0;
         }
 

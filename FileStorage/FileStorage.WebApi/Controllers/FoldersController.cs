@@ -12,6 +12,7 @@ using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
 using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
+using FileStorage.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +42,7 @@ namespace FileStorage.WebApi.Controllers
             var parentId = request.ParentId;
             var name = request.Name;
             var parent = await _folderService.GetByIdAsync(parentId);
-            if (parent.UserId != User.Identity.Name)
+            if (parent.UserId != User.GetId())
                 return BadRequest("cannot create folderEntity in folders of others");
             return Ok(await _folderService.CreateFolderInFolderAsync(parent, name));
         }
@@ -61,14 +62,14 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetByUserId(Guid id)
         {
-            return Ok(_mapper.Map<FolderView>(_folderService.GetByUserId(id, User.Identity.Name)));
+            return Ok(_mapper.Map<FolderView>(_folderService.GetByUserId(id, User.GetId())));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditFolder(Guid id, [FromBody] Folder folder)
         {
             var folderDto = await _folderService.GetByIdAsync(id);
-            if (folderDto.UserId != User.Identity.Name)
+            if (folderDto.UserId != User.GetId())
                 return Forbid();
             await _folderService.EditFolderAsync(id, folder);
             return NoContent();
@@ -78,7 +79,7 @@ namespace FileStorage.WebApi.Controllers
         public async Task<IActionResult> DeleteFolder(Guid id)
         {
             var folderDto = await _folderService.GetByIdAsync(id);
-            if (!User.IsInRole("admin") && folderDto.UserId != User.Identity.Name)
+            if (!User.IsInRole("admin") && folderDto.UserId != User.GetId())
                 return BadRequest("File not found");
 
             await _folderService.DeleteAsync(folderDto);

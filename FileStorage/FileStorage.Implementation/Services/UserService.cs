@@ -4,6 +4,8 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts.DTO;
@@ -22,12 +24,17 @@ namespace FileStorage.Implementation.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<UserEntity> _userManager;
         private readonly IMapper _mapper;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
-        public UserService(IUnitOfWork unitOfWork, UserManager<UserEntity> userManager, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork,
+                           UserManager<UserEntity> userManager,
+                           IMapper mapper,
+                           RoleManager<IdentityRole<Guid>> roleManager)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
 
         public async Task ChangeUserMemorySizeAsync(ChangeUserMemorySizeRequest request)
@@ -46,9 +53,15 @@ namespace FileStorage.Implementation.Services
             {
                 Email = model.Email,
                 UserName = model.Email,
-                MemorySize = 100000000
+                MemorySize = 100000000,
+                SecurityStamp = Guid.NewGuid().ToString()
             };
-            await _userManager.CreateAsync(user, model.Password);
+            var identityResult = await _userManager.CreateAsync(user, model.Password);
+            if (!identityResult.Succeeded)
+            {
+                throw new Exception(string.Join(";", identityResult.Errors.Select(x => x.Description)));
+            }
+
             await _userManager.AddToRoleAsync(user, Role.User.ToString());
             return _mapper.Map<User>(user);
         }

@@ -13,6 +13,7 @@ using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
 using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
+using FileStorage.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,7 +51,7 @@ namespace FileStorage.WebApi.Controllers
         public async Task<IActionResult> Get(Guid id)
         {
             var file = await _fileService.GetByIdAsync(id);
-            if (!file.AccessLevel && User.Identity.Name != file.Folder.UserId)
+            if (!file.AccessLevel && User.GetId() != file.Folder.UserId)
             {
                 return BadRequest("You have no access to this file");
             }
@@ -104,7 +105,7 @@ namespace FileStorage.WebApi.Controllers
         public async Task<IActionResult> DeleteFile(Guid id)
         {
             var file = await _fileService.GetByIdAsync(id);
-            if (!User.IsInRole("Admin") && file.Folder.UserId != User.Identity.Name)
+            if (!User.IsInRole("Admin") && file.Folder.UserId != User.GetId())
             {
                 return BadRequest("File not found");
             }
@@ -122,7 +123,7 @@ namespace FileStorage.WebApi.Controllers
             }
 
             var fileDto = await _fileService.GetByIdAsync(id);
-            if (fileDto.Folder.UserId == User.Identity.Name)
+            if (fileDto.Folder.UserId == User.GetId())
             {
                 await _fileService.EditFileAsync(id, file);
                 return NoContent();

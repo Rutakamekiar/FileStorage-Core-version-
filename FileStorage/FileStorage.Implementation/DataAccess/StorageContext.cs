@@ -4,13 +4,15 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
+using System;
 using FileStorage.Implementation.DataAccess.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FileStorage.Implementation.DataAccess
 {
-    public sealed class StorageContext : IdentityDbContext<UserEntity>
+    public sealed class StorageContext : IdentityDbContext<UserEntity, IdentityRole<Guid>, Guid>
     {
         public StorageContext(DbContextOptions<StorageContext> options) : base(options)
         {

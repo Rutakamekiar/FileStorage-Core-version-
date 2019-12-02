@@ -4,6 +4,7 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
+using System;
 using System.IO;
 using FileStorage.Contracts.Interfaces;
 using FileStorage.Implementation;
@@ -86,6 +87,7 @@ namespace FileStorage.WebApi
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FileStorage API"));
 
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseAuthentication();
@@ -101,7 +103,7 @@ namespace FileStorage.WebApi
                 if (!context.Users.Any())
                 {
                     var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
-                    var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                    var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
                     var folderService = scope.ServiceProvider.GetRequiredService<IFolderService>();
                     SeedData.EnsureSeedDataAsync(userMgr, roleMgr, folderService).Wait();
                 }

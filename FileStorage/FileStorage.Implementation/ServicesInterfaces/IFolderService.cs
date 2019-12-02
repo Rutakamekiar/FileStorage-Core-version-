@@ -13,13 +13,13 @@ namespace FileStorage.Implementation.ServicesInterfaces
 {
     public interface IFolderService : IService<Folder>
     {
-        Task<Folder> CreateRootFolder(string userId, string email);
+        Task<Folder> CreateRootFolder(Guid userId, string email);
 
         Task<Folder> GetRootFolderByUserIdAsync(string userId);
 
         Task<Folder> CreateFolderInFolderAsync(Folder parent, string name);
 
-        Folder GetByUserId(Guid id, string userId);
+        Folder GetByUserId(Guid id, Guid userId);
 
         IEnumerable<Folder> GetAllRootFolders();
 

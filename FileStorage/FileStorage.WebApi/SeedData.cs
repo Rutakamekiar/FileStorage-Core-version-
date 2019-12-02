@@ -17,12 +17,12 @@ namespace FileStorage.WebApi
     public static class SeedData
     {
         public static async Task EnsureSeedDataAsync(UserManager<UserEntity> userManager,
-                                                     RoleManager<IdentityRole> roleManager,
+                                                     RoleManager<IdentityRole<Guid>> roleManager,
                                                      IFolderService folderService)
         {
             if (roleManager.FindByNameAsync(Role.Admin.ToString()).Result == null)
             {
-                var result = roleManager.CreateAsync(new IdentityRole(Role.Admin.ToString())).Result;
+                var result = roleManager.CreateAsync(new IdentityRole<Guid>(Role.Admin.ToString())).Result;
                 if (!result.Succeeded)
                 {
                     throw new InvalidOperationException(result.Errors.First().Description);
@@ -31,7 +31,7 @@ namespace FileStorage.WebApi
 
             if (roleManager.FindByNameAsync(Role.User.ToString()).Result == null)
             {
-                var result = roleManager.CreateAsync(new IdentityRole(Role.User.ToString())).Result;
+                var result = roleManager.CreateAsync(new IdentityRole<Guid>(Role.User.ToString())).Result;
                 if (!result.Succeeded)
                 {
                     throw new InvalidOperationException(result.Errors.First().Description);

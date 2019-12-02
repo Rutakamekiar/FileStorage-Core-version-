@@ -13,7 +13,7 @@ namespace FileStorage.Contracts.DTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public string Path { get; set; }
         public ICollection<MyFile> Files { get; set; }
         public ICollection<Folder> Folders { get; set; }

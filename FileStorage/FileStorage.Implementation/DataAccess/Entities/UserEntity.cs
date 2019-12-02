@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FileStorage.Implementation.DataAccess.Entities
 {
-    public class UserEntity : IdentityUser
+    public class UserEntity : IdentityUser<Guid>
     {
         public long MemorySize { get; set; }
     }

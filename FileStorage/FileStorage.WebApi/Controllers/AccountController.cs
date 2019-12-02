@@ -49,7 +49,7 @@ namespace FileStorage.WebApi.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id)
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = _jwtAuthenticationOptions.SigningCredentials
@@ -65,7 +65,8 @@ namespace FileStorage.WebApi.Controllers
             return Ok(new SignInResponse
             {
                 Email = user.Email,
-                Token = tokenString
+                Token = tokenString,
+                Roles = string.Join(", ", user.Roles)
             });
         }
 

@@ -4,6 +4,7 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
+using System;
 using AutoMapper;
 using FileStorage.Implementation.AutoMapperConfig;
 using FileStorage.Implementation.DataAccess;
@@ -34,7 +35,7 @@ namespace FileStorage.WebApi.Extensions
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<UserEntity, IdentityRole>(options =>
+            services.AddIdentity<UserEntity, IdentityRole<Guid>>(options =>
                     {
                         options.User.RequireUniqueEmail = true;
                     })

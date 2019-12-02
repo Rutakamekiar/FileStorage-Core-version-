@@ -141,7 +141,7 @@ namespace FileStorage.Implementation.Services
             return _mapper.Map<Folder>(folderEntity);
         }
 
-        public Folder GetByUserId(Guid id, string userId)
+        public Folder GetByUserId(Guid id, Guid userId)
         {
             var folder = _mapper.Map<Folder>(_data.Folders.GetByIdAsync(id));
             return folder.UserId == userId
@@ -149,7 +149,7 @@ namespace FileStorage.Implementation.Services
                 : throw new FolderNotFoundException(id.ToString());
         }
 
-        public async Task<Folder> CreateRootFolder(string userId, string email)
+        public async Task<Folder> CreateRootFolder(Guid userId, string email)
         {
             var folder = new Folder
             {
@@ -158,6 +158,7 @@ namespace FileStorage.Implementation.Services
                 UserId = userId
             };
             await CreateAsync(folder);
+
             return folder;
         }
 

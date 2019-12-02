@@ -7,7 +7,7 @@ import { Folder } from '../models/folder';
   providedIn: 'root'
 })
 export class AdminService {
-  readonly baseUrl = 'http://localhost:51439/api/admin';
+  readonly baseUrl = 'http://localhost:5000/api/admin';
 
   constructor(private http: HttpClient) {}
 

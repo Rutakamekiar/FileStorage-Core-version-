@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FileService {
-  readonly baseUrl = 'http://localhost:51439/api/files';
+  readonly baseUrl = 'http://localhost:5000/api/files';
   constructor(private http: HttpClient) {}
 
   uploadFile(file: File, folderId: number, accessLevel: boolean) {

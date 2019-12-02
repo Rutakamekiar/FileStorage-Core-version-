@@ -7,7 +7,7 @@ import { MyFile } from '../models/file';
   providedIn: 'root'
 })
 export class ImageOperationsService {
-  readonly baseUrl = 'http://localhost:51439/api/image';
+  readonly baseUrl = 'http://localhost:5000/api/image';
   constructor(private http: HttpClient) {}
 
   getHeader() {

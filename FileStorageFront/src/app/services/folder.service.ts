@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class FolderService {
   constructor(private http: HttpClient) {}
-  readonly baseUrl = 'http://localhost:51439/api/folders';
+  readonly baseUrl = 'http://localhost:5000/api/folders';
   getRootFolder(): Observable<Folder> {
     const myHeaders = this.getHeader();
     return this.http.get<Folder>(this.baseUrl, {headers: myHeaders});

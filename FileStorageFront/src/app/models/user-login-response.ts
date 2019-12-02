@@ -1,5 +1,6 @@
 export class UserLoginResponse {
 // tslint:disable-next-line: variable-name
-    access_token: string;
-    role: string;
+    token: string;
+    roles: string;
+    email: string;
 }

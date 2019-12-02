@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['login-user.component.css']
 })
 export class LoginUserComponent {
-  public userLogin: UserLogin = new UserLogin('vlad22@ukr.net', '123456');
+  public userLogin: UserLogin = new UserLogin('vlad12@mail.ru', '123456');
   isLoading = false;
   errMessage?: string;
 
@@ -21,8 +21,8 @@ export class LoginUserComponent {
     this.isLoading = true;
     this.service.loginUser(this.userLogin).subscribe(m => {
       this.isLoading = false;
-      localStorage.setItem('access_token', m.access_token);
-      if(m.role == 'admin'){
+      localStorage.setItem('access_token', m.token);
+      if(m.roles == 'admin'){
         this.router.navigate(['/admin']);
       }
       else this.router.navigate(['/folders']);

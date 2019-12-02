@@ -7,7 +7,7 @@ import { MyFile } from '../models/file';
   providedIn: 'root'
 })
 export class TxtOperationsService {
-  readonly baseUrl = 'http://localhost:51439/api/txt';
+  readonly baseUrl = 'http://localhost:5000/api/txt';
   constructor(private http: HttpClient) {}
 
   getHeader() {

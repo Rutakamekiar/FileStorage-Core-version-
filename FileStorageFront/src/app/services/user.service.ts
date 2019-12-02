@@ -9,19 +9,17 @@ import {UserRegister} from '../models/user-register';
   providedIn: 'root',
 })
 export class UserService {
-  readonly baseUrl = 'http://localhost:51439/api/account';
+  readonly baseUrl = 'http://localhost:5000/api/account';
 
   constructor(private http: HttpClient) { }
 
   loginUser(user: UserLogin): Observable<UserLoginResponse> {
-    const url = `/token`;
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
-    return this.http.post<UserLoginResponse>(this.baseUrl + url, 'email=' + encodeURIComponent(user.userName) +
-      '&password=' + encodeURIComponent(user.password), {headers});
+    const url = `/signIn`;
+    return this.http.post<UserLoginResponse>(this.baseUrl + url, user);
   }
 
   registerUser(user: UserRegister) {
+    console.log(user);
     const url = this.baseUrl + '/register';
     return this.http.post(url, user);
   }

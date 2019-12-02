@@ -15,7 +15,7 @@ export class GetFileTextComponent {
               @Inject(GetFolderContentComponent) private parent: GetFolderContentComponent) {  }
   getTxtFile() {
     this.txtService.getTxtFile(this.file).subscribe(f =>
-      window.alert(f.text)
+      window.alert(f)
     );
   }
 }

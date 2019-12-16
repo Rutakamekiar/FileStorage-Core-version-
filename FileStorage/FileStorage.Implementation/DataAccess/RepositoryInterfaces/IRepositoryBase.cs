@@ -9,7 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace FileStorage.Contracts.RepositoryInterfaces
+namespace FileStorage.Implementation.DataAccess.RepositoryInterfaces
 {
     public interface IRepositoryBase<T>
     {

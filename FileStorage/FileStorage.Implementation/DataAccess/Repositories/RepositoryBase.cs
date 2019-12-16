@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using FileStorage.Contracts.RepositoryInterfaces;
+using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace FileStorage.Implementation.DataAccess.Repositories

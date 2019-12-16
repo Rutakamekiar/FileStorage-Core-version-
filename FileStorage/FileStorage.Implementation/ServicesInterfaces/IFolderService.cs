@@ -19,7 +19,7 @@ namespace FileStorage.Implementation.ServicesInterfaces
 
         Task<Folder> CreateFolderInFolderAsync(Folder parent, string name);
 
-        Folder GetByUserId(Guid id, Guid userId);
+        Task<Folder> GetByUserIdAsync(Guid id, Guid userId);
 
         IEnumerable<Folder> GetAllRootFolders();
 

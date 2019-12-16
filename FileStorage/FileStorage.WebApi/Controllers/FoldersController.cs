@@ -60,9 +60,9 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetByUserId(Guid id)
+        public async Task<IActionResult> GetByUserId(Guid id)
         {
-            return Ok(_mapper.Map<FolderView>(_folderService.GetByUserId(id, User.GetId())));
+            return Ok(_mapper.Map<FolderView>(await _folderService.GetByUserIdAsync(id, User.GetId())));
         }
 
         [HttpPut("{id}")]

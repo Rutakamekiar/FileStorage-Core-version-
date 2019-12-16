@@ -7,7 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace FileStorage.Contracts.RepositoryInterfaces
+namespace FileStorage.Implementation.DataAccess.RepositoryInterfaces
 {
     public interface IGenericRepository<T>
     {

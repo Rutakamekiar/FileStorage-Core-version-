@@ -5,7 +5,7 @@
 // </copyright>
 
 using System.Threading.Tasks;
-using FileStorage.Contracts.RepositoryInterfaces;
+using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 
 namespace FileStorage.Implementation.ServicesInterfaces
 {

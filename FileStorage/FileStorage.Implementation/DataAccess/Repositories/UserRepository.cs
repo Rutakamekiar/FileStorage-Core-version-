@@ -4,8 +4,8 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
-using FileStorage.Contracts.RepositoryInterfaces;
 using FileStorage.Implementation.DataAccess.Entities;
+using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
 
 namespace FileStorage.Implementation.DataAccess.Repositories
 {

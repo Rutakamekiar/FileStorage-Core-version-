@@ -5,6 +5,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.Entities;
@@ -17,6 +18,11 @@ namespace FileStorage.Implementation.DataAccess.Repositories
     {
         public FileRepository(StorageContext context) : base(context)
         {
+        }
+
+        public override IQueryable<FileEntity> GetAll()
+        {
+            return base.GetAll().Include(x => x.Folder);
         }
 
         public async Task<FileEntity> GetByIdAsync(Guid id)

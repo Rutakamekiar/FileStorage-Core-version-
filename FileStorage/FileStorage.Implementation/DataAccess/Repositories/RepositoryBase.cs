@@ -22,7 +22,7 @@ namespace FileStorage.Implementation.DataAccess.Repositories
 
         protected StorageContext Context { get; }
 
-        public IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll()
         {
             return Context.Set<T>().AsNoTracking();
         }

@@ -5,6 +5,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.Entities;
@@ -29,6 +30,13 @@ namespace FileStorage.Implementation.DataAccess.Repositories
         {
             var folder = await GetByCondition(x => x.Id == id).DefaultIfEmpty().SingleOrDefaultAsync();
             Delete(folder);
+        }
+
+        public override IQueryable<FolderEntity> GetAll()
+        {
+            return base.GetAll()
+                .Include(x => x.Folders)
+                .Include(x => x.Files);
         }
     }
 }

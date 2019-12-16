@@ -24,6 +24,17 @@ namespace FileStorage.Implementation.DataAccess
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<FolderEntity>()
+                .HasMany(x => x.Files)
+                .WithOne(x => x.Folder)
+                .HasForeignKey(x => x.FolderId);
+
+            builder.Entity<FolderEntity>()
+                .HasMany(x => x.Folders)
+                .WithOne(x => x.ParentFolder)
+                .HasForeignKey(x => x.ParentFolderId)
+                .IsRequired(false);
+
             base.OnModelCreating(builder);
         }
     }

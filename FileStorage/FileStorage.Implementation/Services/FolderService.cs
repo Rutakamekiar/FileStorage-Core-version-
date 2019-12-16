@@ -138,7 +138,7 @@ namespace FileStorage.Implementation.Services
 
         public async Task<Folder> GetRootFolderByUserIdAsync(string userId)
         {
-            var folderEntity = await _data.Folders.GetByCondition(f => f.UserId == userId).FirstOrDefaultAsync();
+            var folderEntity = await _data.Folders.GetAll().Where(f => f.UserId == userId).FirstOrDefaultAsync();
             return _mapper.Map<Folder>(folderEntity);
         }
 

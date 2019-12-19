@@ -1,7 +1,7 @@
 import { UserService } from './../../services/user.service';
-import { RegisterBindingModel } from './../../models/register-binding-model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { RegisterBindingModel } from 'src/app/models/requests/register-binding-model';
 
 @Component({
   selector: 'app-register-user',

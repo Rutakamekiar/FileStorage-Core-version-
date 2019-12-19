@@ -13,12 +13,6 @@ export class FolderService {
   path: string = baseUrl + '/folders';
   constructor(private http: HttpClient) { }
 
-  getRootFolder(id: string): Observable<Folder> {
-    const url = this.path + '/' + id;
-    const myHeaders = this.getHeaders();
-    return this.http.get<Folder>(url, {headers: myHeaders});
-  }
-
   deleteFolder(id: string) {
     const url = this.path + '/' + id;
     const myHeaders = this.getHeaders();
@@ -30,6 +24,17 @@ export class FolderService {
     return this.http.post(this.path, model, {headers: myHeaders});
   }
 
+  getFolderById(id: string): Observable<Folder> {
+    const url = this.path + '/' + id;
+    const myHeaders = this.getHeaders();
+    return this.http.get<Folder>(url, {headers: myHeaders});
+  }
+
+  getSpaceUsedCount(): Observable<number> {
+    const url = this.path + '/spaceUsedCount';
+    const myHeaders = this.getHeaders();
+    return this.http.get<number>(url, {headers: myHeaders});
+  }
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
     let myHeaders = new HttpHeaders();

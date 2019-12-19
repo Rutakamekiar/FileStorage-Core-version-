@@ -65,6 +65,7 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPost]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> UploadFile([FromForm(Name = "File")] IFormFile file, bool accessLevel, Guid folderId)
         {
             if (file?.Length <= 0)

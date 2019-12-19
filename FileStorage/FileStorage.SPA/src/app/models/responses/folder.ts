@@ -11,5 +11,5 @@ export class Folder {
 
   public folders: Folder[];
 
-  public ParentFolderId: string;
+  public parentFolderId: string;
 }

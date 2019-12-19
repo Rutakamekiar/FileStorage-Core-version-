@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FolderService } from 'src/app/services/folder.service';
 import { UserService } from 'src/app/services/user.service';
 
-import { Router } from '@angular/router';
+import { Router, Params, ActivatedRoute } from '@angular/router';
 import { AccountDetails } from 'src/app/models/responses/account-details';
 import { Folder } from 'src/app/models/responses/folder';
 import { CreateFolderRequest } from 'src/app/models/requests/create-folder-request';
 import { FileService } from 'src/app/services/file.service';
-import { MyFile } from 'src/app/models/responses/my-file';
 
 @Component({
   selector: 'app-home',
@@ -19,26 +18,29 @@ export class HomeComponent implements OnInit {
   constructor(private folderService: FolderService,
               private userService: UserService,
               private fileService: FileService,
-              private router: Router) { }
+              private router: Router,
+              private activatedRoute: ActivatedRoute) { }
 
   accountDetails: AccountDetails = new AccountDetails();
   folder: Folder = new Folder();
   createFolderName: string;
   fileToUpload: File;
-  ngOnInit() {
-    this.userService.getAccountDetails().subscribe(r => {
-      this.accountDetails = r;
-    });
+  usedSpace: number;
 
-    this.folderService.getRootFolder('').subscribe(r => {
-      console.log(r);
-      this.folder = r;
+  ngOnInit() {
+    this.activatedRoute.params.subscribe((params: Params) => {
+      let id = params.id;
+      if (id === undefined) {
+        id = '';
+      }
+
+      this.updatePage(id);
     });
   }
 
   deleteFolder(id: string) {
     this.folderService.deleteFolder(id).subscribe(() => {
-      this.getFolder(this.folder.id);
+      this.updatePage(this.folder.id);
     });
   }
 
@@ -47,7 +49,7 @@ export class HomeComponent implements OnInit {
     model.name = this.createFolderName;
     model.parentId = this.folder.id;
     this.folderService.createFolder(model).subscribe(() => {
-      this.getFolder(this.folder.id);
+      this.updatePage(this.folder.id);
     });
   }
 
@@ -57,20 +59,36 @@ export class HomeComponent implements OnInit {
 
   uploadFile() {
     this.fileService.uploadFile(this.fileToUpload, true, this.folder.id).subscribe(() => {
-      this.getFolder(this.folder.id);
+      this.updatePage(this.folder.id);
     });
   }
 
   deleteFile(id: string) {
     this.fileService.deleteFile(id).subscribe(() => {
-      this.getFolder(this.folder.id);
+      this.updatePage(this.folder.id);
     });
   }
 
-  private getFolder(id: string) {
-    this.folderService.getRootFolder(id).subscribe(r => {
+  openFolder(id: string) {
+    this.router.navigate([`/home/${id}`]);
+    this.updatePage(id);
+  }
+
+  getBack() {
+    this.router.navigate([`/home/${this.folder.parentFolderId}`]);
+    this.updatePage(this.folder.parentFolderId);
+  }
+
+  private updatePage(id: string) {
+    this.folderService.getFolderById(id).subscribe(r => {
       console.log(r);
       this.folder = r;
+    });
+    this.folderService.getSpaceUsedCount().subscribe(r => {
+      this.usedSpace = r;
+    });
+    this.userService.getAccountDetails().subscribe(r => {
+      this.accountDetails = r;
     });
   }
 }

@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.DataAccess.Entities;
+using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.Options;
 using FileStorage.Implementation.ServicesInterfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace FileStorage.Implementation.Services
@@ -61,11 +61,16 @@ namespace FileStorage.Implementation.Services
             return _physicalFileService.ReadFile(await ReturnFullPathAsync(fileDto));
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id, Guid userId)
         {
-            var fileEntity = await _data.Files.GetByIdAsync(id);
+            var file = await _data.Files.GetByIdAsync(id);
+            if (file.Folder.UserId != userId)
+            {
+                throw new FileNotFoundException(id.ToString());
+            }
+
             await _data.Files.DeleteByIdAsync(id);
-            var path = await ReturnFullPathAsync(fileEntity);
+            var path = await ReturnFullPathAsync(file);
             _physicalFileService.DeleteFile(path);
             await _data.SaveChangesAsync();
         }

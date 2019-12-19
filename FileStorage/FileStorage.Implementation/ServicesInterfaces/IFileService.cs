@@ -23,6 +23,6 @@ namespace FileStorage.Implementation.ServicesInterfaces
 
         Task<string> ReturnFullPathAsync(MyFile file);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(Guid id, Guid userId);
     }
 }

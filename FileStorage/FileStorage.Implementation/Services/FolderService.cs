@@ -98,7 +98,7 @@ namespace FileStorage.Implementation.Services
 
             foreach (var file in folderEntity.Files)
             {
-                await _fileService.DeleteAsync(file.Id);
+                await _fileService.DeleteAsync(file.Id, userId);
             }
 
             foreach (var folder in folderEntity.Folders)

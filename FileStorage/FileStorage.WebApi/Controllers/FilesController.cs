@@ -97,13 +97,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFile(Guid id)
         {
-            var file = await _fileService.GetByIdAsync(id);
-            if (!User.IsInRole("Admin") && file.Folder.UserId != User.GetId())
-            {
-                return BadRequest("File not found");
-            }
-
-            await _fileService.DeleteAsync(id);
+            await _fileService.DeleteAsync(id, User.GetId());
             return Ok();
         }
 

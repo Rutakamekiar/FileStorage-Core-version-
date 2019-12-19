@@ -6,11 +6,13 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Enums;
 using FileStorage.Contracts.Requests;
+using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Exceptions;
 using FileStorage.Implementation.ServicesInterfaces;
@@ -24,17 +26,14 @@ namespace FileStorage.Implementation.Services
         private readonly UserManager<UserEntity> _userManager;
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-        private readonly IFolderService _folderService;
 
         public UserService(UserManager<UserEntity> userManager,
                            IMapper mapper,
-                           RoleManager<IdentityRole<Guid>> roleManager,
-                           IFolderService folderService)
+                           RoleManager<IdentityRole<Guid>> roleManager)
         {
             _userManager = userManager;
             _mapper = mapper;
             _roleManager = roleManager;
-            _folderService = folderService;
         }
 
         public async Task ChangeUserMemorySizeAsync(ChangeUserMemorySizeRequest request)
@@ -46,7 +45,7 @@ namespace FileStorage.Implementation.Services
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "<Pending>")]
-        public async Task CreateAsync(RegisterBindingModel model)
+        public async Task<UserEntity> CreateAsync(RegisterBindingModel model)
         {
             var user = new UserEntity
             {
@@ -62,7 +61,7 @@ namespace FileStorage.Implementation.Services
             }
 
             await _userManager.AddToRoleAsync(user, Role.User.ToString());
-            await _folderService.CreateRootFolder(user.Id, user.Email);
+            return user;
         }
 
         public async Task<User> GetByIdAsync(Guid userId)
@@ -100,6 +99,18 @@ namespace FileStorage.Implementation.Services
             }
 
             return users;
+        }
+
+        public async Task<AccountDetails> GetByAccountDetailsAsync(Guid userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var account = new AccountDetails
+            {
+                Email = user.Email,
+                Roles = await _userManager.GetRolesAsync(user),
+                MemorySize = user.MemorySize
+            };
+            return account;
         }
     }
 }

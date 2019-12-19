@@ -8,6 +8,8 @@ using System;
 using System.Threading.Tasks;
 using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Requests;
+using FileStorage.Contracts.Responses;
+using FileStorage.Implementation.DataAccess.Entities;
 
 namespace FileStorage.Implementation.ServicesInterfaces
 {
@@ -15,7 +17,7 @@ namespace FileStorage.Implementation.ServicesInterfaces
     {
         Task ChangeUserMemorySizeAsync(ChangeUserMemorySizeRequest request);
 
-        Task CreateAsync(RegisterBindingModel model);
+        Task<UserEntity> CreateAsync(RegisterBindingModel model);
 
         Task<User> GetByIdAsync(Guid userId);
 
@@ -24,5 +26,7 @@ namespace FileStorage.Implementation.ServicesInterfaces
         Task<long> GetMemorySizeByUserIdAsync(Guid userId);
 
         Task<User[]> GetAllAsync();
+
+        Task<AccountDetails> GetByAccountDetailsAsync(Guid userId);
     }
 }

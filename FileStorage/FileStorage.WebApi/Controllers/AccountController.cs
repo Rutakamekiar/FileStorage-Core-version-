@@ -74,15 +74,17 @@ namespace FileStorage.WebApi.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterBindingModel model)
         {
-            await _userService.CreateAsync(model);
+            var user = await _userService.CreateAsync(model);
+            await _folderService.CreateRootFolder(user.Id, user.Email);
+
             return NoContent();
         }
 
         [Authorize(Roles = "User, Admin")]
-        [HttpGet("memorySize")]
+        [HttpGet("accountDetails")]
         public async Task<IActionResult> UserInfo()
         {
-            return Ok((await _userService.GetByIdAsync(User.GetId())).MemorySize);
+            return Ok(await _userService.GetByAccountDetailsAsync(User.GetId()));
         }
     }
 }

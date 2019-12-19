@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Interfaces;
-using FileStorage.Contracts.Requests;
 using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
 using FileStorage.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileStorage.WebApi.Controllers
@@ -65,15 +65,8 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile(UploadFileRequest uploadFileRequest)
+        public async Task<IActionResult> UploadFile([FromForm(Name = "File")] IFormFile file, bool accessLevel, Guid folderId)
         {
-            var request = HttpContext.Request;
-            if (request.Form.Files.Count <= 0)
-            {
-                return BadRequest("File was not found. Please upload it.");
-            }
-
-            var file = request.Form.Files["File"];
             if (file?.Length <= 0)
             {
                 return BadRequest("File have not content");
@@ -83,9 +76,9 @@ namespace FileStorage.WebApi.Controllers
             {
                 var fileDto = new MyFile
                 {
-                    AccessLevel = uploadFileRequest.AccessLevel,
+                    AccessLevel = accessLevel,
                     Name = file.FileName,
-                    FolderId = uploadFileRequest.FolderId
+                    FolderId = folderId
                 };
 
                 if (await _fileService.IsFileExistsAsync(fileDto))

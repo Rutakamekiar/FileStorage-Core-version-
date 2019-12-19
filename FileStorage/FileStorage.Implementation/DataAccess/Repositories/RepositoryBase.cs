@@ -24,12 +24,12 @@ namespace FileStorage.Implementation.DataAccess.Repositories
 
         public virtual IQueryable<T> GetAll()
         {
-            return Context.Set<T>().AsNoTracking();
+            return Context.Set<T>();
         }
 
         public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression)
         {
-            return Context.Set<T>().Where(expression).AsNoTracking();
+            return Context.Set<T>().Where(expression);
         }
 
         public async Task CreateAsync(T entity)

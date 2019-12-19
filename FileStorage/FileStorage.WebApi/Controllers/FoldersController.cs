@@ -14,7 +14,9 @@ using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
 using FileStorage.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace FileStorage.WebApi.Controllers
 {
@@ -37,53 +39,51 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateFolderInFolder(CreateFolderInFolderRequest request)
         {
-            var parentId = request.ParentId;
-            var name = request.Name;
-            var parent = await _folderService.GetByIdAsync(parentId);
+            var parent = await _folderService.GetByIdAsync(request.ParentId);
             if (parent.UserId != User.GetId())
-                return BadRequest("cannot create folderEntity in folders of others");
-            return Ok(await _folderService.CreateFolderInFolderAsync(parent, name));
+                return BadRequest("Cannot create folderEntity in folders of others");
+            return Ok(await _folderService.CreateFolderInFolderAsync(parent, request.Name));
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        [ProducesResponseType(typeof(FolderView), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetRootFolder()
         {
-            return Ok(_mapper.Map<FolderView>(await _folderService.GetRootFolderByUserIdAsync(User.Identity.Name)));
+            return Ok(_mapper.Map<FolderView>(await _folderService.GetRootFolderByUserIdAsync(User.GetId())));
         }
 
-        [HttpGet("folderSize")]
-        public async Task<IActionResult> GetSize()
+        [HttpGet("spaceUsedCount")]
+        [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSpaceUsedCount()
         {
-            return Ok(await _folderService.GetRootFolderSize(User.Identity.Name));
+            return Ok(await _folderService.GetSpaceUsedCountByUserId(User.GetId()));
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByUserId(Guid id)
+        [ProducesResponseType(typeof(FolderView), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetById(Guid id)
         {
             return Ok(_mapper.Map<FolderView>(await _folderService.GetByUserIdAsync(id, User.GetId())));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditFolder(Guid id, [FromBody] Folder folder)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateFolder(Guid id, UpdateFolderRequest request)
         {
-            var folderDto = await _folderService.GetByIdAsync(id);
-            if (folderDto.UserId != User.GetId())
-                return Forbid();
-            await _folderService.EditFolderAsync(id, folder);
+            await _folderService.UpdateFolderAsync(id, User.GetId(), request);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteFolder(Guid id)
         {
-            var folderDto = await _folderService.GetByIdAsync(id);
-            if (!User.IsInRole("admin") && folderDto.UserId != User.GetId())
-                return BadRequest("File not found");
-
-            await _folderService.DeleteAsync(folderDto);
-            return Ok();
+            await _folderService.DeleteAsync(id, User.GetId());
+            return NoContent();
         }
     }
 }

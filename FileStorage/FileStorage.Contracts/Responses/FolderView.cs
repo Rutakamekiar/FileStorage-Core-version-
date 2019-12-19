@@ -15,8 +15,6 @@ namespace FileStorage.Contracts.Responses
 
         public string Name { get; set; }
 
-        public Guid UserId { get; set; }
-
         public string Path { get; set; }
 
         public List<FileView> Files { get; set; }

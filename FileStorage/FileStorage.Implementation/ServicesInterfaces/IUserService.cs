@@ -4,6 +4,7 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
+using System;
 using System.Threading.Tasks;
 using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Requests;
@@ -13,10 +14,15 @@ namespace FileStorage.Implementation.ServicesInterfaces
     public interface IUserService
     {
         Task ChangeUserMemorySizeAsync(ChangeUserMemorySizeRequest request);
-        Task<User> CreateAsync(RegisterBindingModel model);
-        Task<User> GetByIdAsync(string userId);
+
+        Task CreateAsync(RegisterBindingModel model);
+
+        Task<User> GetByIdAsync(Guid userId);
+
         Task<User> SignInAsync(SignInRequest request);
-        Task<long> GetMemorySizeByUserIdAsync(string userId);
+
+        Task<long> GetMemorySizeByUserIdAsync(Guid userId);
+
         Task<User[]> GetAllAsync();
     }
 }

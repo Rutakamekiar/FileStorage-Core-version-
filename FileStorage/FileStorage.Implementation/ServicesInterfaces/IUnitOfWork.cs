@@ -14,6 +14,7 @@ namespace FileStorage.Implementation.ServicesInterfaces
         IFileRepository Files { get; }
         IFolderRepository Folders { get; }
         IUserRepository Users { get; }
-        Task SaveAsync();
+
+        Task SaveChangesAsync();
     }
 }

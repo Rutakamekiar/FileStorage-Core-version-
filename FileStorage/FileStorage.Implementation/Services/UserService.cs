@@ -21,33 +21,32 @@ namespace FileStorage.Implementation.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<UserEntity> _userManager;
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly IFolderService _folderService;
 
-        public UserService(IUnitOfWork unitOfWork,
-                           UserManager<UserEntity> userManager,
+        public UserService(UserManager<UserEntity> userManager,
                            IMapper mapper,
-                           RoleManager<IdentityRole<Guid>> roleManager)
+                           RoleManager<IdentityRole<Guid>> roleManager,
+                           IFolderService folderService)
         {
-            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _mapper = mapper;
             _roleManager = roleManager;
+            _folderService = folderService;
         }
 
         public async Task ChangeUserMemorySizeAsync(ChangeUserMemorySizeRequest request)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId);
-            if (user != null)
-            {
-                user.MemorySize = request.MemorySize;
-                await _userManager.UpdateAsync(user);
-            }
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString())
+                       ?? throw new UserNotFoundException();
+            user.MemorySize = request.MemorySize;
+            await _userManager.UpdateAsync(user);
         }
 
-        public async Task<User> CreateAsync(RegisterBindingModel model)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "<Pending>")]
+        public async Task CreateAsync(RegisterBindingModel model)
         {
             var user = new UserEntity
             {
@@ -63,12 +62,12 @@ namespace FileStorage.Implementation.Services
             }
 
             await _userManager.AddToRoleAsync(user, Role.User.ToString());
-            return _mapper.Map<User>(user);
+            await _folderService.CreateRootFolder(user.Id, user.Email);
         }
 
-        public async Task<User> GetByIdAsync(string userId)
+        public async Task<User> GetByIdAsync(Guid userId)
         {
-            return _mapper.Map<User>(await _userManager.FindByIdAsync(userId));
+            return _mapper.Map<User>(await _userManager.FindByIdAsync(userId.ToString()));
         }
 
         public async Task<User> SignInAsync(SignInRequest request)
@@ -84,9 +83,9 @@ namespace FileStorage.Implementation.Services
             return user;
         }
 
-        public async Task<long> GetMemorySizeByUserIdAsync(string userId)
+        public async Task<long> GetMemorySizeByUserIdAsync(Guid userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
             return user.MemorySize;
         }
 

@@ -4,11 +4,13 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
+using System;
+
 namespace FileStorage.Contracts.Requests
 {
     public class ChangeUserMemorySizeRequest
     {
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public long MemorySize { get; set; }
     }
 }

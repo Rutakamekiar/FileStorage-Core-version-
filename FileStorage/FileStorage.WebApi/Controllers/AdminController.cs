@@ -42,9 +42,9 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpGet("folders")]
-        public IActionResult GetAllFolders()
+        public async Task<IActionResult> GetAllRootFolders()
         {
-            return Ok(_mapper.Map<List<FolderView>>(_folderService.GetAllRootFolders()));
+            return Ok(_mapper.Map<List<FolderView>>(await _folderService.GetAllRootFoldersAsync()));
         }
 
         [HttpGet("folders/{id}")]
@@ -54,24 +54,18 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpGet("folderSize/{name}")]
-        public async Task<IActionResult> GetSize(string name)
+        public async Task<IActionResult> GetSize(Guid id)
         {
-            return Ok(await _folderService.GetRootFolderSize(name));
-        }
-
-        [HttpGet("files")]
-        public IActionResult GetFiles()
-        {
-            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAll()));
+            return Ok(await _folderService.GetSpaceUsedCountByUserId(id));
         }
 
         [AllowAnonymous]
-        [HttpPut("files/{id}")]
+        [HttpPut("files/changeBlockedState/{id}")]
         public async Task<IActionResult> FileBlockChange(Guid id)
         {
             var file = await _fileService.GetByIdAsync(id);
             file.IsBlocked = !file.IsBlocked;
-            await _fileService.EditFileAsync(id, file);
+            await _fileService.UpdateFileAsync(id, file);
             return NoContent();
         }
 
@@ -85,12 +79,11 @@ namespace FileStorage.WebApi.Controllers
         public async Task<IActionResult> ChangeUserMemorySize(ChangeUserMemorySizeRequest request)
         {
             await _userService.ChangeUserMemorySizeAsync(request);
-
             return NoContent();
         }
 
         [HttpGet("memorySize/{userId}")]
-        public async Task<IActionResult> GetMemorySize(string userId)
+        public async Task<IActionResult> GetMemorySize(Guid userId)
         {
             return Ok(await _userService.GetMemorySizeByUserIdAsync(userId));
         }

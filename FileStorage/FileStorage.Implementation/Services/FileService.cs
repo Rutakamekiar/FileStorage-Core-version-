@@ -12,6 +12,7 @@ using FileStorage.Contracts.DTO;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.Options;
 using FileStorage.Implementation.ServicesInterfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace FileStorage.Implementation.Services
@@ -34,12 +35,14 @@ namespace FileStorage.Implementation.Services
             _rootPath = pathOptions.Value.RootPath;
         }
 
-        public async Task CreateAsync(MyFile item)
+        public async Task<Guid> CreateAsync(MyFile item)
         {
-            await _data.Files.CreateAsync(_mapper.Map<FileEntity>(item));
+            var fileEntity = _mapper.Map<FileEntity>(item);
+            await _data.Files.CreateAsync(fileEntity);
             var path = await ReturnFullPathAsync(item);
             _physicalFileService.CreateFile(path, item.FileBytes);
-            await _data.SaveAsync();
+            await _data.SaveChangesAsync();
+            return fileEntity.Id;
         }
 
         public async Task<string> ReturnFullPathAsync(MyFile file)
@@ -58,31 +61,27 @@ namespace FileStorage.Implementation.Services
             return _physicalFileService.ReadFile(await ReturnFullPathAsync(fileDto));
         }
 
-        public async Task DeleteAsync(MyFile item)
+        public async Task DeleteAsync(Guid id)
         {
-            await _data.Files.DeleteByIdAsync(item.Id);
-            var path = await ReturnFullPathAsync(item);
+            var fileEntity = await _data.Files.GetByIdAsync(id);
+            await _data.Files.DeleteByIdAsync(id);
+            var path = await ReturnFullPathAsync(fileEntity);
             _physicalFileService.DeleteFile(path);
-            await _data.SaveAsync();
+            await _data.SaveChangesAsync();
         }
 
-        public IEnumerable<MyFile> GetAll()
-        {
-            return _mapper.Map<IEnumerable<MyFile>>(_data.Files.GetAll());
-        }
-
-        public async Task EditFileAsync(Guid id, MyFile fileDto)
+        public async Task UpdateFileAsync(Guid id, MyFile file)
         {
             var newFile = await _data.Files.GetByIdAsync(id);
             var oldPath = await ReturnFullPathAsync(_mapper.Map<MyFile>(newFile));
-            newFile.Name = fileDto.Name;
+            newFile.Name = file.Name;
             var newPath = await ReturnFullPathAsync(_mapper.Map<MyFile>(newFile));
             _physicalFileService.ReplaceFile(oldPath, newPath);
 
-            newFile.AccessLevel = fileDto.AccessLevel;
-            newFile.IsBlocked = fileDto.IsBlocked;
+            newFile.AccessLevel = file.AccessLevel;
+            newFile.IsBlocked = file.IsBlocked;
             _data.Files.Update(newFile);
-            await _data.SaveAsync();
+            await _data.SaveChangesAsync();
         }
 
         public async Task<bool> IsFileExistsAsync(MyFile file)
@@ -90,9 +89,15 @@ namespace FileStorage.Implementation.Services
             return _physicalFileService.CheckFile(await ReturnFullPathAsync(file));
         }
 
-        public IEnumerable<MyFile> GetAllByUserId(string userid)
+        public IEnumerable<MyFile> GetAllByUserId(Guid userid)
         {
             return _mapper.Map<IEnumerable<MyFile>>(_data.Files.GetByCondition(f => f.Folder.UserId == userid));
+        }
+
+        private async Task<string> ReturnFullPathAsync(FileEntity file)
+        {
+            var folder = await _data.Folders.GetByIdAsync(file.FolderId);
+            return $@"{_rootPath}\{folder.Path}\{folder.Name}\{file.Name}";
         }
     }
 }

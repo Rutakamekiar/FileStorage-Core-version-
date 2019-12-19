@@ -27,7 +27,7 @@ namespace FileStorage.Implementation.DataAccess.Repositories
         public IFolderRepository Folders => _folders ?? (_folders = new FolderRepository(_context));
         public IUserRepository Users => _users ?? (_users = new UserRepository(_context));
 
-        public async Task SaveAsync()
+        public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }

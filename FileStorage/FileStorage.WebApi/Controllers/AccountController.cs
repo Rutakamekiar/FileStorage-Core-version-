@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
 using FileStorage.Implementation.ServicesInterfaces;
+using FileStorage.WebApi.Extensions;
 using FileStorage.WebApi.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -73,17 +74,15 @@ namespace FileStorage.WebApi.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterBindingModel model)
         {
-            var user = await _userService.CreateAsync(model);
-            await _folderService.CreateRootFolder(user.Id, user.Email);
-
-            return Ok(user);
+            await _userService.CreateAsync(model);
+            return NoContent();
         }
 
         [Authorize(Roles = "User, Admin")]
         [HttpGet("memorySize")]
         public async Task<IActionResult> UserInfo()
         {
-            return Ok((await _userService.GetByIdAsync(User.Identity.Name)).MemorySize);
+            return Ok((await _userService.GetByIdAsync(User.GetId())).MemorySize);
         }
     }
 }

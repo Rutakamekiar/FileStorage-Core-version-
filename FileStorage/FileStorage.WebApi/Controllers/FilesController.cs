@@ -43,7 +43,7 @@ namespace FileStorage.WebApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAllByUserId(User.Identity.Name)));
+            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAllByUserId(User.GetId())));
         }
 
         [AllowAnonymous]
@@ -92,7 +92,7 @@ namespace FileStorage.WebApi.Controllers
                     return BadRequest("The file with the specified name exists. Please change the file name");
                 file.OpenReadStream().Read(fileDto.FileBytes = new byte[file.Length], 0, (int)file.Length);
 
-                if (!await _folderService.CanAddAsync(User.Identity.Name, fileDto.FileBytes.Length))
+                if (!await _folderService.CanAddAsync(User.GetId(), fileDto.FileBytes.Length))
                     return BadRequest("You did not have memory to add the file");
 
                 await _fileService.CreateAsync(fileDto);
@@ -110,12 +110,12 @@ namespace FileStorage.WebApi.Controllers
                 return BadRequest("File not found");
             }
 
-            await _fileService.DeleteAsync(file);
+            await _fileService.DeleteAsync(id);
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditFile(Guid id, [FromBody] MyFile file)
+        public async Task<IActionResult> EditFile(Guid id, MyFile file)
         {
             if (file.IsBlocked)
             {
@@ -125,7 +125,7 @@ namespace FileStorage.WebApi.Controllers
             var fileDto = await _fileService.GetByIdAsync(id);
             if (fileDto.Folder.UserId == User.GetId())
             {
-                await _fileService.EditFileAsync(id, file);
+                await _fileService.UpdateFileAsync(id, file);
                 return NoContent();
             }
 

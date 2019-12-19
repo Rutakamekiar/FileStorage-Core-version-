@@ -12,9 +12,8 @@ namespace FileStorage.Implementation.ServicesInterfaces
 {
     public interface IService<T>
     {
-        IEnumerable<T> GetAll();
         Task<T> GetByIdAsync(Guid id);
-        Task CreateAsync(T item);
-        Task DeleteAsync(T item);
+
+        Task<Guid> CreateAsync(T item);
     }
 }

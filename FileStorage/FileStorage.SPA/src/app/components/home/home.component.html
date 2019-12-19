@@ -1,7 +1,12 @@
 <h1>{{accountDetails.email}}</h1>
 <h2>Max memory limit: {{accountDetails.memorySize}}</h2>
-<button (click)="createFolder()">Create folder</button> <br>
-<input type="text" [(ngModel)]="createFolderName" style="margin-bottom: 10px;">
+<div>
+    <button (click)="createFolder()">Create folder</button> <br>
+    <input type="text" [(ngModel)]="createFolderName" style="margin-bottom: 10px;">
+    <button (click)="uploadFile()">Upload file</button> <br>
+    <input type="file" value='Select' (change)="handleFileInput($event.target.files)" style="margin-bottom: 10px;">
+
+</div>
 <div *ngFor="let flder of folder.folders">
     <div style="background-color: salmon;width: 50px;height: 50px;"></div>
     <button (click)="deleteFolder(flder.id)">Delete</button>
@@ -9,5 +14,6 @@
 </div>
 <div *ngFor="let file of folder.files">
     <div style="background-color: slateblue;width: 50px;height: 50px;"></div>
+    <button (click)="deleteFile(file.id)">Delete</button>
     <h3>{{file.name}}</h3>
 </div>

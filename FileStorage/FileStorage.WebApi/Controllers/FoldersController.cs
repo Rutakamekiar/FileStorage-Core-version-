@@ -7,7 +7,6 @@
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using FileStorage.Contracts.DTO;
 using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
 using FileStorage.Contracts.Responses;
@@ -16,7 +15,6 @@ using FileStorage.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace FileStorage.WebApi.Controllers
 {

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileStorage.WebApi.Controllers
@@ -28,12 +29,14 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpGet("{id}/Symbols")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSymbols(Guid id)
         {
             return Ok(await _txtFileService.GetTxtFileSymbolsCountAsync(id));
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
         {
             return Ok(new TxtResponse

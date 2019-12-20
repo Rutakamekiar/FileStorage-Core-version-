@@ -41,13 +41,15 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<FileView>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            return Ok(_mapper.Map<List<FileView>>(_fileService.GetAllByUserId(User.GetId())));
+            return Ok(_mapper.Map<IEnumerable<FileView>>(_fileService.GetAllByUserId(User.GetId())));
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
         {
             var file = await _fileService.GetByIdAsync(id);
@@ -65,7 +67,8 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPost]
-        [DisableRequestSizeLimit]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        ////[DisableRequestSizeLimit]
         public async Task<IActionResult> UploadFile([FromForm(Name = "File")] IFormFile file, bool accessLevel, Guid folderId)
         {
             if (file?.Length <= 0)
@@ -96,13 +99,17 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteFile(Guid id)
         {
             await _fileService.DeleteAsync(id, User.GetId());
-            return Ok();
+            return NoContent();
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> EditFile(Guid id, MyFile file)
         {
             if (file.IsBlocked)

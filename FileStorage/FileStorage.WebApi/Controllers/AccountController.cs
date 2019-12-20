@@ -10,10 +10,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
+using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
 using FileStorage.WebApi.Extensions;
 using FileStorage.WebApi.Options;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -43,6 +45,7 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPost("SignIn")]
+        [ProducesResponseType(typeof(SignInResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> SignIn(SignInRequest request)
         {
             var user = await _userService.SignInAsync(request);
@@ -72,6 +75,7 @@ namespace FileStorage.WebApi.Controllers
         }
 
         [HttpPost("Register")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Register(RegisterBindingModel model)
         {
             var user = await _userService.CreateAsync(model);
@@ -82,6 +86,7 @@ namespace FileStorage.WebApi.Controllers
 
         [Authorize(Roles = "User, Admin")]
         [HttpGet("accountDetails")]
+        [ProducesResponseType(typeof(AccountDetails), StatusCodes.Status200OK)]
         public async Task<IActionResult> UserInfo()
         {
             return Ok(await _userService.GetByAccountDetailsAsync(User.GetId()));

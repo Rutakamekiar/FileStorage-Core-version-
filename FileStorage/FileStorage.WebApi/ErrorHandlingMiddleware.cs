@@ -47,7 +47,10 @@ namespace FileStorage.WebApi
                 case ArgumentException _:
                     code = (int)HttpStatusCode.BadRequest;
                     break;
+
                 case UserNotFoundException _:
+                case FolderNotFoundException _:
+                case FileNotFoundException _:
                     code = (int)HttpStatusCode.NotFound;
                     break;
             }

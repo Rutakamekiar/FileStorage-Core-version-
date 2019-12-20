@@ -6,8 +6,6 @@
 
 using System;
 using System.IO;
-using FileStorage.Contracts.Interfaces;
-using FileStorage.Implementation;
 using FileStorage.Implementation.DataAccess;
 using FileStorage.Implementation.DataAccess.Entities;
 using FileStorage.Implementation.DataAccess.Repositories;
@@ -46,9 +44,6 @@ namespace FileStorage.WebApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<StorageContext>(options => options.UseSqlite(Configuration.GetConnectionString("Database")));
 
-            services.AddSingleton<ILoggerManager, LoggerManager>();
-
-            services.AddLogging(x => x.AddConsole());
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IFolderService, FolderService>();
             services.AddScoped<IFileService, FileService>();

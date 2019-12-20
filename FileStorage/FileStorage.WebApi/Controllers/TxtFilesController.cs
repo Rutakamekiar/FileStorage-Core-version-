@@ -6,11 +6,11 @@
 
 using System;
 using System.Threading.Tasks;
-using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace FileStorage.WebApi.Controllers
 {
@@ -19,13 +19,12 @@ namespace FileStorage.WebApi.Controllers
     public class TxtFilesController : ControllerBase
     {
         private readonly ITxtFileService _txtFileService;
-        private readonly ILoggerManager _loggerManager;
+        private readonly ILogger<TxtFilesController> _logger;
 
-        public TxtFilesController(ITxtFileService txtFileService,
-                                  ILoggerManager loggerManager)
+        public TxtFilesController(ITxtFileService txtFileService, ILogger<TxtFilesController> logger)
         {
             _txtFileService = txtFileService;
-            _loggerManager = loggerManager;
+            _logger = logger;
         }
 
         [HttpGet("{id}/Symbols")]

@@ -9,13 +9,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts.DTO;
-using FileStorage.Contracts.Interfaces;
 using FileStorage.Contracts.Requests;
 using FileStorage.Contracts.Responses;
 using FileStorage.Implementation.ServicesInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace FileStorage.WebApi.Controllers
 {
@@ -28,19 +28,19 @@ namespace FileStorage.WebApi.Controllers
         private readonly IFolderService _folderService;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly ILoggerManager _loggerManager;
+        private readonly ILogger<AdminController> _logger;
 
         public AdminController(IFolderService folderService,
                                IFileService fileService,
                                IUserService userService,
                                IMapper mapper,
-                               ILoggerManager loggerManager)
+                               ILogger<AdminController> logger)
         {
             _folderService = folderService;
             _fileService = fileService;
             _userService = userService;
             _mapper = mapper;
-            _loggerManager = loggerManager;
+            _logger = logger;
         }
 
         [HttpGet("folders")]

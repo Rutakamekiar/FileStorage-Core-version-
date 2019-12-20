@@ -6,6 +6,8 @@
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace FileStorage.WebApi
 {
@@ -19,7 +21,13 @@ namespace FileStorage.WebApi
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                          .UseStartup<Startup>()
+                          .ConfigureLogging(logging =>
+                          {
+                              logging.AddConsole();
+                              logging.SetMinimumLevel(LogLevel.Trace);
+                          })
+                          .UseNLog();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="FoldersController.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -43,7 +43,10 @@ namespace FileStorage.WebApi.Controllers
         {
             var parent = await _folderService.GetByIdAsync(request.ParentId);
             if (parent.UserId != User.GetId())
+            {
                 return BadRequest("Cannot create folderEntity in folders of others");
+            }
+
             return Ok(await _folderService.CreateFolderInFolderAsync(parent, request.Name));
         }
 
@@ -58,7 +61,7 @@ namespace FileStorage.WebApi.Controllers
         [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSpaceUsedCount()
         {
-            return Ok(await _folderService.GetSpaceUsedCountByUserId(User.GetId()));
+            return Ok(await _folderService.GetSpaceUsedCountByUserIdAsync(User.GetId()));
         }
 
         [HttpGet("{id}")]

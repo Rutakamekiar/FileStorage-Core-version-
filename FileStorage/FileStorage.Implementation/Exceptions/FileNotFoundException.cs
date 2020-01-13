@@ -1,4 +1,4 @@
-﻿// <copyright file="FileNotFoundException.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -6,12 +6,10 @@
 
 using System;
 using System.Globalization;
-using System.Runtime.Serialization;
 using FileStorage.Implementation.Resourses.Exceptions;
 
 namespace FileStorage.Implementation.Exceptions
 {
-    [Serializable]
     public class FileNotFoundException : Exception
     {
         public FileNotFoundException()
@@ -30,10 +28,6 @@ namespace FileStorage.Implementation.Exceptions
                                  Localization.FileNotFoundTemplate,
                                  fileId),
                    innerException)
-        {
-        }
-
-        protected FileNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

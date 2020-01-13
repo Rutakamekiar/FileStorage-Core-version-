@@ -1,4 +1,4 @@
-﻿// <copyright file="ImageFileService.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -13,14 +13,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Implementation.Exceptions;
-using FileStorage.Implementation.Resourses.Exceptions;
 using FileStorage.Implementation.ServicesInterfaces;
 
 namespace FileStorage.Implementation.Services
 {
     public class ImageFileService : IImageFileService
     {
-        private static readonly IList<string> _extensions = new ReadOnlyCollection<string>(
+        private static readonly IList<string> Extensions = new ReadOnlyCollection<string>(
             new List<string>
             {
                 "img", "bmp"
@@ -36,7 +35,7 @@ namespace FileStorage.Implementation.Services
         public async Task BlackoutAsync(Guid id)
         {
             var file = await _fileService.GetByIdAsync(id);
-            if (!_extensions.Contains(file.Name.Split('.').Last()))
+            if (!Extensions.Contains(file.Name.Split('.').Last()))
             {
                 throw new WrongTypeException();
             }

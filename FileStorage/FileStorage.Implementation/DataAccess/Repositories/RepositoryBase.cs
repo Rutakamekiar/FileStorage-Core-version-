@@ -1,4 +1,4 @@
-﻿// <copyright file="RepositoryBase.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -9,7 +9,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.RepositoryInterfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace FileStorage.Implementation.DataAccess.Repositories
 {
@@ -32,9 +31,9 @@ namespace FileStorage.Implementation.DataAccess.Repositories
             return Context.Set<T>().Where(expression);
         }
 
-        public async Task CreateAsync(T entity)
+        public Task CreateAsync(T entity)
         {
-            await Context.Set<T>().AddAsync(entity);
+            return Context.Set<T>().AddAsync(entity);
         }
 
         public void Update(T entity)

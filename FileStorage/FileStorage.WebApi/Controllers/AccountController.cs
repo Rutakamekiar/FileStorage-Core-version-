@@ -1,4 +1,4 @@
-﻿// <copyright file="AccountController.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -79,7 +79,7 @@ namespace FileStorage.WebApi.Controllers
         public async Task<IActionResult> Register(RegisterBindingModel model)
         {
             var user = await _userService.CreateAsync(model);
-            await _folderService.CreateRootFolder(user.Id, user.Email);
+            await _folderService.CreateRootFolderAsync(user.Id, user.Email);
 
             return NoContent();
         }

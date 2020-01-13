@@ -1,11 +1,10 @@
-﻿// <copyright file="FileRepository.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FileStorage.Implementation.DataAccess.Entities;

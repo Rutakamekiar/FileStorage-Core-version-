@@ -1,4 +1,4 @@
-﻿// <copyright file="UserService.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -6,7 +6,6 @@
 
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using FileStorage.Contracts.DTO;
@@ -44,7 +43,6 @@ namespace FileStorage.Implementation.Services
             await _userManager.UpdateAsync(user);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2201:Do not raise reserved exception types", Justification = "<Pending>")]
         public async Task<UserEntity> CreateAsync(RegisterBindingModel model)
         {
             var user = new UserEntity

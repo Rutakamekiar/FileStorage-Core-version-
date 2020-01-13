@@ -1,4 +1,4 @@
-﻿// <copyright file="StorageContext.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -20,6 +20,7 @@ namespace FileStorage.Implementation.DataAccess
         }
 
         public DbSet<FileEntity> Files { get; set; }
+
         public DbSet<FolderEntity> Folders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

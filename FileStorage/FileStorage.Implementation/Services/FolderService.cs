@@ -1,4 +1,4 @@
-﻿// <copyright file="FolderService.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -111,7 +111,7 @@ namespace FileStorage.Implementation.Services
             await _data.SaveChangesAsync();
         }
 
-        public async Task<Guid> CreateFolderInFolderAsync(Folder parent, string name)
+        public Task<Guid> CreateFolderInFolderAsync(Folder parent, string name)
         {
             var folder = new Folder
             {
@@ -125,17 +125,17 @@ namespace FileStorage.Implementation.Services
                 throw new FolderWrongNameException();
             }
 
-            return await CreateAsync(folder);
+            return CreateAsync(folder);
         }
 
         public async Task<bool> CanAddAsync(Guid userId, long itemSize)
         {
-            var folderSize = await GetSpaceUsedCountByUserId(userId);
+            var folderSize = await GetSpaceUsedCountByUserIdAsync(userId);
             var userMemorySize = await _userService.GetMemorySizeByUserIdAsync(userId);
             return userMemorySize - folderSize - itemSize > 0;
         }
 
-        public async Task<long> GetSpaceUsedCountByUserId(Guid userId)
+        public async Task<long> GetSpaceUsedCountByUserIdAsync(Guid userId)
         {
             var folder = await GetRootFolderByUserIdAsync(userId);
             return GetRootFolderSizeByPath(ReturnFullFolderPath(folder));
@@ -158,7 +158,7 @@ namespace FileStorage.Implementation.Services
                 : throw new FolderNotFoundException(id.ToString());
         }
 
-        public async Task<Folder> CreateRootFolder(Guid userId, string email)
+        public async Task<Folder> CreateRootFolderAsync(Guid userId, string email)
         {
             var folder = new Folder
             {

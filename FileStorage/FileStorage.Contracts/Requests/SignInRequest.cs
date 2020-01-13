@@ -1,4 +1,4 @@
-﻿// <copyright file="SignInRequest.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -12,6 +12,7 @@ namespace FileStorage.Contracts.Requests
     {
         [Required]
         public string Email { get; set; }
+
         [Required]
         public string Password { get; set; }
     }

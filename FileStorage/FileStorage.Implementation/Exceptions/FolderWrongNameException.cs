@@ -1,16 +1,14 @@
-﻿// <copyright file="FolderWrongNameException.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
 // </copyright>
 
 using System;
-using System.Runtime.Serialization;
 using FileStorage.Implementation.Resourses.Exceptions;
 
 namespace FileStorage.Implementation.Exceptions
 {
-    [Serializable]
     public class FolderWrongNameException : Exception
     {
         public FolderWrongNameException() : base(Localization.FolderWrongName)
@@ -22,10 +20,6 @@ namespace FileStorage.Implementation.Exceptions
         }
 
         public FolderWrongNameException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected FolderWrongNameException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

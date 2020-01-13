@@ -1,4 +1,4 @@
-﻿// <copyright file="ErrorHandlingMiddleware.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -36,7 +36,7 @@ namespace FileStorage.WebApi
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception ex)
+        private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             var code = (int)HttpStatusCode.InternalServerError; // 500 if unexpected
             var message = ex.Message;
@@ -59,7 +59,7 @@ namespace FileStorage.WebApi
 
             context.Response.ContentType = "text/plain";
             context.Response.StatusCode = code;
-            await context.Response.WriteAsync(message);
+            return context.Response.WriteAsync(message);
         }
     }
 }

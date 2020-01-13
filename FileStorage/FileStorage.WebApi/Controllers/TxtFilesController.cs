@@ -1,4 +1,4 @@
-﻿// <copyright file="TxtFilesController.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -40,7 +40,7 @@ namespace FileStorage.WebApi.Controllers
         {
             return Ok(new TxtResponse
             {
-                Text = await _txtFileService.GetTxtFile(id)
+                Text = await _txtFileService.GetTxtFileAsync(id)
             });
         }
     }

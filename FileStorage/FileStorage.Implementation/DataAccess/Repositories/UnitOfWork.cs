@@ -1,4 +1,4 @@
-﻿// <copyright file="UnitOfWork.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -25,11 +25,12 @@ namespace FileStorage.Implementation.DataAccess.Repositories
         public IFileRepository Files => _files ?? (_files = new FileRepository(_context));
 
         public IFolderRepository Folders => _folders ?? (_folders = new FolderRepository(_context));
+
         public IUserRepository Users => _users ?? (_users = new UserRepository(_context));
 
-        public async Task SaveChangesAsync()
+        public Task SaveChangesAsync()
         {
-            await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
     }
 }

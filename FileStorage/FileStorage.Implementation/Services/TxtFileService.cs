@@ -1,4 +1,4 @@
-﻿// <copyright file="TxtFileService.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -17,7 +17,7 @@ namespace FileStorage.Implementation.Services
 {
     public class TxtFileService : ITxtFileService
     {
-        private static readonly IList<string> _extensions =
+        private static readonly IList<string> Extensions =
             new ReadOnlyCollection<string>(
                 new List<string>
                 {
@@ -45,7 +45,7 @@ namespace FileStorage.Implementation.Services
             return allText.Length;
         }
 
-        public async Task<string> GetTxtFile(Guid id)
+        public async Task<string> GetTxtFileAsync(Guid id)
         {
             var fileDto = await _fileService.GetByIdAsync(id);
             if (CheckType(fileDto))
@@ -59,7 +59,7 @@ namespace FileStorage.Implementation.Services
 
         private static bool CheckType(MyFile file)
         {
-            return !_extensions.Contains(file.Name.Split('.').Last());
+            return !Extensions.Contains(file.Name.Split('.').Last());
         }
     }
 }

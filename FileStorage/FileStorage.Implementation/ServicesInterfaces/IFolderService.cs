@@ -1,4 +1,4 @@
-﻿// <copyright file="IFolderService.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -14,7 +14,7 @@ namespace FileStorage.Implementation.ServicesInterfaces
 {
     public interface IFolderService : IService<Folder>
     {
-        Task<Folder> CreateRootFolder(Guid userId, string email);
+        Task<Folder> CreateRootFolderAsync(Guid userId, string email);
 
         Task<Folder> GetRootFolderByUserIdAsync(Guid userId);
 
@@ -28,7 +28,7 @@ namespace FileStorage.Implementation.ServicesInterfaces
 
         Task<bool> CanAddAsync(Guid userId, long itemSize);
 
-        Task<long> GetSpaceUsedCountByUserId(Guid userId);
+        Task<long> GetSpaceUsedCountByUserIdAsync(Guid userId);
 
         Task DeleteAsync(Guid id, Guid userId);
     }

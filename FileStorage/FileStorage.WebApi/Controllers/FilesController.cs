@@ -1,4 +1,4 @@
-﻿// <copyright file="FilesController.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -86,11 +86,16 @@ namespace FileStorage.WebApi.Controllers
                 };
 
                 if (await _fileService.IsFileExistsAsync(fileDto))
+                {
                     return BadRequest("The file with the specified name exists. Please change the file name");
-                file.OpenReadStream().Read(fileDto.FileBytes = new byte[file.Length], 0, (int)file.Length);
+                }
+
+                await file.OpenReadStream().ReadAsync(fileDto.FileBytes = new byte[file.Length], 0, (int)file.Length);
 
                 if (!await _folderService.CanAddAsync(User.GetId(), fileDto.FileBytes.Length))
+                {
                     return BadRequest("You did not have memory to add the file");
+                }
 
                 await _fileService.CreateAsync(fileDto);
             }

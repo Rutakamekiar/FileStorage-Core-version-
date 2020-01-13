@@ -1,4 +1,4 @@
-﻿// <copyright file="SeedData.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -20,18 +20,18 @@ namespace FileStorage.WebApi
                                                      RoleManager<IdentityRole<Guid>> roleManager,
                                                      IFolderService folderService)
         {
-            if (roleManager.FindByNameAsync(Role.Admin.ToString()).Result == null)
+            if (await roleManager.FindByNameAsync(Role.Admin.ToString()) == null)
             {
-                var result = roleManager.CreateAsync(new IdentityRole<Guid>(Role.Admin.ToString())).Result;
+                var result = await roleManager.CreateAsync(new IdentityRole<Guid>(Role.Admin.ToString()));
                 if (!result.Succeeded)
                 {
                     throw new InvalidOperationException(result.Errors.First().Description);
                 }
             }
 
-            if (roleManager.FindByNameAsync(Role.User.ToString()).Result == null)
+            if (await roleManager.FindByNameAsync(Role.User.ToString()) == null)
             {
-                var result = roleManager.CreateAsync(new IdentityRole<Guid>(Role.User.ToString())).Result;
+                var result = await roleManager.CreateAsync(new IdentityRole<Guid>(Role.User.ToString()));
                 if (!result.Succeeded)
                 {
                     throw new InvalidOperationException(result.Errors.First().Description);
@@ -65,7 +65,7 @@ namespace FileStorage.WebApi
                         throw new InvalidOperationException(result.Errors.First().Description);
                     }
 
-                    await folderService.CreateRootFolder(user.Id, user.Email);
+                    await folderService.CreateRootFolderAsync(user.Id, user.Email);
 
                     result = await userManager.AddToRoleAsync(user, Role.Admin.ToString());
                     if (!result.Succeeded)

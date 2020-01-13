@@ -1,4 +1,4 @@
-﻿// <copyright file="FolderEntity.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -24,8 +24,11 @@ namespace FileStorage.Implementation.DataAccess.Entities
         public string Path { get; set; }
 
         public ICollection<FileEntity> Files { get; set; }
+
         public ICollection<FolderEntity> Folders { get; set; }
+
         public Guid? ParentFolderId { get; set; }
+
         public FolderEntity ParentFolder { get; set; }
     }
 }

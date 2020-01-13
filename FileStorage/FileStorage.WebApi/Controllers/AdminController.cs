@@ -1,4 +1,4 @@
-﻿// <copyright file="AdminController.cs" company="Kovalov Systems">
+﻿// <copyright company="Kovalov Systems">
 // Confidential and Proprietary
 // Copyright 2019 Kovalov Systems
 // ALL RIGHTS RESERVED.
@@ -61,7 +61,7 @@ namespace FileStorage.WebApi.Controllers
         [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSize(Guid id)
         {
-            return Ok(await _folderService.GetSpaceUsedCountByUserId(id));
+            return Ok(await _folderService.GetSpaceUsedCountByUserIdAsync(id));
         }
 
         [AllowAnonymous]

@@ -41,7 +41,7 @@ namespace FileStorage.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<StorageContext>(options => options.UseSqlite(Configuration.GetConnectionString("Database")));
+            services.AddDbContext<StorageContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Database")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IFolderService, FolderService>();
@@ -71,12 +71,13 @@ namespace FileStorage.WebApi
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseHsts();
             }
+
+            app.UseDeveloperExceptionPage();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FileStorage API"));

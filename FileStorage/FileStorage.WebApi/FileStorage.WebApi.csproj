@@ -3,7 +3,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
     <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <SignAssembly>false</SignAssembly>
@@ -24,6 +25,10 @@
     <Content Remove="Angular\**" />
     <EmbeddedResource Remove="Angular\**" />
     <None Remove="Angular\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="internal-nlog.log" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,10 +80,13 @@
   <ItemGroup>
     <ProjectReference Include="..\FileStorage.Implementation\FileStorage.Implementation.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <AdditionalFiles Include="..\SolutionItems\FileStorage.ruleset" Link="FileStorage.ruleset" />
     <AdditionalFiles Include="..\SolutionItems\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <EmbeddedResource Include="internal-nlog.log" />
+  </ItemGroup>
 </Project>

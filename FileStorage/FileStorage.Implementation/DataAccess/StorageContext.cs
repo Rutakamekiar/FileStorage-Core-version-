@@ -16,7 +16,7 @@ namespace FileStorage.Implementation.DataAccess
     {
         public StorageContext(DbContextOptions<StorageContext> options) : base(options)
         {
-            Database.EnsureCreatedAsync();
+            Database.EnsureCreatedAsync().Wait();
         }
 
         public DbSet<FileEntity> Files { get; set; }

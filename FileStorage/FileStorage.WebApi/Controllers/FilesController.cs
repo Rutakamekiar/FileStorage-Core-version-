@@ -68,7 +68,7 @@ namespace FileStorage.WebApi.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        ////[DisableRequestSizeLimit]
+        [RequestSizeLimit(50 * 1024 * 1024)]
         public async Task<IActionResult> UploadFile([FromForm(Name = "File")] IFormFile file, bool accessLevel, Guid folderId)
         {
             if (file?.Length <= 0)

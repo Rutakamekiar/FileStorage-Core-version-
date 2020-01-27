@@ -4,8 +4,10 @@
 // ALL RIGHTS RESERVED.
 // </copyright>
 
+using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 
@@ -27,7 +29,16 @@ namespace FileStorage.WebApi
                               logging.AddConsole();
                               logging.SetMinimumLevel(LogLevel.Trace);
                           })
-                          .UseNLog();
+                          .UseNLog()
+                          .UseKestrel(options =>
+                          {
+                              options.Limits.MaxRequestBodySize = 10 * 1024;
+                              options.Limits.MinRequestBodyDataRate =
+                                  new MinDataRate(bytesPerSecond: 100, gracePeriod: TimeSpan.FromSeconds(10));
+                              options.Limits.MinResponseDataRate =
+                                  new MinDataRate(bytesPerSecond: 100, gracePeriod: TimeSpan.FromSeconds(10));
+                          })
+                          .UseIISIntegration();
         }
     }
 }

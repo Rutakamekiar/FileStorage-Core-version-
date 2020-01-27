@@ -17,7 +17,7 @@ namespace FileStorage.Implementation.DataAccess.RepositoryInterfaces
 
         IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression);
 
-        Task CreateAsync(T entity);
+        Task<T> CreateAsync(T entity);
 
         void Delete(T entity);
 

@@ -31,9 +31,9 @@ namespace FileStorage.Implementation.DataAccess.Repositories
             return Context.Set<T>().Where(expression);
         }
 
-        public Task CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
-            return Context.Set<T>().AddAsync(entity);
+            return (await Context.Set<T>().AddAsync(entity)).Entity;
         }
 
         public void Update(T entity)
